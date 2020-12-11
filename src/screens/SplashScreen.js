@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ImageBackground, Image, Text } from 'react-native';
 
+
 export default class SplashScreen extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +24,7 @@ export default class SplashScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image source={require('../assets/iamges/logo.png')} resizeMode='stretch' style={{ width: 150, height: 160 }} />
+        <Image source={require('../assets/iamges/logo.png')} resizeMode='stretch' style={{ width: 162, height: 170 }} />
         <Text style={{color:'gray'}}>Let's be buds!</Text>
       </View>
     );
