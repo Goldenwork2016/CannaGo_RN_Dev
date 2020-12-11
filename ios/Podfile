@@ -8,6 +8,8 @@ target 'CannaGo' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
   target 'CannaGoTests' do
     inherit! :complete
     # Pods for testing
