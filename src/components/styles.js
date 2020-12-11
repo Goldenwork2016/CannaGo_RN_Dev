@@ -103,9 +103,9 @@ export const styles = StyleSheet.create({
         fontSize:15
     },
     personImage:{
-        width:129,
-        height:129,
-        borderRadius:64.5
+        width:120,
+        height:120,
+        borderRadius:60
     },
     personImageArea:{
         width:143,
@@ -115,6 +115,14 @@ export const styles = StyleSheet.create({
         borderWidth:2,
         justifyContent:'center',
         alignItems:'center'
+    },
+    personImageArea1:{
+        width:127,
+        height:127,
+        borderRadius:63.5,
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor:'green'
     },
     addImage:{
         width:50,

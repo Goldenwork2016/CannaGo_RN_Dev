@@ -3,12 +3,6 @@ import { View, Text, Image, ScrollView, TouchableOpacity, TextInput } from 'reac
 
 import {styles} from '../components/styles'
 
-const options = {
-  title: 'Choose Photo',
-  takePhotoButtonTitle: 'Take photo with your camera',
-  chooseFromLibraryButtonTitle: 'Choose photo from library'
-}
-
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
@@ -35,11 +29,11 @@ export default class LoginScreen extends Component {
               <TouchableOpacity style={styles.forgotBtn}>
               <Text style={{...styles.signinTxt, color:'#7E7E7E'}}>Forgot Password?</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.signinBtn} onPress={()=>{this.props.navigation.navigate("SignUpScreen")}}>
+              <TouchableOpacity style={styles.signinBtn}>
                 <Text style={styles.signinTxt1}>Sign in</Text>
               </TouchableOpacity>
               <Text style={styles.dontaccountTxt}>Don't you have an account?</Text>
-              <TouchableOpacity style={{...styles.forgotBtn, alignItems:'center', marginTop:5}}>
+              <TouchableOpacity style={{...styles.forgotBtn, alignItems:'center', marginTop:5}} onPress={()=>{this.props.navigation.navigate("SignUpScreen")}}>
                 <Text style={styles.signinTxt}>Sign up</Text>
               </TouchableOpacity>
             </View>

@@ -5,12 +5,23 @@ import ImagePicker from 'react-native-image-picker';
 import {styles} from '../components/styles'
 
 import NonImage from '../assets/iamges/personImage.png'
+import uncheckImage from '../assets/iamges/uncheckImage.png'
+import checkImage from '../assets/iamges/checkImage.png'
+
+const options = {
+  title: 'Choose Photo',
+  takePhotoButtonTitle: 'Take photo with your camera',
+  chooseFromLibraryButtonTitle: 'Choose photo from library'
+}
 
 export default class SignUpScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       avatarSource: NonImage,
+      ischecked:false,
+      checkImage:checkImage,
+      uncheckImage:uncheckImage,
     };
   }
 
@@ -30,22 +41,21 @@ export default class SignUpScreen extends Component {
   // }
 
   chooseImage = () => {
-    ImagePicker.showImagePicker(options, (response) => {
-        console.log('Response = ', response);
+    ImagePicker.showImagePicker(options, response => {
+      console.log("Response = ", response);
 
-        if (response.didCancel) {
-            console.log('User cancelled image picker');
-        } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-        } else {
-            const source = { uri: response.uri };
-
-            this.setState({
-                avatarSource: source,
-            });
-        }
+      if (response.didCancel) {
+        console.log("User cancelled image picker");
+      } else if (response.error) {
+        console.log("ImagePicker Error: ", response.error);
+      } else {
+        const source = { uri: response.uri };
+        this.setState({
+          avatarSource: source
+        });
+      }
     });
-  }
+  };
 
   render() {
     return (
@@ -58,7 +68,9 @@ export default class SignUpScreen extends Component {
                 </TouchableOpacity>
                 <View style={styles.personUploadgImage}>
                     <View style={styles.personImageArea}>
+                      <View style={styles.personImageArea1}>
                         <Image source={this.state.avatarSource} resizeMode='stretch' style={styles.personImage} />
+                      </View>
                     </View>
                     <TouchableOpacity style={styles.addBtn} onPress={() => { this.chooseImage() }}>
                         <Image source={require('../assets/iamges/addImage.png')} resizeMode='stretch' style={styles.addImage} />
@@ -89,7 +101,7 @@ export default class SignUpScreen extends Component {
               </TouchableOpacity>
               <View style={styles.TermsArea}>
                 <TouchableOpacity style={styles.forgotBtn1}>
-                  <Image source={require('../assets/iamges/uncheckImage.png')} resizeMode='stretch' style={styles.uncheckImage} />
+                  <Image source={this.state.ischecked?this.state.checkImage:this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} onPress={()=>{this.setState({ischecked:!this.state.ischecked})}} />
                 </TouchableOpacity>
                 <Text style={styles.termsTxt}>By checking this I agree to CannaGo's  </Text>
                 <TouchableOpacity style={styles.forgotBtn1}>
