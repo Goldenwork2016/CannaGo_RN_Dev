@@ -10,6 +10,8 @@ target 'CannaGo' do
 
   pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
 
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
   target 'CannaGoTests' do
     inherit! :complete
     # Pods for testing

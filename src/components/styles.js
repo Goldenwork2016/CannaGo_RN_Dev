@@ -23,6 +23,12 @@ export const styles = StyleSheet.create({
         marginLeft:33,
         marginRight:18
     },
+    InputImage2:{ 
+        width: 18, 
+        height: 18,
+        marginLeft:32,
+        marginRight:15
+    },
     logoTxt:{
         fontSize:13,
         color:'#7E7E7E'
@@ -95,6 +101,64 @@ export const styles = StyleSheet.create({
         textAlign:'center',
         color:'#515151',
         fontSize:15
+    },
+    personImage:{
+        width:129,
+        height:129,
+        borderRadius:64.5
+    },
+    personImageArea:{
+        width:143,
+        height:143,
+        borderRadius:72.5,
+        borderColor:'#61D273',
+        borderWidth:2,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    addImage:{
+        width:50,
+        height:50,
+    },
+    backImage:{
+        width:56,
+        height:40
+    },
+    backBtn:{
+        position:'absolute',
+        left:0
+    },
+    addBtn:{
+        position:'absolute',
+        bottom:15, 
+        right:-18
+    },
+    personUploadgImage:{
+        marginTop:20
+    },
+    arrowleft:{
+        height:15,
+        width:9,
+        position:'absolute',
+        right:35
+    },
+    uncheckImage:{
+        width:16, 
+        height:15,
+        marginRight:10, 
+        marginLeft:15
+    },
+    termsTxt:{
+        fontSize:10,
+        color:'#707070'
+    },
+    termsTxt1:{
+        fontSize:10,
+        color:'#707070'
+    },
+    TermsArea:{
+        flexDirection:'row',
+        alignItems:'center'
     }
 })
 

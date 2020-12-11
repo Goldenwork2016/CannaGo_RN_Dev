@@ -3,6 +3,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import SplashScreen from '../screens/SplashScreen';
 import LoginScreen from '../screens/LoginScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 
 import TabBarScreen from './TabBarNavigation'
 
@@ -10,6 +11,12 @@ const AuthStack = createStackNavigator(
     {
         LoginScreen: {
             screen: LoginScreen,
+            navigationOptions: {
+                headerShown: false
+            }
+        },
+        SignUpScreen: {
+            screen: SignUpScreen,
             navigationOptions: {
                 headerShown: false
             }
