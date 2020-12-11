@@ -57,6 +57,10 @@ export default class SignUpScreen extends Component {
     });
   };
 
+  checkfun = async() =>{
+    await this.setState({ischecked:!this.state.ischecked});
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -100,8 +104,8 @@ export default class SignUpScreen extends Component {
                 <Image source={require('../assets/iamges/arrow-left.png')} resizeMode='stretch' style={styles.arrowleft} />
               </TouchableOpacity>
               <View style={styles.TermsArea}>
-                <TouchableOpacity style={styles.forgotBtn1}>
-                  <Image source={this.state.ischecked?this.state.checkImage:this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} onPress={()=>{this.setState({ischecked:!this.state.ischecked})}} />
+                <TouchableOpacity style={styles.forgotBtn1} onPress={()=>{this.checkfun()}}>
+                  <Image source={this.state.ischecked?this.state.checkImage:this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage}  />
                 </TouchableOpacity>
                 <Text style={styles.termsTxt}>By checking this I agree to CannaGo's  </Text>
                 <TouchableOpacity style={styles.forgotBtn1}>

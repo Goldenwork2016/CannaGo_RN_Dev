@@ -26,10 +26,10 @@ export default class LoginScreen extends Component {
                 <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
                 <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Password"></TextInput>
               </View>
-              <TouchableOpacity style={styles.forgotBtn}>
-              <Text style={{...styles.signinTxt, color:'#7E7E7E'}}>Forgot Password?</Text>
+              <TouchableOpacity style={styles.forgotBtn} onPress={()=>{this.props.navigation.navigate("ForgotPasswordScreen")}}>
+                <Text style={{...styles.signinTxt, color:'#7E7E7E'}}>Forgot Password?</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.signinBtn}>
+              <TouchableOpacity style={styles.signinBtn} onPress={()=>{this.props.navigation.navigate("App")}}>
                 <Text style={styles.signinTxt1}>Sign in</Text>
               </TouchableOpacity>
               <Text style={styles.dontaccountTxt}>Don't you have an account?</Text>

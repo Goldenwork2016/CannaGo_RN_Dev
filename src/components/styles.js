@@ -33,6 +33,16 @@ export const styles = StyleSheet.create({
         fontSize:13,
         color:'#7E7E7E'
     }, 
+    forgpwdTxt:{
+        fontSize:16,
+        color:'#515151',
+        textAlign:'center',
+        width:'90%',
+        lineHeight:25,
+        marginTop:20,
+        fontWeight:'bold',
+        marginBottom:20
+    }, 
     inputArea:{
         width:'90%',
         marginTop:35,
@@ -119,7 +129,7 @@ export const styles = StyleSheet.create({
     personImageArea1:{
         width:127,
         height:127,
-        borderRadius:63.5,
+        borderRadius:100,
         justifyContent:'center',
         alignItems:'center',
         backgroundColor:'green'
@@ -167,6 +177,22 @@ export const styles = StyleSheet.create({
     TermsArea:{
         flexDirection:'row',
         alignItems:'center'
+    },
+    modal:{
+        height:400,
+        borderTopRightRadius:45,
+        borderTopLeftRadius:45,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    closeImage:{
+        height:17,
+        width:17
+    },
+    closeBtn:{
+        position:'absolute',
+        top:30,
+        right: 30,
     }
 })
 
