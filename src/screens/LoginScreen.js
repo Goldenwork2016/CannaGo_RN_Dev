@@ -27,12 +27,12 @@ export default class LoginScreen extends Component {
                 <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Password"></TextInput>
               </View>
               <TouchableOpacity style={styles.forgotBtn} onPress={()=>{this.props.navigation.navigate("ForgotPasswordScreen")}}>
-                <Text style={{...styles.signinTxt, color:'#7E7E7E'}}>Forgot Password?</Text>
+                <Text style={{fontFamily:'Poppins-Regular',color:'#7E7E7E', fontSize:13}}>Forgot Password?</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.signinBtn} onPress={()=>{this.props.navigation.navigate("App")}}>
                 <Text style={styles.signinTxt1}>Sign in</Text>
               </TouchableOpacity>
-              <Text style={styles.dontaccountTxt}>Don't you have an account?</Text>
+              <Text style={styles.dontaccountTxt}>Don't have an account?</Text>
               <TouchableOpacity style={{...styles.forgotBtn, alignItems:'center', marginTop:5}} onPress={()=>{this.props.navigation.navigate("SignUpScreen")}}>
                 <Text style={styles.signinTxt}>Sign up</Text>
               </TouchableOpacity>

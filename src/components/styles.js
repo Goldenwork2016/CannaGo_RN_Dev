@@ -37,17 +37,17 @@ export const styles = StyleSheet.create({
     logoTxt:{
         fontSize:13,
         color:'#7E7E7E',
-        fontFamily:'Poppins-Bold'
+        fontFamily:'Poppins-Regular'
     }, 
     forgpwdTxt:{
-        fontSize:16,
+        fontSize:15,
         color:'#515151',
         textAlign:'center',
         width:'90%',
         lineHeight:25,
         marginTop:20,
-        fontWeight:'bold',
-        marginBottom:20
+        marginBottom:20,
+        fontFamily:'Poppins-Regular'
     }, 
     AddShopiingTxt:{
         fontSize:19,
@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
         width:'90%',
         lineHeight:25,
         marginTop:20,
-        fontWeight:'bold',
+        fontFamily:'Poppins-Regular',
         marginBottom:20
     }, 
     CartTitle:{
@@ -68,7 +68,8 @@ export const styles = StyleSheet.create({
         textAlign:'center',
         width:'90%',
         lineHeight:25,
-        fontWeight:'bold',
+        fontFamily:'Poppins-Regular',
+        fontSize:18
     }, 
     inputArea:{
         width:'90%',
@@ -78,7 +79,7 @@ export const styles = StyleSheet.create({
         fontSize:13,
         color:'#000',
         width:'70%',
-        fontFamily:'Poppins-Bold'
+        fontFamily:'Poppins-Regular'
     },
     inputItem:{
         flexDirection:'row',
@@ -111,19 +112,26 @@ export const styles = StyleSheet.create({
     },
     signinTxt1:{
         fontSize:18,
-        color:'white'
+        color:'white',
+        fontFamily:'Poppins-Regular'
     }, 
     dontaccountTxt:{
         color:'#bdbdc6',
         fontSize:14,
-        fontWeight:'bold',
         marginTop:18,
-        textAlign:'center'
+        textAlign:'center',
+        fontFamily:'NunitoSans-Bold'
     },
     signinTxt:{
         fontSize:14,
+        color:'#61D273',
+        fontFamily:'NunitoSans-Bold'
+    },
+    forgotTxt:{
+        fontSize:14,
         fontWeight:'bold',
-        color:'#61D273'
+        color:'#7E7E7E',
+        fontFamily:'Poppins-Regular'
     },
     wantBtn:{
         justifyContent:'center',
@@ -138,7 +146,8 @@ export const styles = StyleSheet.create({
     wantTxt:{
         textAlign:'center',
         color:'#515151',
-        fontSize:15
+        fontSize:15,
+        fontFamily:'Poppins-Regular'
     },
     personImage:{
         width:120,
@@ -191,12 +200,13 @@ export const styles = StyleSheet.create({
     uncheckImage:{
         width:16, 
         height:15,
-        marginRight:10, 
-        marginLeft:15
+        marginRight:5, 
+        marginLeft:10
     },
     termsTxt:{
         fontSize:10,
-        color:'#707070'
+        color:'#707070',
+        fontFamily:'Poppins-Regular'
     },
     termsTxt1:{
         fontSize:10,
@@ -223,9 +233,9 @@ export const styles = StyleSheet.create({
         right: 30,
     },
     homeTitle:{
-        fontFamily:'OpenSans-Semibold',
         fontSize:25,
-        fontWeight:'bold',
+        fontFamily:'Poppins-SemiBold',
+        color:'#070707'
     },
     StoreItem:{
         width:'85%',
@@ -257,8 +267,8 @@ export const styles = StyleSheet.create({
     },
     desTxt:{
         color:'white',
-        fontSize:12,
-        fontWeight:'700'
+        fontSize:10,
+        fontFamily:'Poppins-Medium'
     }
 })
 

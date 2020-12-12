@@ -109,7 +109,7 @@ export default class SignUpScreen extends Component {
                 </TouchableOpacity>
                 <Text style={styles.termsTxt}>By checking this I agree to CannaGo's  </Text>
                 <TouchableOpacity style={styles.forgotBtn1}>
-                  <Text style={{color:'#61D273', fontSize:10,}}>Terms & Conditions</Text>
+                  <Text style={{color:'#61D273', fontSize:10, fontFamily:'Poppins-Regular'}}>Terms & Conditions</Text>
                 </TouchableOpacity>
               </View>
               <TouchableOpacity style={styles.signinBtn}>
