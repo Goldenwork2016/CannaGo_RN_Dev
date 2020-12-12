@@ -4,12 +4,17 @@ export const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: "center",
-      backgroundColor:'#fff'
+      backgroundColor:'#fff',
+      width:'100%'
     },
     logoImage:{ 
         width: 162, 
         height: 170,
         marginTop:60
+    },
+    plusImage:{ 
+        width: 121, 
+        height: 121,
     },
     InputImage:{ 
         width: 18, 
@@ -31,7 +36,8 @@ export const styles = StyleSheet.create({
     },
     logoTxt:{
         fontSize:13,
-        color:'#7E7E7E'
+        color:'#7E7E7E',
+        fontFamily:'Poppins-Bold'
     }, 
     forgpwdTxt:{
         fontSize:16,
@@ -43,6 +49,27 @@ export const styles = StyleSheet.create({
         fontWeight:'bold',
         marginBottom:20
     }, 
+    AddShopiingTxt:{
+        fontSize:19,
+        color:'#414041',
+        textAlign:'center',
+        width:'90%',
+        lineHeight:25,
+        marginTop:20,
+        fontWeight:'bold',
+        marginBottom:20
+    }, 
+    CartTitle:{
+        position: 'absolute',
+        alignSelf:'center',
+        top:30,
+        fontSize:20,
+        color:'#414041',
+        textAlign:'center',
+        width:'90%',
+        lineHeight:25,
+        fontWeight:'bold',
+    }, 
     inputArea:{
         width:'90%',
         marginTop:35,
@@ -50,7 +77,8 @@ export const styles = StyleSheet.create({
     inputTxt:{
         fontSize:13,
         color:'#000',
-        width:'70%'
+        width:'70%',
+        fontFamily:'Poppins-Bold'
     },
     inputItem:{
         flexDirection:'row',
@@ -193,6 +221,44 @@ export const styles = StyleSheet.create({
         position:'absolute',
         top:30,
         right: 30,
+    },
+    homeTitle:{
+        fontFamily:'OpenSans-Semibold',
+        fontSize:25,
+        fontWeight:'bold',
+    },
+    StoreItem:{
+        width:'85%',
+        marginTop:30,
+        alignItems:'center',
+        alignSelf:'center'
+    },
+    StoreItem1:{
+        width:'85%',
+        marginTop:30,
+        alignItems:'center',
+        alignSelf:'center',
+        backgroundColor:'red',
+    },
+    storeImage:{
+        width:'100%',
+        height:115,
+        marginTop:15
+    },
+    storeDes:{
+        width:'100%',
+        height:67,
+        backgroundColor:'#61D273',
+        borderBottomLeftRadius:25,
+        borderBottomRightRadius:25,
+        marginTop:-7,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    desTxt:{
+        color:'white',
+        fontSize:12,
+        fontWeight:'700'
     }
 })
 

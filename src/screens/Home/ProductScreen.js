@@ -39,7 +39,7 @@ export default class HomeScreen extends Component {
 
   _rendermakelist({ item, index }) {
     return (
-        <TouchableOpacity style={styles.StoreItem} onPress={()=>{this.props.navigation.navigate("TouchableOpacity")}}>
+        <TouchableOpacity style={styles.StoreItem} >
             <Text style={styles.homeTitle}> {item.Title} </Text>
             <Image source={item.ImageUrl} resizeMode='stretch' style={styles.storeImage} />
             <View style={styles.storeDes}>
@@ -52,29 +52,26 @@ export default class HomeScreen extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, alignItems: "center",}}>
-        <ScrollView style={{width:'100%'}}>
+    //   <View style={{flex: 1, alignItems: "center",}}>
             <View style={{...styles.container, paddingTop:30}}>
                 <FlatList
-                // showsVerticalScrollIndicator={true}
-                style={{width:'100%'}}
-                numColumns={1}
-                data={this.state.contentList}
-                renderItem={({ item }) => (
-                    <TouchableOpacity style={styles.StoreItem} onPress={()=>{this.props.navigation.navigate("ProductScreen")}}>
-                        <Text style={styles.homeTitle}> {item.Title} </Text>
-                        <Image source={item.ImageUrl} resizeMode='stretch' style={styles.storeImage} />
-                        <View style={styles.storeDes}>
-                            <Text style={styles.desTxt}>{item.price}</Text>
-                            <Text style={styles.desTxt}>{item.time}</Text>
-                        </View>
-                    </TouchableOpacity>
-                )}
-                keyExtractor={item => `${item.id}`}
+                    numColumns={2}
+                    // showsVerticalScrollIndicator={true}
+                    style={{width:'100%', marginHorizontal:'5%', backgroundColor:'red'}}
+                    data={this.state.contentList}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity style={styles.StoreItem1}>
+                            <Image source={item.ImageUrl} resizeMode='stretch' style={styles.storeImage} />
+                            <View style={styles.storeDes}>
+                                <Text style={styles.desTxt}>{item.price}</Text>
+                                <Text style={styles.desTxt}>{item.time}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    keyExtractor={item => `${item.id}`}
                 />
             </View>
-        </ScrollView>
-      </View>
+    //   </View>
     );
   }
 }

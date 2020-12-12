@@ -36,7 +36,7 @@ export default class ForgotPasswordScreen extends Component {
                     <Image source={require('../assets/iamges/close.png')} resizeMode='stretch' style={styles.closeImage} />
                 </TouchableOpacity>
                 <Image source={require('../assets/iamges/modalImage.png')} resizeMode='stretch' style={{...styles.logoImage, marginTop:0}} />
-                <Text style={{...styles.forgpwdTxt, width:'80%'}}>Please check you email inbox for instructions!</Text>
+                <Text style={{...styles.forgpwdTxt, width:'80%'}}>Please check your email inbox for further instructions!</Text>
             </Modal>
         </View>
     );

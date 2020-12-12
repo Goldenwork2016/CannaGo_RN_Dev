@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
+import {styles} from '../../components/styles'
+
 export default class OrderHistoryScreen extends Component {
   constructor(props) {
     super(props);
@@ -10,8 +12,7 @@ export default class OrderHistoryScreen extends Component {
 
   render() {
     return (
-      <View>
-        <Text> OrderHistoryScreen </Text>
+      <View style={{backgroundColor:'#61D273', height:'100%'}}>
       </View>
     );
   }
