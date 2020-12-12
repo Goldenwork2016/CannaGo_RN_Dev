@@ -11,12 +11,36 @@ export default class ShoppingCartScreen extends Component {
     super(props);
     this.state = {
         modalVisible: false,
-        isEmpty:false
+        isEmpty:false,
+        itemNum1: 2,
+        itemNum2: 1,
     };
   }
 
   GoBack = () =>{
     this.props.navigation.navigate("ProductDetailScreen")
+  }
+
+  Addcart = () => {
+    this.setState({itemNum1:this.state.itemNum1 + 1})
+  }
+
+  Minuscart = async() => {
+    await this.setState({itemNum1:this.state.itemNum1 - 1})
+    if(this.state.itemNum1 <= 0){
+      this.setState({itemNum1:0})
+    }
+  }
+
+  Addcart1 = () => {
+    this.setState({itemNum2:this.state.itemNum2 + 1})
+  }
+
+  Minuscart1 = async() => {
+    await this.setState({itemNum2:this.state.itemNum2 - 1})
+    if(this.state.itemNum2 <= 0){
+      this.setState({itemNum2:0})
+    }
   }
 
   render() {
@@ -30,6 +54,7 @@ export default class ShoppingCartScreen extends Component {
               <Text style={{...styles.AddShopiingTxt, color:'#414041'}}>Shopping Cart Empty</Text>
             </View>
             :
+            <View style={{width:'100%', flex:1, alignItems:'center'}}>
             <ScrollView style={{width:'100%', flex:1}}>
                 <View style={{...styles.container, flex:1}}>
                   <View style={{width:'100%', alignItems:'center', marginTop:55}}>
@@ -45,13 +70,13 @@ export default class ShoppingCartScreen extends Component {
                         <Text style={styles.productDescription}>Just CBD Gummies</Text>
                         <Text style={{...styles.productDescription, color:"#61D273"}}>$ 24.99</Text>
                         <View style={styles.countItem}>
-                          <TouchableOpacity style={styles.cartAccountArea}>
+                          <TouchableOpacity style={styles.cartAccountArea} onPress={()=>{this.Addcart()}}>
                             <Text style={styles.cartAddBtn}>+</Text>
                           </TouchableOpacity>
                           <View style={styles.cartAccountArea}>
-                            <Text style={styles.cartAddBtn}>2</Text>
+                            <Text style={styles.cartAddBtn}>{this.state.itemNum1}</Text>
                           </View>
-                          <TouchableOpacity style={styles.cartAccountArea}>
+                          <TouchableOpacity style={styles.cartAccountArea} onPress={()=>{this.Minuscart()}}>
                             <Text style={styles.cartAddBtn}>-</Text>
                           </TouchableOpacity>
                         </View>
@@ -65,26 +90,26 @@ export default class ShoppingCartScreen extends Component {
                         <Text style={styles.productDescription}>CBD Wax 10 ML</Text>
                         <Text style={{...styles.productDescription, color:"#61D273"}}>$ 15</Text>
                         <View style={styles.countItem}>
-                          <TouchableOpacity style={styles.cartAccountArea}>
+                          <TouchableOpacity style={styles.cartAccountArea} onPress={()=>{this.Addcart1()}}>
                             <Text style={styles.cartAddBtn}>+</Text>
                           </TouchableOpacity>
                           <View style={styles.cartAccountArea}>
-                            <Text style={styles.cartAddBtn}>1</Text>
+                            <Text style={styles.cartAddBtn}>{this.state.itemNum2}</Text>
                           </View>
-                          <TouchableOpacity style={styles.cartAccountArea}>
+                          <TouchableOpacity style={styles.cartAccountArea} onPress={()=>{this.Minuscart1()}}>
                             <Text style={styles.cartAddBtn}>-</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
                     </View>
-                    <TouchableOpacity style={{...styles.AddCartBtn}} onPress={()=>{this.props.navigation.navigate("CheckOutScreen")}}>
-                        <Text style={styles.signinTxt1}>Next</Text>
-                    </TouchableOpacity>
                   </View>
                 </View>
             </ScrollView>
+            <TouchableOpacity style={styles.AddCartBtn1} onPress={()=>{this.props.navigation.navigate("CheckOutScreen")}}>
+                <Text style={styles.signinTxt1}>Next</Text>
+            </TouchableOpacity>
+            </View>
           }
-            
         </View>
     );
   }

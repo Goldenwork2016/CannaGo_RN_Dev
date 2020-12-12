@@ -187,9 +187,20 @@ export const styles = StyleSheet.create({
         backgroundColor:'#61D273',
         marginTop:35,
         justifyContent:'center',
-        alignItems:'center',
         width:246,
-        alignSelf:'center'
+        alignSelf:'center',
+    },
+    AddCartBtn1:{
+        flexDirection:'row',
+        alignItems:'center',
+        height:39,
+        borderRadius:26,
+        backgroundColor:'#61D273',
+        justifyContent:'center',
+        width:246,
+        alignSelf:'center',
+        position:'absolute',
+        bottom:30
     },
     cartItemArea:{
         flexDirection:'row', 
