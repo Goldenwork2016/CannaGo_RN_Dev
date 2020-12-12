@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { color } from 'react-native-reanimated';
 
 export const styles = StyleSheet.create({
     container: {
@@ -62,7 +63,17 @@ export const styles = StyleSheet.create({
     CartTitle:{
         position: 'absolute',
         alignSelf:'center',
-        top:30,
+        top:45,
+        fontSize:20,
+        color:'#414041',
+        textAlign:'center',
+        width:'90%',
+        lineHeight:25,
+        fontFamily:'Poppins-Regular',
+        fontSize:18
+    }, 
+    DetailTitle:{
+        alignSelf:'center',
         fontSize:20,
         color:'#414041',
         textAlign:'center',
@@ -154,6 +165,44 @@ export const styles = StyleSheet.create({
         height:120,
         borderRadius:60
     },
+    productDetailImage:{
+        width:316,
+        height:214,
+        marginTop:30
+    },
+    productCartImage:{
+        width:120,
+        height:120,
+    },
+    productDescription:{
+        color:'#1D1C1C', 
+        fontSize:16, 
+        fontFamily:'Poppins-Regular'
+    },
+    AddCartBtn:{
+        flexDirection:'row',
+        alignItems:'center',
+        height:39,
+        borderRadius:26,
+        backgroundColor:'#61D273',
+        marginTop:35,
+        justifyContent:'center',
+        alignItems:'center',
+        width:246,
+        alignSelf:'center'
+    },
+    cartItemArea:{
+        flexDirection:'row', 
+        alignItems:'center', 
+        marginTop:30, 
+        width:'90%'
+    },
+    cartImage:{
+        borderRadius:5, 
+        borderColor:'#61D273', 
+        borderWidth:2, 
+        marginRight:20
+    },
     personImageArea:{
         width:143,
         height:143,
@@ -179,9 +228,18 @@ export const styles = StyleSheet.create({
         width:56,
         height:40
     },
+    paymethodAdd:{
+        width:20,
+        height:20
+    },
     backBtn:{
         position:'absolute',
         left:0
+    },
+    paymethodAddBtn:{
+        position:'absolute',
+        right:30,
+        top:10
     },
     addBtn:{
         position:'absolute',
@@ -244,16 +302,19 @@ export const styles = StyleSheet.create({
         alignSelf:'center'
     },
     StoreItem1:{
-        width:'85%',
+        width:'100%',
         marginTop:30,
         alignItems:'center',
         alignSelf:'center',
-        backgroundColor:'red',
     },
     storeImage:{
         width:'100%',
         height:115,
         marginTop:15
+    },
+    productImage:{
+        width:93,
+        height:124,
     },
     storeDes:{
         width:'100%',
@@ -261,14 +322,124 @@ export const styles = StyleSheet.create({
         backgroundColor:'#61D273',
         borderBottomLeftRadius:25,
         borderBottomRightRadius:25,
-        marginTop:-7,
         justifyContent:'center',
         alignItems:'center'
+    },
+    storeDes1:{
+        width:'100%',
+        height:67,
+        backgroundColor:'#61D273',
+        borderBottomLeftRadius:25,
+        borderBottomRightRadius:25,
+        justifyContent:'center',
+        alignItems:'center',
+        marginTop:-10
     },
     desTxt:{
         color:'white',
         fontSize:10,
-        fontFamily:'Poppins-Medium'
+        fontFamily:'Poppins-Bold'
+    },
+    desTxt1:{
+        color:'#61D273',
+        fontSize:10,
+        fontFamily:'Poppins-Bold',
+        position:'absolute',
+        top:10,
+        right:7
+    },
+    countItem:{
+        flexDirection:'row',
+        width:95,
+        height:30,
+        backgroundColor:'#f0f0f0',
+        justifyContent:'center',
+        alignItems:'center',
+        marginTop:20        
+    },
+    cartAccountArea:{
+        width:'33.3%',
+        justifyContent: 'center',
+        alignItems:'center'
+    },
+    cartAddBtn:{
+        color:'#343434',
+        fontSize:17
+    },
+    paymenntArea:{
+        marginTop:40,
+        width:'85%',
+        alignSelf:'center'
+    },
+    OrderSummeryTxt:{
+        fontSize:18,
+        fontFamily:'Poppins-SemiBold',
+        color:'#505050'
+    },
+    ContentItem:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        marginTop:12,
+        marginBottom:12
+    },
+    ItemTxt:{
+        color:'#211D18',
+        fontFamily:'Poppins-Regular',
+        fontSize:14
+    },
+    orderContent:{
+        marginTop:15,
+        borderTopWidth:1,
+        borderBottomWidth:1,
+        borderColor:'#E5E5E5'
+    },
+    PromoInput:{
+        height:43,
+        width:'65%',
+        borderTopLeftRadius:21.5,
+        borderBottomLeftRadius:21.5,
+        borderWidth:1,
+        borderColor:'#e9e9e9',
+        paddingLeft:20,
+        fontSize:13,
+        fontFamily:'Poppins-Regular',
+    },
+    CardNumberInput:{
+        height:43,
+        width:'100%',
+        borderRadius:21.5,
+        borderWidth:1,
+        borderColor:'#e9e9e9',
+        paddingLeft:20,
+        fontSize:13,
+        fontFamily:'Poppins-Regular',
+        marginTop:-20
+    },
+    specialInput:{
+        height:43,
+        width:'100%',
+        borderRadius:15,
+        borderWidth:1,
+        borderColor:'#e9e9e9',
+        paddingLeft:20,
+        fontSize:13,
+        fontFamily:'Poppins-Regular',
+        marginTop:-20,
+        height:86
+    },
+    ApplyBtn:{
+        height:43,
+        width:'35%',
+        backgroundColor:'#61D273',
+        borderTopRightRadius:21.5,
+        borderBottomRightRadius:21.5,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    applyBtnTxt:{
+        color:'white',
+        fontFamily:'Poppins-Regular',
+        fontSize:14
     }
 })
 

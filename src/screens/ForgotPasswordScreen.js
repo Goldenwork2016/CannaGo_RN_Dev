@@ -25,7 +25,7 @@ export default class ForgotPasswordScreen extends Component {
             <View style={styles.inputArea}>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Email Adress"></TextInput>
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Email Address"></TextInput>
               </View>
               <TouchableOpacity style={{...styles.signinBtn, marginTop:5, marginBottom:50}} onPress={() => this.refs.modal6.open()}>
                 <Text style={styles.signinTxt1}>Submit</Text>

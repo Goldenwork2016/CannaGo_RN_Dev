@@ -10,28 +10,32 @@ export default class HomeScreen extends Component {
     this.state = {
         contentList: [
             {
+              id:1,
               Title: 'Cannabis Station',
               ImageUrl: require('../../assets/iamges/storeImage1.png'),
               price: "Store's pricing: $$",
               time: "Store's Hours Today: 9am - 9pm",
             },
             {
-              Title: 'Harvest',
-              ImageUrl: require('../../assets/iamges/storeImage2.png'),
-              price: "Store's pricing: $$",
-              time: "Store's Hours Today: 10am - 15pm",
-            },
-            {
+              id:2,
               Title: 'Sunnyside',
               ImageUrl: require('../../assets/iamges/storeImage3.png'),
               price: "Store's pricing: $$",
               time: "Store's Hours Today: 9am - 5pm",
             },
             {
-                Title: 'SUMMER READY',
-                ImageUrl: require('../../assets/iamges/storeImage1.png'),
-                price: "Store's pricing: $$",
-                time: "Store's Hours Today: 8am - 7pm",
+              id:3,
+              Title: 'Harvest',
+              ImageUrl: require('../../assets/iamges/storeImage2.png'),
+              price: "Store's pricing: $$",
+              time: "Store's Hours Today: 10am - 15pm",
+            },
+            {
+              id:4,
+              Title: 'SUMMER READY',
+              ImageUrl: require('../../assets/iamges/storeImage1.png'),
+              price: "Store's pricing: $$",
+              time: "Store's Hours Today: 8am - 7pm",
             },
           ],
     };
@@ -64,7 +68,7 @@ export default class HomeScreen extends Component {
                     <TouchableOpacity style={styles.StoreItem} onPress={()=>{this.props.navigation.navigate("ProductScreen")}}>
                         <Text style={styles.homeTitle}> {item.Title} </Text>
                         <Image source={item.ImageUrl} resizeMode='stretch' style={styles.storeImage} />
-                        <View style={styles.storeDes}>
+                        <View style={styles.storeDes1}>
                             <Text style={styles.desTxt}>{item.price}</Text>
                             <Text style={styles.desTxt}>{item.time}</Text>
                         </View>

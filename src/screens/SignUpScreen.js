@@ -84,7 +84,7 @@ export default class SignUpScreen extends Component {
             <View style={styles.inputArea}>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Email Adress"></TextInput>
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Email Address"></TextInput>
               </View>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />

@@ -6,7 +6,9 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import HomeScreen from '../screens/Home/HomeScreen'
 import ProductScreen from '../screens/Home/ProductScreen'
+import ProductDetailScreen from '../screens/Home/ProductDetailScreen'
 import ShoppingCartScreen from '../screens/ShopingCart/ShoppingCartScreen'
+import CheckOutScreen from '../screens/ShopingCart/CheckOutScreen'
 import OrderHistoryScreen from '../screens/OrderHistory/OrderHistoryScreen'
 
 const Home = createStackNavigator(
@@ -19,6 +21,12 @@ const Home = createStackNavigator(
         },
         ProductScreen: {
             screen: ProductScreen,
+            navigationOptions: {
+                headerShown: false,
+            }
+        },
+        ProductDetailScreen: {
+            screen: ProductDetailScreen,
             navigationOptions: {
                 headerShown: false,
             }
@@ -53,6 +61,12 @@ const ShoppingCart = createStackNavigator(
           navigationOptions: {
               headerShown: false,
           }
+      },
+      CheckOutScreen: {
+        screen: CheckOutScreen,
+        navigationOptions: {
+            headerShown: false,
+        }
       },
   },
   {
