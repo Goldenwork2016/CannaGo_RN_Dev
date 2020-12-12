@@ -234,7 +234,8 @@ export const styles = StyleSheet.create({
     },
     backBtn:{
         position:'absolute',
-        left:0
+        left:0,
+        zIndex:100
     },
     paymethodAddBtn:{
         position:'absolute',

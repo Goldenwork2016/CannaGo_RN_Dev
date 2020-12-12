@@ -15,6 +15,10 @@ export default class ShoppingCartScreen extends Component {
     };
   }
 
+  GoBack = () =>{
+    this.props.navigation.navigate("ProductDetailScreen")
+  }
+
   render() {
     return (
         <View style={{...styles.container, justifyContent:'center'}}>
@@ -29,7 +33,7 @@ export default class ShoppingCartScreen extends Component {
             <ScrollView style={{width:'100%', flex:1}}>
                 <View style={{...styles.container, flex:1}}>
                   <View style={{width:'100%', alignItems:'center', marginTop:55}}>
-                    <TouchableOpacity style={styles.backBtn} onPress={()=>{this.props.navigation.goBack()}}>
+                    <TouchableOpacity style={styles.backBtn} onPress={()=>{this.GoBack()}}>
                       <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                     </TouchableOpacity>
                     <Text style={{...styles.DetailTitle, marginTop:7}}>Cart</Text>

@@ -25,7 +25,7 @@ export default class CheckOutScreen extends Component {
                       <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                     </TouchableOpacity>
                     <Text style={{...styles.DetailTitle, marginTop:7}}>PAYMENT METHOD</Text>
-                    <TouchableOpacity style={styles.paymethodAddBtn} onPress={()=>{this.props.navigation.goBack()}}>
+                    <TouchableOpacity style={styles.paymethodAddBtn}>
                       <Image source={require('../../assets/iamges/paymethodAdd.png')} resizeMode='stretch' style={styles.paymethodAdd} />
                     </TouchableOpacity>
                   </View>
@@ -99,7 +99,7 @@ export default class CheckOutScreen extends Component {
                         <TextInput style={styles.specialInput} multiline={true} placeholderTextColor="#5E5E5E" placeholder="The gate code is #01234" />
                       </View>
                   </View>
-                  <TouchableOpacity style={{...styles.signinBtn, width:'85%', alignSelf:'center'}} onPress={()=>{this.props.navigation.navigate("CheckOutScreen")}}>
+                  <TouchableOpacity style={{...styles.signinBtn, width:'85%', alignSelf:'center'}} onPress={()=>{this.props.navigation.navigate("OrderStatusScreen")}}>
                       <Text style={styles.signinTxt1}>Check Out</Text>
                   </TouchableOpacity>
                 </View>

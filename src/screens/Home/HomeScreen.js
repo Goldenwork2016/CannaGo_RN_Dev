@@ -18,17 +18,17 @@ export default class HomeScreen extends Component {
             },
             {
               id:2,
-              Title: 'Sunnyside',
+              Title: 'Harvest',
               ImageUrl: require('../../assets/iamges/storeImage3.png'),
               price: "Store's pricing: $$",
-              time: "Store's Hours Today: 9am - 5pm",
+              time: "Store's Hours Today: 10am - 15pm",
             },
             {
               id:3,
-              Title: 'Harvest',
+              Title: 'Sunnyside',
               ImageUrl: require('../../assets/iamges/storeImage2.png'),
               price: "Store's pricing: $$",
-              time: "Store's Hours Today: 10am - 15pm",
+              time: "Store's Hours Today: 9am - 5pm",
             },
             {
               id:4,

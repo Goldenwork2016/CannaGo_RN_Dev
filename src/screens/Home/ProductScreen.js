@@ -96,7 +96,7 @@ export default class HomeScreen extends Component {
                     // showsVerticalScrollIndicator={true}
                     data={this.state.contentList}
                     renderItem={({ item }) => (
-                        <View style={{width:width, height:201, marginHorizontal:10, marginTop:30}}>
+                        <TouchableOpacity style={{width:width, height:201, marginHorizontal:10, marginTop:30}}  onPress={()=>{this.props.navigation.navigate('ProductDetailScreen')}}>
                             <View style={{justifyContent:'center', height:134, alignItems:'center', borderWidth:2, borderColor:'#61D273', borderTopLeftRadius:30}}>
                               <Image source={item.ImageUrl} resizeMode='stretch' style={styles.productImage} />
                               <Text style={styles.desTxt1}>{item.price}</Text>
@@ -107,7 +107,7 @@ export default class HomeScreen extends Component {
                                   <Image source={require('../../assets/iamges/rightArror.png')} resizeMode='stretch' style={{height:16, width:16, marginTop:10}} />
                                 </TouchableOpacity>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     )}
                     keyExtractor={item => `${item.id}`}
                 />

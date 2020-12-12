@@ -9,6 +9,7 @@ import ProductScreen from '../screens/Home/ProductScreen'
 import ProductDetailScreen from '../screens/Home/ProductDetailScreen'
 import ShoppingCartScreen from '../screens/ShopingCart/ShoppingCartScreen'
 import CheckOutScreen from '../screens/ShopingCart/CheckOutScreen'
+import OrderStatusScreen from '../screens/ShopingCart/OrderStatusScreen'
 import OrderHistoryScreen from '../screens/OrderHistory/OrderHistoryScreen'
 
 const Home = createStackNavigator(
@@ -64,6 +65,12 @@ const ShoppingCart = createStackNavigator(
       },
       CheckOutScreen: {
         screen: CheckOutScreen,
+        navigationOptions: {
+            headerShown: false,
+        }
+      },
+      OrderStatusScreen: {
+        screen: OrderStatusScreen,
         navigationOptions: {
             headerShown: false,
         }
