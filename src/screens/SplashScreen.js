@@ -24,8 +24,7 @@ export default class SplashScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image source={require('../assets/iamges/logo.png')} resizeMode='stretch' style={{ width: 162, height: 170 }} />
-        <Text style={{color:'gray', fontFamily:'Poppins-Regular'}}>Let's be buds!</Text>
+        <Image source={require('../assets/iamges/SplashLogo.png')} resizeMode='stretch' style={{ width: 162, height: 180 }} />
       </View>
     );
   }
