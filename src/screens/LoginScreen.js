@@ -93,9 +93,6 @@ export default class LoginScreen extends Component {
               <TouchableOpacity style={styles.wantBtn} onPress={()=>{this.change_logo(2)}}>
                 <Text style={styles.wantTxt}>Want to sell with us?</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.wantBtn} onPress={()=>{this.change_logo(1)}}>
-                <Text style={styles.wantTxt}>Want to buy from us?</Text>
-              </TouchableOpacity>
             </View>
           </View>
           <View style={{height:50}}></View>
