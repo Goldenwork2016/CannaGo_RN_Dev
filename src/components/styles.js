@@ -35,12 +35,6 @@ export const styles = StyleSheet.create({
         marginLeft:32,
         marginRight:15
     },
-    InputImage3:{ 
-        width: 16, 
-        height: 22,
-        marginLeft:32,
-        marginRight:15
-    },
     logoTxt:{
         fontSize:13,
         color:'#7E7E7E',
@@ -204,11 +198,6 @@ export const styles = StyleSheet.create({
         height:120,
         borderRadius:60
     },
-    storeImage1:{
-        width:'100%',
-        height:109,
-        borderRadius:10
-    },
     productDetailImage:{
         width:316,
         height:214,
@@ -358,14 +347,11 @@ export const styles = StyleSheet.create({
     },
     addBtn:{
         position:'absolute',
-        bottom:-30, 
-        right:-20
+        bottom:15, 
+        right:-18
     },
     personUploadgImage:{
-        marginTop:20,
-        width:'85%',
-        height:109,
-        marginTop:50
+        marginTop:20
     },
     arrowleft:{
         height:15,
@@ -705,16 +691,6 @@ export const styles = StyleSheet.create({
         borderColor:'#D8D8D8',
         borderBottomWidth:1,
         paddingBottom:5
-    },
-    SignInfoArea:{
-        paddingBottom:15,
-        marginBottom:15,
-        borderBottomWidth:1,
-        borderBottomColor:'#000000',
-    },
-    SignInfoTxt:{
-        fontFamily:"Poppins-Medium",
-        fontSize:15
     }
 })
 
