@@ -42,6 +42,7 @@ export default class ProductDetailScreen extends Component {
                     </TouchableOpacity>
                     </View>
                 </View>
+                <View style={{height:50}}></View>
             </ScrollView>
         </View>
     );

@@ -11,7 +11,7 @@ export default class ShoppingCartScreen extends Component {
     super(props);
     this.state = {
         modalVisible: false,
-        isEmpty:false,
+        isEmpty:true,
         itemNum1: 2,
         itemNum2: 1,
     };
@@ -43,14 +43,20 @@ export default class ShoppingCartScreen extends Component {
     }
   }
 
+  chageState = async() => {
+    await this.setState({isEmpty:false})
+  }
+
   render() {
     return (
         <View style={{...styles.container, justifyContent:'center'}}>
           {
             this.state.isEmpty?
-            <View style={{alignItems:'center'}}>
+            <View style={{alignItems:'center', height:'100%', justifyContent:'center'}}>
               <Text style={styles.CartTitle}>Cart</Text>
-              <Image source={require('../../assets/iamges/plusImage.png')} resizeMode='stretch' style={styles.plusImage} />
+              <TouchableOpacity onPress={()=>{this.chageState()}}>
+                <Image source={require('../../assets/iamges/plusImage.png')} resizeMode='stretch' style={styles.plusImage} />
+              </TouchableOpacity>
               <Text style={{...styles.AddShopiingTxt, color:'#414041'}}>Shopping Cart Empty</Text>
             </View>
             :
@@ -104,8 +110,9 @@ export default class ShoppingCartScreen extends Component {
                     </View>
                   </View>
                 </View>
+                <View style={{height:50}}></View>
             </ScrollView>
-            <TouchableOpacity style={styles.AddCartBtn1} onPress={()=>{this.props.navigation.navigate("CheckOutScreen")}}>
+            <TouchableOpacity style={styles.AddCartBtn1} onPress={()=>{this.props.navigation.navigate("CheckOutScreen"), this.setState({isEmpty:true})}}>
                 <Text style={styles.signinTxt1}>Next</Text>
             </TouchableOpacity>
             </View>

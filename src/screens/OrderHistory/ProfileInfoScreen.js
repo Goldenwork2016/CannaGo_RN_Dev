@@ -100,6 +100,7 @@ export default class ProfileInfoScreen extends Component {
               </TouchableOpacity>
             </View>
           </View>
+          <View style={{height:50}}></View>
         </ScrollView>
       </View>
     );

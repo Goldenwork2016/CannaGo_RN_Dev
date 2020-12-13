@@ -14,7 +14,7 @@ const options = {
   chooseFromLibraryButtonTitle: 'Choose photo from library'
 }
 
-export default class SignUpScreen extends Component {
+export default class DispensariesSignupScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -71,20 +71,31 @@ export default class SignUpScreen extends Component {
                     <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                 </TouchableOpacity>
                 <View style={styles.personUploadgImage}>
-                    <View style={styles.personImageArea}>
-                      <View style={styles.personImageArea1}>
-                        <Image source={this.state.avatarSource} resizeMode='stretch' style={styles.personImage} />
-                      </View>
-                    </View>
+                    <Image source={require('../assets/iamges/storeImage1.png')} resizeMode='stretch' style={styles.storeImage1} />
                     <TouchableOpacity style={styles.addBtn} onPress={() => { this.chooseImage() }}>
-                        <Image source={require('../assets/iamges/addImage.png')} resizeMode='stretch' style={styles.addImage} />
+                        <Image source={require('../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
                     </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.inputArea}>
+              <View style={styles.SignInfoArea}>
+                  <Text style={styles.SignInfoTxt}>Sign Up Information</Text>
+              </View>
+              <View style={styles.inputItem}>
+                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="First Name"></TextInput>
+              </View>
+              <View style={styles.inputItem}>
+                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Last Name"></TextInput>
+              </View>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Email Address"></TextInput>
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Owner's Email Address"></TextInput>
+              </View>
+              <View style={styles.inputItem}>
+                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Owner's Phone Number"></TextInput>
               </View>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
@@ -94,15 +105,48 @@ export default class SignUpScreen extends Component {
                 <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
                 <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Retype password"></TextInput>
               </View>
+              <View style={styles.SignInfoArea}>
+                  <Text style={styles.SignInfoTxt}>Dispensary Information</Text>
+              </View>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Mobile Number"></TextInput>
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary Store Name"></TextInput>
               </View>
-              <TouchableOpacity style={styles.inputItem}>
+              <View style={styles.inputItem}>
+                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Phone Number"></TextInput>
+              </View>
+              <View style={styles.inputItem}>
+                <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Address"></TextInput>
+              </View>
+              <View style={styles.inputItem}>
+                <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Hours"></TextInput>
+              </View>
+              <View style={styles.TermsArea}>
+                <TouchableOpacity style={styles.forgotBtn1} onPress={()=>{this.checkfun()}}>
+                  <Image source={this.state.ischecked?this.state.checkImage:this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage}  />
+                </TouchableOpacity>
+                <Text style={{...styles.termsTxt, width:'90%', marginTop:10}}>By checking I am an authorized signatory of this business, with the power to commit to binding agreements</Text>
+              </View>
+              {/* <TouchableOpacity style={styles.inputItem}>
                 <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <Text style={{...styles.inputTxt, color:'#7a7a7b'}}>Scan Driver's License</Text>
                 <Image source={require('../assets/iamges/arrow-left.png')} resizeMode='stretch' style={styles.arrowleft} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+              <View style={{...styles.SignInfoArea, marginTop:20}}>
+                  <Text style={styles.SignInfoTxt}>Tax Information</Text>
+              </View>
+              <View style={styles.inputItem}>
+                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Business entity/Company name"></TextInput>
+              </View>
+              <Text style={{...styles.termsTxt, width:'90%', marginTop:-10, marginBottom:10}}>Ensure this matches the official tax documents for your business.</Text>
+              <View style={styles.inputItem}>
+                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                <TextInput style={{...styles.inputTxt, fontSize:11}} placeholderTextColor="#7a7a7b" placeholder="FEIN (Federal Employer Identification Number)"></TextInput>
+              </View>
               <View style={styles.TermsArea}>
                 <TouchableOpacity style={styles.forgotBtn1} onPress={()=>{this.checkfun()}}>
                   <Image source={this.state.ischecked?this.state.checkImage:this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage}  />

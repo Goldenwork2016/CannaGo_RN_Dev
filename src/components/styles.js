@@ -35,6 +35,12 @@ export const styles = StyleSheet.create({
         marginLeft:32,
         marginRight:15
     },
+    InputImage3:{ 
+        width: 16, 
+        height: 22,
+        marginLeft:32,
+        marginRight:15
+    },
     logoTxt:{
         fontSize:13,
         color:'#7E7E7E',
@@ -90,8 +96,23 @@ export const styles = StyleSheet.create({
         fontFamily:'Poppins-Regular',
         fontSize:18
     }, 
+    OrderStatusTitle:{
+        alignSelf:'center',
+        fontSize:35,
+        color:'#61D273',
+        textAlign:'center',
+        width:'90%',
+        fontFamily:'Poppins-SemiBold',
+        marginRight:50,
+        marginBottom:40,
+        marginTop:10
+    }, 
     inputArea:{
         width:'90%',
+        marginTop:35,
+    },
+    statusArea:{
+        width:'80%',
         marginTop:35,
     },
     inputTxt:{
@@ -134,6 +155,16 @@ export const styles = StyleSheet.create({
         color:'white',
         fontFamily:'Poppins-Regular'
     }, 
+    signinTxt2:{
+        fontSize:14,
+        color:'#000000',
+        fontFamily:'Poppins-Regular'
+    }, 
+    signinTxt3:{
+        fontSize:14,
+        color:'white',
+        fontFamily:'Poppins-Regular'
+    }, 
     dontaccountTxt:{
         color:'#bdbdc6',
         fontSize:14,
@@ -173,6 +204,11 @@ export const styles = StyleSheet.create({
         height:120,
         borderRadius:60
     },
+    storeImage1:{
+        width:'100%',
+        height:109,
+        borderRadius:10
+    },
     productDetailImage:{
         width:316,
         height:214,
@@ -209,6 +245,65 @@ export const styles = StyleSheet.create({
         alignSelf:'center',
         position:'absolute',
         bottom:30
+    },
+    SubmitBtn:{
+        flexDirection:'row',
+        alignItems:'center',
+        height:52,
+        borderRadius:26,
+        backgroundColor:'#61D273',
+        justifyContent:'center',
+        width:307,
+        alignSelf:'center',
+        marginTop:40
+    },
+    TimingBtn:{
+        flexDirection:'row',
+        alignItems:'center',
+        height:39,
+        borderRadius:5,
+        backgroundColor:'#61D273',
+        justifyContent:'center',
+        width:87,
+        marginTop:20,
+        alignSelf:'center',
+    },
+    TimingBtn1:{
+        flexDirection:'row',
+        alignItems:'center',
+        height:39,
+        borderRadius:5,
+        backgroundColor:'#EAEAEB',
+        justifyContent:'center',
+        paddingHorizontal:10,
+        marginTop:20,
+        alignSelf:'center',
+    },
+    TimingBtn2:{
+        flexDirection:'row',
+        alignItems:'center',
+        height:39,
+        borderRadius:19.5,
+        backgroundColor:'white',
+        borderWidth:1,
+        borderColor:'#CFCFCF',
+        justifyContent:'center',
+        width:"22%",
+        marginTop:20,
+        alignSelf:'center',
+    },
+    TimingBtn3:{
+        flexDirection:'row',
+        alignItems:'center',
+        height:39,
+        borderRadius:19.5,
+        backgroundColor:'#61D273',
+        borderWidth:1,
+        borderColor:'#61D273',
+        justifyContent:'center',
+        width:"22%",
+        marginTop:20,
+        alignSelf:'center',
     },
     cartItemArea:{
         flexDirection:'row', 
@@ -263,11 +358,14 @@ export const styles = StyleSheet.create({
     },
     addBtn:{
         position:'absolute',
-        bottom:15, 
-        right:-18
+        bottom:-30, 
+        right:-20
     },
     personUploadgImage:{
-        marginTop:20
+        marginTop:20,
+        width:'85%',
+        height:109,
+        marginTop:50
     },
     arrowleft:{
         height:15,
@@ -550,6 +648,73 @@ export const styles = StyleSheet.create({
         justifyContent:'center',
         borderRadius:5,
         marginRight:20
+    },
+    checkArea:{
+        width:31,
+        height:31,
+        backgroundColor:'#61D273',
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    checkLineArea:{
+        alignItems:'center',
+        width:31
+    },
+    checkIcon:{
+        width:30, 
+        height:25
+    },
+    lineArea:{
+        height:70,
+        width:1,
+        backgroundColor:'black',
+        marginVertical:5
+    },
+    orderStatusItem:{
+        flexDirection:'row',
+        alignSelf:'center',
+        width:'95%'
+    },
+    orderStatus:{
+        marginLeft:30
+    },
+    statusTitle:{
+        color:'#61D273',
+        fontFamily:'Poppins-SemiBold',
+        fontSize:20
+    },
+    statusDescrition:{
+        fontFamily:'Poppins-Regular',
+        fontSize:12,
+        color:'#707070',
+        marginTop:1
+    },
+    rateTitle:{
+        alignSelf:'center',
+        fontSize:41,
+        color:'#61D273',
+        textAlign:'center',
+        width:'90%',
+        fontFamily:'Poppins-SemiBold',
+        marginTop:30
+    },
+    rateArea:{
+        width:'85%', 
+        alignItems:'center', 
+        marginTop:55,
+        borderColor:'#D8D8D8',
+        borderBottomWidth:1,
+        paddingBottom:5
+    },
+    SignInfoArea:{
+        paddingBottom:15,
+        marginBottom:15,
+        borderBottomWidth:1,
+        borderBottomColor:'#000000',
+    },
+    SignInfoTxt:{
+        fontFamily:"Poppins-Medium",
+        fontSize:15
     }
 })
 

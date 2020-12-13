@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, FlatList } from 'react-native';
+import { View, Text, Image, ScrollView, FlatList, Dimensions } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-community/async-storage';
 
-import {styles} from '../../components/styles'
+import {styles} from '../../components/styles';
+const width = Dimensions.get('screen').width*0.9/2-20;
 
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        usertype:'consumer',
         contentList: [
             {
               id:1,
@@ -38,6 +41,64 @@ export default class HomeScreen extends Component {
               time: "Store's Hours Today: 8am - 7pm",
             },
           ],
+          contentList1: [
+            {
+              id:1,
+              Title: 'Cannabis Station',
+              ImageUrl: require('../../assets/iamges/product1.png'),
+              price: "$30.00",
+              Description: "John Doe’s CBD Oil",
+            },
+            {
+              id:2,
+              Title: 'Harvest',
+              ImageUrl: require('../../assets/iamges/product2.png'),
+              price: "$30.00",
+              Description: "Pure Karma",
+            },
+            {
+              id:3,
+              Title: 'Sunnyside',
+              ImageUrl: require('../../assets/iamges/product3.png'),
+              price: "$30.00",
+              Description: "Just CBD Gummies",
+            },
+            {
+              id:4,
+              Title: 'SUMMER READY',
+              ImageUrl: require('../../assets/iamges/product4.png'),
+              price: "$30.00",
+              Description: "CBD Flower",
+            },
+            {
+              id:5,
+              Title: 'Cannabis Station',
+              ImageUrl: require('../../assets/iamges/product1.png'),
+              price: "$30.00",
+              Description: "John Doe’s CBD Oil",
+            },
+            {
+              id:6,
+              Title: 'Harvest',
+              ImageUrl: require('../../assets/iamges/product2.png'),
+              price: "$30.00",
+              Description: "Pure Karma",
+            },
+            {
+              id:7,
+              Title: 'Sunnyside',
+              ImageUrl: require('../../assets/iamges/product3.png'),
+              price: "$30.00",
+              Description: "Just CBD Gummies",
+            },
+            {
+              id:8,
+              Title: 'SUMMER READY',
+              ImageUrl: require('../../assets/iamges/product4.png'),
+              price: "$30.00",
+              Description: "CBD Flower",
+            },
+          ],
     };
   }
 
@@ -57,7 +118,7 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <View style={{flex: 1, alignItems: "center",}}>
-        <ScrollView style={{width:'100%'}}>
+          <ScrollView style={{width:'100%'}}>
             <View style={{...styles.container, paddingTop:30}}>
                 <FlatList
                 // showsVerticalScrollIndicator={true}
@@ -77,7 +138,8 @@ export default class HomeScreen extends Component {
                 keyExtractor={item => `${item.id}`}
                 />
             </View>
-        </ScrollView>
+            <View style={{height:50}}></View>
+          </ScrollView>
       </View>
     );
   }

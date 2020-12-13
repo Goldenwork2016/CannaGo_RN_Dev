@@ -20,28 +20,66 @@ export default class OrderStatusScreen extends Component {
             <ScrollView style={{width:'100%'}}>
                 <View style={styles.container}>
                     <View style={{width:'100%', alignItems:'center', marginTop:55}}>
-                        <TouchableOpacity style={styles.backBtn} onPress={()=>{this.props.navigation.goBack()}}>
-                            <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
-                        </TouchableOpacity>
-                        <View style={styles.personUploadgImage}>
-                            <Text style={styles.DetailTitle}>Details</Text>
-                            <Image source={this.state.avatarSource} resizeMode='stretch' style={styles.productDetailImage} />
+                        <Text style={styles.OrderStatusTitle}>Order Status</Text>
+                    </View>
+                    <View style={styles.statusArea}>
+                        <View style={styles.orderStatusItem}>
+                            <View style={styles.checkLineArea}>
+                                <View style={styles.checkArea}>
+                                    <Image source={require('../../assets/iamges/checkIcon.png')} resizeMode='stretch' style={styles.checkIcon} />
+                                </View>
+                                <View style={styles.lineArea}></View>
+                            </View>
+                            <View style={styles.orderStatus}>
+                                <Text style={styles.statusTitle}>Order Placed</Text>
+                                <Text style={styles.statusDescrition}>We have received your order.</Text>
+                                <Text style={styles.statusDescrition}>11:20 AM, 11/20/2020</Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.inputArea}>
-                    <View style={{width:'90%',marginLeft:'5%'}}>
-                        <Text style={styles.productDescription}>Name: Just CBD Gummies</Text>
-                        <Text style={styles.productDescription}>Price: $ 24.99</Text>
-                    </View>
-                    <View style={{width:'90%',marginLeft:'5%', marginTop:50}}>
-                        <Text style={{...styles.productDescription, fontSize:16}}>Description</Text>
-                        <Text style={{...styles.productDescription, fontSize:12, marginTop:10, color:'#707070'}}>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic designs. The passage is attributed to an </Text>
-                    </View>
-                    <TouchableOpacity style={styles.AddCartBtn} >
-                        <Text style={styles.signinTxt1}>Add to Cart</Text>
-                    </TouchableOpacity>
+                        <View style={styles.orderStatusItem}>
+                            <View style={styles.checkLineArea}>
+                                <View style={styles.checkArea}>
+                                    <Image source={require('../../assets/iamges/checkIcon.png')} resizeMode='stretch' style={styles.checkIcon} />
+                                </View>
+                                <View style={styles.lineArea}></View>
+                            </View>
+                            <View style={styles.orderStatus}>
+                                <Text style={styles.statusTitle}>Order Confirmed</Text>
+                                <Text style={styles.statusDescrition}>The store has confirmed your order</Text>
+                                <Text style={styles.statusDescrition}>11:22 AM, 11/20/2020</Text>
+                            </View>
+                        </View>
+                        <View style={styles.orderStatusItem}>
+                            <View style={styles.checkLineArea}>
+                                <View style={styles.checkArea}>
+                                    <Image source={require('../../assets/iamges/checkIcon.png')} resizeMode='stretch' style={styles.checkIcon} />
+                                </View>
+                                <View style={styles.lineArea}></View>
+                            </View>
+                            <View style={styles.orderStatus}>
+                                <Text style={styles.statusTitle}>Order En Route</Text>
+                                <Text style={styles.statusDescrition}>Your order is being delivered</Text>
+                                <Text style={styles.statusDescrition}>10:03 AM, 11/21/2020</Text>
+                            </View>
+                        </View>
+                        <View style={styles.orderStatusItem}>
+                            <View style={styles.checkLineArea}>
+                                <View style={styles.checkArea}>
+                                    {/* <Image source={require('../../assets/iamges/checkIcon.png')} resizeMode='stretch' style={styles.checkIcon} /> */}
+                                </View>
+                            </View>
+                            <View style={styles.orderStatus}>
+                                <Text style={styles.statusTitle}>Order Delivered</Text>
+                                <Text style={styles.statusDescrition}>Your order has been dropped off. </Text>
+                                <Text style={styles.statusDescrition}>10:32 AM, 11/21/2020</Text>
+                            </View>
+                        </View>
+                        <TouchableOpacity style={{...styles.AddCartBtn, borderRadius:5, width:200}} onPress = {()=>{this.props.navigation.navigate("RateExperienceScreen")}}>
+                            <Text style={styles.signinTxt1}>Message Driver</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
+                <View style={{height:50}}></View>
             </ScrollView>
         </View>
     );

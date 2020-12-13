@@ -5,6 +5,7 @@ import SplashScreen from '../screens/SplashScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import DispensariesSignupScreen from '../screens/DispensariesSignupScreen';
 
 import TabBarScreen from './TabBarNavigation'
 
@@ -24,6 +25,12 @@ const AuthStack = createStackNavigator(
         },
         ForgotPasswordScreen: {
             screen: ForgotPasswordScreen,
+            navigationOptions: {
+                headerShown: false
+            }
+        },
+        DispensariesSignupScreen: {
+            screen: DispensariesSignupScreen,
             navigationOptions: {
                 headerShown: false
             }

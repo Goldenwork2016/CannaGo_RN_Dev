@@ -10,6 +10,7 @@ import ProductDetailScreen from '../screens/Home/ProductDetailScreen'
 import ShoppingCartScreen from '../screens/ShopingCart/ShoppingCartScreen'
 import CheckOutScreen from '../screens/ShopingCart/CheckOutScreen'
 import OrderStatusScreen from '../screens/ShopingCart/OrderStatusScreen'
+import RateExperienceScreen from '../screens/ShopingCart/RateExperienceScreen'
 import OrderHistoryScreen from '../screens/OrderHistory/OrderHistoryScreen'
 import ProfileScreen from '../screens/OrderHistory/ProfileScreen'
 import ProfileInfoScreen from '../screens/OrderHistory/ProfileInfoScreen'
@@ -73,6 +74,12 @@ const ShoppingCart = createStackNavigator(
       },
       OrderStatusScreen: {
         screen: OrderStatusScreen,
+        navigationOptions: {
+            headerShown: false,
+        }
+      },
+      RateExperienceScreen: {
+        screen: RateExperienceScreen,
         navigationOptions: {
             headerShown: false,
         }

@@ -103,6 +103,7 @@ export default class CheckOutScreen extends Component {
                       <Text style={styles.signinTxt1}>Check Out</Text>
                   </TouchableOpacity>
                 </View>
+                <View style={{height:50}}></View>
             </ScrollView>
         </View>
     );
