@@ -50,6 +50,14 @@ export const styles = StyleSheet.create({
         marginBottom:20,
         fontFamily:'Poppins-Regular'
     }, 
+    MessageTxt:{
+        fontSize:17,
+        color:'#161616',
+        lineHeight:25,
+        fontFamily:'Poppins-Bold',
+        width:'80%',
+        marginTop:110
+    }, 
     AddShopiingTxt:{
         fontSize:19,
         color:'#414041',
@@ -293,6 +301,12 @@ export const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center'
     },
+    modal1:{
+        height:340,
+        borderTopRightRadius:45,
+        borderTopLeftRadius:45,
+        alignItems:'center'
+    },
     closeImage:{
         height:17,
         width:17
@@ -439,6 +453,18 @@ export const styles = StyleSheet.create({
         marginTop:-20,
         height:86
     },
+    contactlInput:{
+        height:101,
+        width:'80%',
+        borderRadius:5,
+        borderWidth:1,
+        borderColor:'#e9e9e9',
+        paddingLeft:20,
+        fontSize:13,
+        fontFamily:'Poppins-Regular',
+        marginTop:20,
+        backgroundColor:'#F3F3F3'
+    },
     ApplyBtn:{
         height:43,
         width:'35%',
@@ -452,6 +478,78 @@ export const styles = StyleSheet.create({
         color:'white',
         fontFamily:'Poppins-Regular',
         fontSize:14
+    },
+    ModalBtnArea:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        width:'80%',
+        marginTop:35
+    },
+    sendBtn:{
+        width:135,
+        height:40,
+        borderRadius:20,
+        backgroundColor:'#61D273',
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    sendTxt:{
+        color:'white',
+        fontSize:15,
+        fontFamily:'Poppins-Regular'
+    },
+    modalBackBtn:{
+        height:40,
+        justifyContent:"center"
+    },
+    modalBackTxt:{
+        color:'#3D3D3D',
+        fontSize:15,
+        fontFamily:'Poppins-Regular',
+    },
+    backArea:{
+        borderBottomWidth:1,
+        borderColor:'#3D3D3D',
+    },
+    backgroundImage:{
+        marginTop:90, 
+        height:'100%', 
+        alignSelf:'center', 
+        alignItems:'center'
+    },
+    historyItem:{
+        marginTop:30,
+        width:'90%',
+        alignSelf:'center',
+        borderColor:'#D8D8D8',
+        borderBottomWidth:1,
+        paddingBottom:20        
+    },
+    ItemHeader:{
+        fontFamily:'Poppins-Medium',
+        fontSize:16
+    },
+    ReportTxt:{
+        fontFamily:'Poppins-Regular',
+        fontSize:17,
+        color:'#CD5C5C',
+        textAlign:'center',
+        marginTop:10
+    },
+    historyContent:{
+        flexDirection:'row',
+        marginTop:20,
+        alignItems:'center'
+    },
+    histroyImageArea:{
+        width:81,
+        height:81,
+        borderWidth:1,
+        borderColor:'#61D273',
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius:5,
+        marginRight:20
     }
 })
 

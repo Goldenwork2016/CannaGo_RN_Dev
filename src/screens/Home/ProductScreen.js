@@ -88,7 +88,7 @@ export default class HomeScreen extends Component {
     //   <View style={{flex: 1, alignItems: "center",}}>
             <View style={{paddingTop: Platform.OS === 'ios'? 70:30, paddingHorizontal:'5%', backgroundColor:'white', flex:1}}>
                 <TouchableOpacity onPress={()=>{this.props.navigation.goBack()}}>
-                  <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
+                  <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={{...styles.backImage, marginLeft:'-5.5%'}} />
                 </TouchableOpacity>
                 <FlatList
                     numColumns={2}

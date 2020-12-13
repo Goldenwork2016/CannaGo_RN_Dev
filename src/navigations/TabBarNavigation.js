@@ -11,6 +11,8 @@ import ShoppingCartScreen from '../screens/ShopingCart/ShoppingCartScreen'
 import CheckOutScreen from '../screens/ShopingCart/CheckOutScreen'
 import OrderStatusScreen from '../screens/ShopingCart/OrderStatusScreen'
 import OrderHistoryScreen from '../screens/OrderHistory/OrderHistoryScreen'
+import ProfileScreen from '../screens/OrderHistory/ProfileScreen'
+import ProfileInfoScreen from '../screens/OrderHistory/ProfileInfoScreen'
 
 const Home = createStackNavigator(
     {
@@ -100,15 +102,27 @@ ShoppingCart.navigationOptions = ({ navigation }) => {
 
 const OrderHistory = createStackNavigator(
   {
+    ProfileScreen: {
+        screen: ProfileScreen,
+        navigationOptions: {
+            headerShown: false,
+        }
+    },
+    ProfileInfoScreen: {
+        screen: ProfileInfoScreen,
+        navigationOptions: {
+            headerShown: false,
+        }
+    },
     OrderHistoryScreen: {
-          screen: OrderHistoryScreen,
-          navigationOptions: {
-              headerShown: false,
-          }
-      },
+        screen: OrderHistoryScreen,
+        navigationOptions: {
+            headerShown: false,
+        }
+    },
   },
   {
-      initialRouteName: 'OrderHistoryScreen',
+      initialRouteName: 'ProfileScreen',
   }
 );
 

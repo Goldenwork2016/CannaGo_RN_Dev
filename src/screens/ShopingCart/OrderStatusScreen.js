@@ -37,7 +37,7 @@ export default class OrderStatusScreen extends Component {
                         <Text style={{...styles.productDescription, fontSize:16}}>Description</Text>
                         <Text style={{...styles.productDescription, fontSize:12, marginTop:10, color:'#707070'}}>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic designs. The passage is attributed to an </Text>
                     </View>
-                    <TouchableOpacity style={styles.AddCartBtn} onPress={()=>{this.props.navigation.navigate("ShoppingCartScreen")}}>
+                    <TouchableOpacity style={styles.AddCartBtn} >
                         <Text style={styles.signinTxt1}>Add to Cart</Text>
                     </TouchableOpacity>
                     </View>
