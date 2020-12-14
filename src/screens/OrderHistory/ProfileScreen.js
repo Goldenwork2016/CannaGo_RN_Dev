@@ -105,7 +105,7 @@ export default class ProfileScreen extends Component {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{height:50}}></View>
+          <View style={{height:150}}></View>
         </ScrollView>
         <Modal style={styles.modal1} position={"bottom"} ref={"modal6"} swipeArea={20}>
             <TouchableOpacity style={styles.closeBtn} onPress={() => {this.closeModal()}}>

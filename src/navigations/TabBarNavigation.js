@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, Dimensions } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -7,6 +7,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import HomeScreen from '../screens/Home/HomeScreen'
 import ProductScreen from '../screens/Home/ProductScreen'
 import ProductDetailScreen from '../screens/Home/ProductDetailScreen'
+import AddStoreItemScreen from '../screens/Home/AddStoreItem'
 import ShoppingCartScreen from '../screens/ShopingCart/ShoppingCartScreen'
 import CheckOutScreen from '../screens/ShopingCart/CheckOutScreen'
 import OrderStatusScreen from '../screens/ShopingCart/OrderStatusScreen'
@@ -14,6 +15,8 @@ import RateExperienceScreen from '../screens/ShopingCart/RateExperienceScreen'
 import OrderHistoryScreen from '../screens/OrderHistory/OrderHistoryScreen'
 import ProfileScreen from '../screens/OrderHistory/ProfileScreen'
 import ProfileInfoScreen from '../screens/OrderHistory/ProfileInfoScreen'
+
+const Device_width = Dimensions.get('window').width
 
 const Home = createStackNavigator(
     {
@@ -31,6 +34,12 @@ const Home = createStackNavigator(
         },
         ProductDetailScreen: {
             screen: ProductDetailScreen,
+            navigationOptions: {
+                headerShown: false,
+            }
+        },
+        AddStoreItemScreen: {
+            screen: AddStoreItemScreen,
             navigationOptions: {
                 headerShown: false,
             }
@@ -201,6 +210,10 @@ const TabNavigation = createBottomTabNavigator(
               borderTopRightRadius:50,
               borderTopLeftRadius :50,
               width:'100%',
+              position:'absolute',
+              bottom:0,
+              width:Device_width,
+              zIndex:100
           },
           labelStyle: {
               marginTop: -10,

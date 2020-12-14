@@ -102,6 +102,11 @@ export default class HomeScreen extends Component {
     };
   }
 
+  componentDidMount = async() => {
+    const usertype = await AsyncStorage.getItem("usertype");
+    await this.setState({usertype:usertype})
+  }
+
   _rendermakelist({ item, index }) {
     return (
         <TouchableOpacity style={styles.StoreItem} onPress={()=>{this.props.navigation.navigate("TouchableOpacity")}}>
@@ -118,6 +123,7 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <View style={{flex: 1, alignItems: "center",}}>
+        {this.state.usertype == "consumer"?
           <ScrollView style={{width:'100%'}}>
             <View style={{...styles.container, paddingTop:30}}>
                 <FlatList
@@ -138,8 +144,38 @@ export default class HomeScreen extends Component {
                 keyExtractor={item => `${item.id}`}
                 />
             </View>
-            <View style={{height:50}}></View>
-          </ScrollView>
+            <View style={{height:150}}></View>
+          </ScrollView>:
+          <View style={{paddingTop: Platform.OS === 'ios'? 70:30, backgroundColor:'white', flex:1}}>
+              <Text style={{...styles.CartTitle, marginTop:Platform.OS=='ios'?7:-10}}>Your Store Front</Text>
+              <TouchableOpacity style={styles.addItemBtn} onPress={()=>{this.props.navigation.navigate("AddStoreItemScreen")}}>
+                <Image source={require('../../assets/iamges/addImage.png')} resizeMode='stretch' style={styles.addImage} />
+              </TouchableOpacity>
+              <View style={{paddingHorizontal:'5%', flex:1, paddingBottom:150}}>
+                <FlatList
+                    numColumns={2}
+                    columnWrapperStyle={{justifyContent:'space-between'}}
+                    // showsVerticalScrollIndicator={true}
+                    data={this.state.contentList1}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity style={{width:width, height:201, marginHorizontal:10, marginTop:30}}  onPress={()=>{this.props.navigation.navigate('ProductDetailScreen')}}>
+                            <View style={{justifyContent:'center', height:134, alignItems:'center', borderWidth:2, borderColor:'#61D273', borderTopLeftRadius:30}}>
+                              <Image source={item.ImageUrl} resizeMode='stretch' style={styles.productImage} />
+                              <Text style={styles.desTxt1}>{item.price}</Text>
+                            </View>
+                            <View style={styles.storeDes}>
+                                <Text style={styles.desTxt}>{item.Description}</Text>
+                                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('ProductDetailScreen')}}>
+                                  <Image source={require('../../assets/iamges/rightArror.png')} resizeMode='stretch' style={{height:16, width:16, marginTop:10}} />
+                                </TouchableOpacity>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    keyExtractor={item => `${item.id}`}
+                />
+              </View>
+          </View>
+        }
       </View>
     );
   }

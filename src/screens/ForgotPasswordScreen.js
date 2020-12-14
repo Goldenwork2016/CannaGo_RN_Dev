@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform } from 'react-native';
 import Modal from 'react-native-modalbox';
 
 import {styles} from '../components/styles'
@@ -20,6 +20,9 @@ export default class ForgotPasswordScreen extends Component {
   render() {
     return (
         <View style={{...styles.container, justifyContent:'center'}}>
+            <TouchableOpacity style={{position:'absolute', top:Platform.OS=='ios'?55:25, left:0}} onPress={()=>{this.props.navigation.goBack()}}>
+              <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={{...styles.backImage}} />
+            </TouchableOpacity>
             <Image source={require('../assets/iamges/forgpwdImage.png')} resizeMode='stretch' style={{...styles.logoImage, marginTop:0}} />
             <Text style={styles.forgpwdTxt}>Please enter the email address you used to make your CannaGo Account</Text>
             <View style={styles.inputArea}>

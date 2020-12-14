@@ -118,7 +118,7 @@ export default class RateExperienceScreen extends Component {
                   <TouchableOpacity style={styles.SubmitBtn} onPress={()=>{this.props.navigation.navigate("ShoppingCartScreen")}}>
                       <Text style={styles.signinTxt1}>Submit</Text>
                   </TouchableOpacity>
-                  <View style={{height:50}}></View>
+                  <View style={{height:150}}></View>
               </ScrollView>
             </View>
         </View>

@@ -114,7 +114,7 @@ export default class OrderHistoryScreen extends Component {
                   <Text style={styles.ReportTxt}>Report an Issue</Text>
                 </TouchableOpacity>
               </View>
-              <View style={{height:100}}></View>
+              <View style={{height:200}}></View>
             </ScrollView>
           </ImageBackground>
           <Modal style={styles.modal1} position={"bottom"} ref={"modal6"} swipeArea={20}>

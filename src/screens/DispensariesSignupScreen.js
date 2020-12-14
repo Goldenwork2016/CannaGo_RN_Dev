@@ -4,7 +4,7 @@ import ImagePicker from 'react-native-image-picker';
 
 import {styles} from '../components/styles'
 
-import NonImage from '../assets/iamges/personImage.png'
+import NonImage from '../assets/iamges/storeImage1.png'
 import uncheckImage from '../assets/iamges/uncheckImage.png'
 import checkImage from '../assets/iamges/checkImage.png'
 
@@ -70,9 +70,9 @@ export default class DispensariesSignupScreen extends Component {
                 <TouchableOpacity style={styles.backBtn} onPress={()=>{this.props.navigation.goBack()}}>
                     <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                 </TouchableOpacity>
-                <View style={styles.personUploadgImage}>
-                    <Image source={require('../assets/iamges/storeImage1.png')} resizeMode='stretch' style={styles.storeImage1} />
-                    <TouchableOpacity style={styles.addBtn} onPress={() => { this.chooseImage() }}>
+                <View style={styles.storeUploadgImage}>
+                    <Image source={this.state.avatarSource} resizeMode='cover' style={styles.storeImage1} />
+                    <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
                         <Image source={require('../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
                     </TouchableOpacity>
                 </View>

@@ -113,7 +113,7 @@ export default class HomeScreen extends Component {
                       keyExtractor={item => `${item.id}`}
                   />
                 </View>
-                
+                <View style={{height:150}}></View>
             </View>
     //   </View>
     );

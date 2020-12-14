@@ -79,7 +79,7 @@ export default class OrderStatusScreen extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={{height:50}}></View>
+                <View style={{height:150}}></View>
             </ScrollView>
         </View>
     );

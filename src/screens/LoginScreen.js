@@ -6,7 +6,8 @@ import {styles} from '../components/styles'
 
 const consumers_logo = require('../assets/iamges/logo.png');
 const driver_logo = require('../assets/iamges/driver_logo.png');
-const seller_logo = require('../assets/iamges/seller_log.png')
+const seller_logo = require('../assets/iamges/seller_log.png');
+const usertype =  "consumer";
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -21,14 +22,14 @@ export default class LoginScreen extends Component {
   }
 
   componentDidMount = async() => {
-    await AsyncStorage.setItem(usertype, "consumer");
+    await AsyncStorage.setItem('usertype', "consumer");
   }
 
   change_logo= async(logo_num)=>{
     switch(logo_num){
       case 1:
         await this.setState({isDispensaries:false, isDriver:false, isConsumers:true})
-        await AsyncStorage.setItem(usertype, "consumer");
+        await AsyncStorage.setItem('usertype', "consumer");
         break;
       case 2:
         await this.setState({isDispensaries:true, isDriver:false, isConsumers:false})
@@ -39,8 +40,8 @@ export default class LoginScreen extends Component {
         await AsyncStorage.setItem('usertype', "driver");
         break;
     }
-    const ssss = await AsyncStorage.getItem(usertype);
-    alert(ssss)
+    usertype = await AsyncStorage.getItem("usertype");
+    // alert(ssss)
     if(this.state.isDispensaries){
       this.setState({logo_image:seller_logo, logo_title:'for dispensaries'})
     } else if(this.state.isDriver){

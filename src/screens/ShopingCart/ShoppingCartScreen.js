@@ -110,7 +110,7 @@ export default class ShoppingCartScreen extends Component {
                     </View>
                   </View>
                 </View>
-                <View style={{height:50}}></View>
+                <View style={{height:150}}></View>
             </ScrollView>
             <TouchableOpacity style={styles.AddCartBtn1} onPress={()=>{this.props.navigation.navigate("CheckOutScreen"), this.setState({isEmpty:true})}}>
                 <Text style={styles.signinTxt1}>Next</Text>

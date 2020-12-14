@@ -35,6 +35,12 @@ export const styles = StyleSheet.create({
         marginLeft:32,
         marginRight:15
     },
+    InputImage3:{ 
+        width: 16, 
+        height: 20,
+        marginLeft:32,
+        marginRight:15
+    },
     logoTxt:{
         fontSize:13,
         color:'#7E7E7E',
@@ -233,7 +239,7 @@ export const styles = StyleSheet.create({
         width:246,
         alignSelf:'center',
         position:'absolute',
-        bottom:30
+        bottom:140
     },
     SubmitBtn:{
         flexDirection:'row',
@@ -330,6 +336,14 @@ export const styles = StyleSheet.create({
         width:56,
         height:40
     },
+    storeImage1:{
+        width:"100%",
+        height:109
+    },
+    storeImage2:{
+        width:"100%",
+        height:"100%"
+    },
     paymethodAdd:{
         width:20,
         height:20
@@ -349,8 +363,31 @@ export const styles = StyleSheet.create({
         bottom:15, 
         right:-18
     },
+    addItemBtn:{
+        alignSelf:'flex-end',
+        marginRight:'5%'
+    },
+    addStoreBtn:{
+        position:'absolute',
+        bottom:-25, 
+        right:-22
+    },
     personUploadgImage:{
         marginTop:20
+    },
+    storeUploadgImage:{
+        marginTop:20,
+        width:'85%',
+        marginTop:50
+    },
+    AddItemImage:{
+        marginTop:20,
+        width:263,
+        height:162,
+        marginTop:75,
+        borderWidth:3,
+        borderRadius:10,
+        borderColor:'#61D273'               
     },
     arrowleft:{
         height:15,
@@ -385,7 +422,7 @@ export const styles = StyleSheet.create({
         alignItems:'center'
     },
     modal1:{
-        height:340,
+        height:470,
         borderTopRightRadius:45,
         borderTopLeftRadius:45,
         alignItems:'center'
@@ -690,6 +727,23 @@ export const styles = StyleSheet.create({
         borderColor:'#D8D8D8',
         borderBottomWidth:1,
         paddingBottom:5
+    },
+    SignInfoTxt:{
+       fontFamily:'Poppins-Medium',
+       fontSize:15,
+       color:'#0f0f11' 
+    },
+    SignInfoArea:{
+        borderBottomWidth:1,
+        borderBottomColor:'#000000',
+        paddingBottom:10,
+        marginBottom:15
+    },
+    quantityNum:{
+        fontSize:13, 
+        color:'#707070',
+        fontFamily:'Poppins-Regular',
+        marginRight:10
     }
 })
 
