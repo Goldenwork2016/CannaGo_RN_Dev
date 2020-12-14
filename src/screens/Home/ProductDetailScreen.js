@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform } from 'react-native';
 
 import {styles} from '../../components/styles'
 
@@ -19,7 +19,7 @@ export default class ProductDetailScreen extends Component {
         <View style={styles.container}>
             <ScrollView style={{width:'100%'}}>
                 <View style={styles.container}>
-                    <View style={{width:'100%', alignItems:'center', marginTop:55}}>
+                    <View style={{width:'100%', alignItems:'center', marginTop:Platform.OS=='ios'?55:25}}>
                         <TouchableOpacity style={styles.backBtn} onPress={()=>{this.props.navigation.goBack()}}>
                             <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                         </TouchableOpacity>

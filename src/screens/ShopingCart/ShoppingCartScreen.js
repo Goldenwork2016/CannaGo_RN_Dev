@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Dimensions } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Dimensions, Platform } from 'react-native';
 import Modal from 'react-native-modalbox';
 
 import {styles} from '../../components/styles'
@@ -53,7 +53,7 @@ export default class ShoppingCartScreen extends Component {
           {
             this.state.isEmpty?
             <View style={{alignItems:'center', height:'100%', justifyContent:'center'}}>
-              <Text style={styles.CartTitle}>Cart</Text>
+              <Text style={{...styles.CartTitle, marginTop:Platform.OS=='ios'?7:-10}}>Cart</Text>
               <TouchableOpacity onPress={()=>{this.chageState()}}>
                 <Image source={require('../../assets/iamges/plusImage.png')} resizeMode='stretch' style={styles.plusImage} />
               </TouchableOpacity>
@@ -63,7 +63,7 @@ export default class ShoppingCartScreen extends Component {
             <View style={{width:'100%', flex:1, alignItems:'center'}}>
             <ScrollView style={{width:'100%', flex:1}}>
                 <View style={{...styles.container, flex:1}}>
-                  <View style={{width:'100%', alignItems:'center', marginTop:55}}>
+                  <View style={{width:'100%', alignItems:'center', marginTop:Platform.OS=='ios'?55:25}}>
                     <TouchableOpacity style={styles.backBtn} onPress={()=>{this.GoBack()}}>
                       <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                     </TouchableOpacity>

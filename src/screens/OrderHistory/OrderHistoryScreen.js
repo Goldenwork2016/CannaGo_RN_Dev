@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, ImageBackground, Dimensions } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, ImageBackground, Dimensions, Platform } from 'react-native';
 import Modal from 'react-native-modalbox';
 
 const width = Dimensions.get('screen').width;
@@ -22,8 +22,8 @@ export default class OrderHistoryScreen extends Component {
   render() {
     return (
       <View style={{backgroundColor:'#61D273', height:'100%', width:'100%'}}>
-          <View style={{...styles.container, backgroundColor:'#61D273'}}>
-            <View style={{width:'100%', alignItems:'center', marginTop:60}}>
+          <View style={{...styles.container, backgroundColor:'#61D273', position:'absolute'}}>
+            <View style={{width:'100%', alignItems:'center', marginTop:Platform.OS=='ios'?60:40}}>
                 <TouchableOpacity style={styles.backBtn} onPress={()=>{this.props.navigation.goBack()}}>
                     <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                 </TouchableOpacity>

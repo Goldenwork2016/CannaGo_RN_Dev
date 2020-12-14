@@ -194,8 +194,8 @@ export const styles = StyleSheet.create({
         fontFamily:'Poppins-Regular'
     },
     personImage:{
-        width:120,
-        height:120,
+        width:125,
+        height:125,
         borderRadius:60
     },
     productDetailImage:{
@@ -321,7 +321,6 @@ export const styles = StyleSheet.create({
         borderRadius:100,
         justifyContent:'center',
         alignItems:'center',
-        backgroundColor:'green'
     },
     addImage:{
         width:50,

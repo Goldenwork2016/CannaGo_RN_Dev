@@ -86,31 +86,34 @@ export default class HomeScreen extends Component {
   render() {
     return (
     //   <View style={{flex: 1, alignItems: "center",}}>
-            <View style={{paddingTop: Platform.OS === 'ios'? 70:30, paddingHorizontal:'5%', backgroundColor:'white', flex:1}}>
+            <View style={{paddingTop: Platform.OS === 'ios'? 70:30, backgroundColor:'white', flex:1}}>
                 <TouchableOpacity onPress={()=>{this.props.navigation.goBack()}}>
-                  <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={{...styles.backImage, marginLeft:'-5.5%'}} />
+                  <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={{...styles.backImage}} />
                 </TouchableOpacity>
-                <FlatList
-                    numColumns={2}
-                    columnWrapperStyle={{justifyContent:'space-between'}}
-                    // showsVerticalScrollIndicator={true}
-                    data={this.state.contentList}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity style={{width:width, height:201, marginHorizontal:10, marginTop:30}}  onPress={()=>{this.props.navigation.navigate('ProductDetailScreen')}}>
-                            <View style={{justifyContent:'center', height:134, alignItems:'center', borderWidth:2, borderColor:'#61D273', borderTopLeftRadius:30}}>
-                              <Image source={item.ImageUrl} resizeMode='stretch' style={styles.productImage} />
-                              <Text style={styles.desTxt1}>{item.price}</Text>
-                            </View>
-                            <View style={styles.storeDes}>
-                                <Text style={styles.desTxt}>{item.Description}</Text>
-                                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('ProductDetailScreen')}}>
-                                  <Image source={require('../../assets/iamges/rightArror.png')} resizeMode='stretch' style={{height:16, width:16, marginTop:10}} />
-                                </TouchableOpacity>
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                    keyExtractor={item => `${item.id}`}
-                />
+                <View style={{paddingHorizontal:'5%', flex:1}}>
+                  <FlatList
+                      numColumns={2}
+                      columnWrapperStyle={{justifyContent:'space-between'}}
+                      // showsVerticalScrollIndicator={true}
+                      data={this.state.contentList}
+                      renderItem={({ item }) => (
+                          <TouchableOpacity style={{width:width, height:201, marginHorizontal:10, marginTop:30}}  onPress={()=>{this.props.navigation.navigate('ProductDetailScreen')}}>
+                              <View style={{justifyContent:'center', height:134, alignItems:'center', borderWidth:2, borderColor:'#61D273', borderTopLeftRadius:30}}>
+                                <Image source={item.ImageUrl} resizeMode='stretch' style={styles.productImage} />
+                                <Text style={styles.desTxt1}>{item.price}</Text>
+                              </View>
+                              <View style={styles.storeDes}>
+                                  <Text style={styles.desTxt}>{item.Description}</Text>
+                                  <TouchableOpacity onPress={()=>{this.props.navigation.navigate('ProductDetailScreen')}}>
+                                    <Image source={require('../../assets/iamges/rightArror.png')} resizeMode='stretch' style={{height:16, width:16, marginTop:10}} />
+                                  </TouchableOpacity>
+                              </View>
+                          </TouchableOpacity>
+                      )}
+                      keyExtractor={item => `${item.id}`}
+                  />
+                </View>
+                
             </View>
     //   </View>
     );

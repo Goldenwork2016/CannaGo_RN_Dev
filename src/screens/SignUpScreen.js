@@ -88,11 +88,11 @@ export default class SignUpScreen extends Component {
               </View>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Password"></TextInput>
+                <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Password"></TextInput>
               </View>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Retype password"></TextInput>
+                <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Retype password"></TextInput>
               </View>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />

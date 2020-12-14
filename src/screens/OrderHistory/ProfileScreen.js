@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import Modal from 'react-native-modalbox';
 
@@ -73,11 +73,11 @@ export default class ProfileScreen extends Component {
       <View style={styles.container}>
         <ScrollView style={{width:'100%'}}>
           <View style={styles.container}>
-            <View style={{width:'100%', alignItems:'center', marginTop:40}}>
+            <View style={{width:'100%', alignItems:'center', marginTop:Platform.OS=='ios'?40:20}}>
                 <View style={styles.personUploadgImage}>
                     <View style={styles.personImageArea}>
                       <View style={styles.personImageArea1}>
-                        <Image source={this.state.avatarSource} resizeMode='stretch' style={styles.personImage} />
+                        <Image source={this.state.avatarSource} resizeMode='cover' style={styles.personImage} />
                       </View>
                     </View>
                     <TouchableOpacity style={{...styles.addBtn, bottom:50}} onPress={() => { this.chooseImage() }}>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Dimensions } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Dimensions, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-rating';
 
@@ -64,7 +64,7 @@ export default class RateExperienceScreen extends Component {
               <ScrollView style={{width:'100%', flex:1}}>
                   <View style={{...styles.container, flex:1}}>
                     <View style={styles.rateArea}>
-                      <Text style={{...styles.DetailTitle, marginTop:7, fontSize:18}}>Rate Experience</Text>
+                      <Text style={{...styles.DetailTitle, marginTop:Platform.OS=='ios'?7:-10, fontSize:18}}>Rate Experience</Text>
                       <Text style={styles.rateTitle}>$74.81</Text>
                     </View>
                     <View style={{...styles.rateArea, marginTop:40}}>

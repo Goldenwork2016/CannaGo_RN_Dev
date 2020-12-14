@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Dimensions } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Dimensions, Platform } from 'react-native';
 import Modal from 'react-native-modalbox';
 
 import {styles} from '../../components/styles'
@@ -11,8 +11,30 @@ export default class CheckOutScreen extends Component {
     super(props);
     this.state = {
         modalVisible: false,
-        isEmpty:false
+        isEmpty:false,
+        cardNum:'',
+        expired_date:''
     };
+  }
+
+  parseCardNumber = async(input) => {
+    await this.setState({cardNum:input})
+    if (this.state.cardNum.length === 4) {
+      await this.setState({cardNum: this.state.cardNum + " "})
+    }
+    if (this.state.cardNum.length === 9) {
+      await this.setState({cardNum: this.state.cardNum + " "})
+    }
+    if (this.state.cardNum.length === 14) {
+      await this.setState({cardNum: this.state.cardNum + " "})
+    }
+    console.log(this.state.cardNum)
+  }
+  parseExpireDate = async(input) => {
+    await this.setState({expired_date:input})
+    if (this.state.expired_date.length === 2) {
+      await this.setState({expired_date: this.state.expired_date + "/"})
+    }
   }
 
   render() {
@@ -20,7 +42,7 @@ export default class CheckOutScreen extends Component {
         <View style={{...styles.container, justifyContent:'center'}}>
             <ScrollView style={{width:'100%', flex:1}}>
                 <View style={{...styles.container}}>
-                  <View style={{width:'100%', alignItems:'center', marginTop:55}}>
+                  <View style={{width:'100%', alignItems:'center', marginTop:Platform.OS=='ios'?55:25}}>
                     <TouchableOpacity style={styles.backBtn} onPress={()=>{this.props.navigation.goBack()}}>
                       <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                     </TouchableOpacity>
@@ -66,7 +88,7 @@ export default class CheckOutScreen extends Component {
                         <Text style={styles.ItemTxt}>Card Number</Text>
                       </View>
                       <View style={styles.ContentItem}>
-                        <TextInput style={styles.CardNumberInput} placeholderTextColor="#5E5E5E" placeholder="xxxx xxxx xxxx 1278" />
+                      <TextInput keyboardType="number-pad" value={this.state.cardNum} onChangeText={(input) =>{this.parseCardNumber(input)}} maxLength={19} style={styles.CardNumberInput} placeholderTextColor="#5E5E5E" placeholder="xxxx xxxx xxxx 1278" />
                       </View>
                       <View style={{flexDirection:'row'}}>
                         <View style={{width:'50%'}}>
@@ -74,7 +96,7 @@ export default class CheckOutScreen extends Component {
                             <Text style={styles.ItemTxt}>Expiration Date</Text>
                           </View>
                           <View style={styles.ContentItem}>
-                            <TextInput style={{...styles.CardNumberInput,width:96}} placeholderTextColor="#5E5E5E" placeholder="06/22" />
+                          <TextInput keyboardType="number-pad"  value={this.state.expired_date} onChangeText={(input) =>{this.parseExpireDate(input)}} maxLength={5} style={{...styles.CardNumberInput,width:96}} placeholderTextColor="#5E5E5E" placeholder="06/22" />
                           </View>
                         </View>
                         <View style={{width:'50%'}}>
@@ -82,7 +104,7 @@ export default class CheckOutScreen extends Component {
                             <Text style={styles.ItemTxt}>CVC</Text>
                           </View>
                           <View style={styles.ContentItem}>
-                            <TextInput style={{...styles.CardNumberInput,width:96}} placeholderTextColor="#5E5E5E" placeholder="071" />
+                          <TextInput style={{...styles.CardNumberInput,width:96}} keyboardType="number-pad" maxLength={3} placeholderTextColor="#5E5E5E" placeholder="071" />
                           </View>
                         </View>
                       </View>
