@@ -124,7 +124,7 @@ export default class HomeScreen extends Component {
     return (
       <View style={{flex: 1, alignItems: "center",}}>
         {this.state.usertype == "consumer"?
-          <ScrollView style={{width:'100%'}}>
+          <ScrollView style={{width:'100%', borderColor:'white'}}>
             <View style={{...styles.container, paddingTop:30}}>
                 <FlatList
                 // showsVerticalScrollIndicator={true}
@@ -144,7 +144,7 @@ export default class HomeScreen extends Component {
                 keyExtractor={item => `${item.id}`}
                 />
             </View>
-            <View style={{height:150}}></View>
+            <View style={{height:150, backgroundColor:'white'}}></View>
           </ScrollView>:
           <View style={{paddingTop: Platform.OS === 'ios'? 70:30, backgroundColor:'white', flex:1}}>
               <Text style={{...styles.CartTitle, marginTop:Platform.OS=='ios'?7:-10}}>Your Store Front</Text>

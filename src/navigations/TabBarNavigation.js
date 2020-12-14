@@ -213,7 +213,8 @@ const TabNavigation = createBottomTabNavigator(
               position:'absolute',
               bottom:0,
               width:Device_width,
-              zIndex:100
+              zIndex:8,
+              borderWidth:1.5
           },
           labelStyle: {
               marginTop: -10,
