@@ -78,7 +78,7 @@ export default class AddStoreItemScreen extends Component {
       <View style={styles.container}>
         <ScrollView style={{width:'100%'}}>
           <View style={styles.container}>
-            <Text style={{...styles.CartTitle, marginTop:Platform.OS=='ios'?7:-10}}>Add an Item in Your Store</Text>
+            <Text style={{...styles.CartTitle, marginTop:Platform.OS=='ios'?7:-10}}>Add an Item to Your Store</Text>
             <View style={{width:'100%', alignItems:'center', marginTop:40}}>
                 <TouchableOpacity style={styles.backBtn} onPress={()=>{this.props.navigation.goBack()}}>
                     <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
