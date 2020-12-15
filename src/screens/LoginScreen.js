@@ -25,31 +25,56 @@ export default class LoginScreen extends Component {
     await AsyncStorage.setItem('usertype', "consumer");
   }
 
+  changefirst = async() => {
+    if(this.state.isConsumers){
+      this.change_logo(3)
+    } else {
+      this.change_logo(1)
+    }
+  }
+
+  changeSecond = async() => {
+    if(!this.state.isDispensaries){
+      this.change_logo(2)
+    } else {
+      this.change_logo(3)
+    }
+  }
+
   change_logo= async(logo_num)=>{
     switch(logo_num){
       case 1:
         await this.setState({isDispensaries:false, isDriver:false, isConsumers:true})
         await AsyncStorage.setItem('usertype', "consumer");
+        this.ChangeState();
         break;
       case 2:
         await this.setState({isDispensaries:true, isDriver:false, isConsumers:false})
+        this.ChangeState();
         await AsyncStorage.setItem('usertype', "dispensaries");
         break;
       case 3:
         await this.setState({isDispensaries:false, isDriver:true, isConsumers:false})
+        this.ChangeState();
         await AsyncStorage.setItem('usertype', "driver");
         break;
     }
     usertype = await AsyncStorage.getItem("usertype");
     // alert(ssss)
+    
+  }
+
+  ChangeState = async() => {
     if(this.state.isDispensaries){
-      this.setState({logo_image:seller_logo, logo_title:'for dispensaries'})
+      await this.setState({logo_image:seller_logo, logo_title:'for dispensaries'})
     } else if(this.state.isDriver){
-      this.setState({logo_image:driver_logo, logo_title:'for drivers'})
+      await this.setState({logo_image:driver_logo, logo_title:'for drivers'})
     } else if(this.state.isConsumers){
-      this.setState({logo_image:consumers_logo, logo_title:'for consumers'})
+      await this.setState({logo_image:consumers_logo, logo_title:'for consumers'})
     }
   }
+
+  
 
   gotoSignUp = () => {
     if(this.state.isDispensaries){
@@ -88,15 +113,12 @@ export default class LoginScreen extends Component {
               </TouchableOpacity>
             </View>
             <View style={styles.inputArea}>
-              <TouchableOpacity style={styles.wantBtn} onPress={()=>{this.change_logo(3)}}>
-                <Text style={styles.wantTxt}>Want to drive with us?</Text>
+              <TouchableOpacity style={styles.wantBtn} onPress={()=>{this.changefirst()}}>
+                <Text style={styles.wantTxt}>{this.state.isConsumers?"Want to drive with us?":"Want to buy from us?"}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.wantBtn} onPress={()=>{this.change_logo(2)}}>
-                <Text style={styles.wantTxt}>Want to sell with us?</Text>
+              <TouchableOpacity style={styles.wantBtn} onPress={()=>{this.changeSecond()}}>
+                <Text style={styles.wantTxt}>{!this.state.isDispensaries?"Want to sell with us?":"Want to drive with us?"}</Text>
               </TouchableOpacity>
-              {/* <TouchableOpacity style={styles.wantBtn} onPress={()=>{this.change_logo(1)}}>
-                <Text style={styles.wantTxt}>Want to buy from us?</Text>
-              </TouchableOpacity> */}
             </View>
           </View>
           <View style={{height:50}}></View>

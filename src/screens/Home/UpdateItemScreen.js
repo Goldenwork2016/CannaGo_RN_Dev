@@ -14,7 +14,7 @@ const options = {
   chooseFromLibraryButtonTitle: 'Choose photo from library'
 }
 
-export default class AddStoreItemScreen extends Component {
+export default class UpdateItemScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,7 +22,7 @@ export default class AddStoreItemScreen extends Component {
       ischecked:false,
       checkImage:checkImage,
       uncheckImage:uncheckImage,
-      itemNum1: 26,
+      itemNum1: 6,
     };
   }
 
@@ -78,7 +78,7 @@ export default class AddStoreItemScreen extends Component {
       <View style={styles.container}>
         <ScrollView style={{width:'100%'}}>
           <View style={styles.container}>
-            <Text style={{...styles.CartTitle, marginTop:Platform.OS=='ios'?7:-10}}>Add an Item in Your Store</Text>
+            <Text style={{...styles.CartTitle, marginTop:Platform.OS=='ios'?7:-10}}>Edit an Item in Your Store</Text>
             <View style={{width:'100%', alignItems:'center', marginTop:40}}>
                 <TouchableOpacity style={styles.backBtn} onPress={()=>{this.props.navigation.goBack()}}>
                     <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
@@ -127,19 +127,24 @@ export default class AddStoreItemScreen extends Component {
             <View style={{...styles.inputArea, marginTop:0}}>
               <Text style={{...styles.quantityNum, marginBottom:10}}>Name of Product</Text>
               <View style={styles.inputItem}>
-                <TextInput style={{...styles.inputTxt, marginLeft:20}} placeholderTextColor="#7a7a7b" placeholder="Enter items's Name"></TextInput>
+                <TextInput style={{...styles.inputTxt, marginLeft:20}} placeholderTextColor="#000000" placeholder="Enter items's Name"></TextInput>
               </View>
               <Text style={{...styles.quantityNum, marginBottom:10}}>Tags</Text>
               <View style={styles.inputItem}>
-                <TextInput style={{...styles.inputTxt, marginLeft:20}} placeholderTextColor="#7a7a7b" placeholder="Enter Relevant Search Tags of Item..."></TextInput>
+                <TextInput style={{...styles.inputTxt, marginLeft:20}} placeholderTextColor="#000000" placeholder="ECBD, Flower,CBD Plant, CBD Bud"></TextInput>
               </View>
               <Text style={{...styles.quantityNum, marginBottom:10}}>Description</Text>
               <View style={styles.ContentItem}>
-                <TextInput style={styles.specialInput} multiline={true} placeholderTextColor="#5E5E5E" placeholder="Enter Items Description..." />
+                <TextInput style={styles.specialInput} multiline={true} placeholderTextColor="#000000" placeholder="Lorem ipsum, or lipsum as it is sometimes known, Lorem ipsum, or lipsum as it is sometimes known, " />
               </View>
-              <TouchableOpacity style={{...styles.signinBtn, width:170, alignSelf:'center'}} onPress={()=>{this.props.navigation.navigate("HomeScreen")}}>
-                <Text style={styles.signinTxt1}>Add to Store</Text>
-              </TouchableOpacity>
+              <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:-20}}>
+                <TouchableOpacity style={{...styles.signinBtn, backgroundColor:"white", width:128}} onPress={()=>{this.props.navigation.navigate("HomeScreen")}}>
+                  <Text style={{...styles.signinTxt1, color:"#CD5D5D"}}>Delete</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{...styles.signinBtn, backgroundColor:"#3EA5E1", width:128}} onPress={()=>{this.props.navigation.navigate("HomeScreen")}}>
+                  <Text style={styles.signinTxt1}>Update</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
           <View style={{height:150}}></View>

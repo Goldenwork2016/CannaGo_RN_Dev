@@ -193,6 +193,17 @@ export const styles = StyleSheet.create({
         width:'100%',
         alignItems:'center'
     },
+    wantBtn1:{
+        justifyContent:'center',
+        height:55,
+        borderRadius:27.5,
+        borderWidth:1,
+        borderColor:'#61D273',
+        marginBottom:22,
+        width:'100%',
+        alignItems:'center',
+        backgroundColor:'#61D273'
+    },
     wantTxt:{
         textAlign:'center',
         color:'#515151',
