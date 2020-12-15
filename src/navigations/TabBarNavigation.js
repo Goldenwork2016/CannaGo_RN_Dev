@@ -16,6 +16,7 @@ import RateExperienceScreen from '../screens/ShopingCart/RateExperienceScreen'
 import OrderHistoryScreen from '../screens/OrderHistory/OrderHistoryScreen'
 import ProfileScreen from '../screens/OrderHistory/ProfileScreen'
 import ProfileInfoScreen from '../screens/OrderHistory/ProfileInfoScreen'
+import DispensaryUpdateScreen from '../screens/OrderHistory/DispensaryUpdateScreen'
 
 const Device_width = Dimensions.get('window').width
 
@@ -139,6 +140,12 @@ const OrderHistory = createStackNavigator(
     },
     OrderHistoryScreen: {
         screen: OrderHistoryScreen,
+        navigationOptions: {
+            headerShown: false,
+        }
+    },
+    DispensaryUpdateScreen: {
+        screen: DispensaryUpdateScreen,
         navigationOptions: {
             headerShown: false,
         }

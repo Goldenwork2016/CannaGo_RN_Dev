@@ -8,6 +8,20 @@ export const styles = StyleSheet.create({
       backgroundColor:'#fff',
       width:'100%'
     },
+    switchShadow: {
+        flex: 1, 
+        marginTop:5,
+        borderRadius: 18, 
+        shadowColor: '#878787',
+        shadowOffset: {
+            width: 0,
+            height: 0
+        },
+        shadowRadius: 5,
+        shadowOpacity: 0.7,
+        alignSelf:'flex-end',
+        margin: '5%',
+    },
     logoImage:{ 
         width: 162, 
         height: 170,
@@ -121,6 +135,7 @@ export const styles = StyleSheet.create({
         width:'70%',
         fontFamily:'Poppins-Regular'
     },
+    
     inputItem:{
         flexDirection:'row',
         alignItems:'center',
@@ -130,6 +145,12 @@ export const styles = StyleSheet.create({
         borderColor:'#e9e9e9',
         marginBottom:22,
         width:'100%'
+    },
+    checkImage: {
+        width: 21,
+        height: 21,
+        borderRadius:10.5,
+        backgroundColor:'#61D273'
     },
     forgotBtn:{
         alignItems:'flex-end',
