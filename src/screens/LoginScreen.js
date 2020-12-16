@@ -80,6 +80,7 @@ export default class LoginScreen extends Component {
     if(this.state.isDispensaries){
       this.props.navigation.navigate("DispensariesSignupScreen")
     } else if(this.state.isDriver){
+      this.props.navigation.navigate("DriverSignupScreen")
     } else if(this.state.isConsumers){
       this.props.navigation.navigate("SignUpScreen")
     }

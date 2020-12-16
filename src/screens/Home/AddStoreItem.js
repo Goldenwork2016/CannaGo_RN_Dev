@@ -93,14 +93,14 @@ export default class AddStoreItemScreen extends Component {
             <View style={{flexDirection:'row', alignItems:'center', marginTop:50}}>
                 <Text style={styles.quantityNum}>Quantity in Stock</Text>
                 <View style={{...styles.countItem, marginTop:0}}>
-                    <TouchableOpacity style={styles.cartAccountArea} onPress={()=>{this.Addcart()}}>
-                    <Text style={styles.cartAddBtn}>+</Text>
+                    <TouchableOpacity style={styles.cartAccountArea} onPress={()=>{this.Minuscart()}}>
+                    <Text style={styles.cartAddBtn}>-</Text>
                     </TouchableOpacity>
                     <View style={styles.cartAccountArea}>
                     <Text style={styles.cartAddBtn}>{this.state.itemNum1}</Text>
                     </View>
-                    <TouchableOpacity style={styles.cartAccountArea} onPress={()=>{this.Minuscart()}}>
-                    <Text style={styles.cartAddBtn}>-</Text>
+                    <TouchableOpacity style={styles.cartAccountArea} onPress={()=>{this.Addcart()}}>
+                    <Text style={styles.cartAddBtn}>+</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -108,19 +108,19 @@ export default class AddStoreItemScreen extends Component {
                 <View style={{...styles.inputArea, width:'28%'}}>
                     <Text style={{...styles.quantityNum, textAlign:'center', marginBottom:10}}>Our fees</Text>
                     <View style={{...styles.inputItem, alignItems:'center'}}>
-                        <TextInput style={{...styles.inputTxt, textAlign:'center'}} placeholderTextColor="#7a7a7b" placeholder="$12.9"></TextInput>
+                        <TextInput style={{...styles.inputTxt, textAlign:'center'}} placeholderTextColor="#7a7a7b" placeholder="$12.94"></TextInput>
                     </View>
                 </View>
                 <View style={{...styles.inputArea, width:'30%'}}>
                     <Text style={{...styles.quantityNum, textAlign:'center', marginBottom:10}}>Product Price</Text>
                     <View style={styles.inputItem}>
-                        <TextInput style={{...styles.inputTxt, textAlign:'center'}} placeholderTextColor="#7a7a7b" placeholder="$15.3"></TextInput>
+                        <TextInput style={{...styles.inputTxt, textAlign:'center'}} placeholderTextColor="#7a7a7b" placeholder="$15.34"></TextInput>
                     </View>
                 </View>
                 <View style={{...styles.inputArea, width:'30%'}}>
                     <Text style={{...styles.quantityNum, textAlign:'center', marginBottom:10}}>Gross Price</Text>
                     <View style={styles.inputItem}>
-                        <TextInput style={{...styles.inputTxt, textAlign:'center'}} placeholderTextColor="#7a7a7b" placeholder="$13.5"></TextInput>
+                        <TextInput style={{...styles.inputTxt, textAlign:'center'}} placeholderTextColor="#7a7a7b" placeholder="$13.50"></TextInput>
                     </View>
                 </View>
             </View>

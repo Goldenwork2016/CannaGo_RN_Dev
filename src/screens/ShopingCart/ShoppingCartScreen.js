@@ -88,14 +88,14 @@ export default class ShoppingCartScreen extends Component {
                         <Text style={styles.productDescription}>Just CBD Gummies</Text>
                         <Text style={{ ...styles.productDescription, color: "#61D273" }}>$ 24.99</Text>
                         <View style={styles.countItem}>
-                          <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Addcart() }}>
-                            <Text style={styles.cartAddBtn}>+</Text>
+                          <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Minuscart() }}>
+                            <Text style={styles.cartAddBtn}>-</Text>
                           </TouchableOpacity>
                           <View style={styles.cartAccountArea}>
                             <Text style={styles.cartAddBtn}>{this.state.itemNum1}</Text>
                           </View>
-                          <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Minuscart() }}>
-                            <Text style={styles.cartAddBtn}>-</Text>
+                          <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Addcart() }}>
+                            <Text style={styles.cartAddBtn}>+</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -106,16 +106,16 @@ export default class ShoppingCartScreen extends Component {
                       </View>
                       <View>
                         <Text style={styles.productDescription}>CBD Wax 10 ML</Text>
-                        <Text style={{ ...styles.productDescription, color: "#61D273" }}>$ 15</Text>
+                        <Text style={{ ...styles.productDescription, color: "#61D273" }}>$ 15.00</Text>
                         <View style={styles.countItem}>
-                          <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Addcart1() }}>
-                            <Text style={styles.cartAddBtn}>+</Text>
+                          <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Minuscart1() }}>
+                            <Text style={styles.cartAddBtn}>-</Text>
                           </TouchableOpacity>
                           <View style={styles.cartAccountArea}>
                             <Text style={styles.cartAddBtn}>{this.state.itemNum2}</Text>
                           </View>
-                          <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Minuscart1() }}>
-                            <Text style={styles.cartAddBtn}>-</Text>
+                          <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Addcart1() }}>
+                            <Text style={styles.cartAddBtn}>+</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
