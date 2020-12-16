@@ -136,12 +136,12 @@ export default class ProfileScreen extends Component {
                     circleBorderWidth={0}
                     activeTextStyle={{ alignItems: "flex-end", color:"#878787", fontSize:10, fontFamily:'Poppins-Regular'}}
                     inactiveTextStyle={{ alignItems: "flex-start", color:"#878787", fontSize:10, fontFamily:'Poppins-Regular', marginLeft:0, paddingLeft:0 }}
-                    activeText={'Offline'}
-                    inActiveText={'Online'}
+                    activeText={'Online'}
+                    inActiveText={'Offline'}
                     backgroundActive={'#FFF'}
                     backgroundInactive={'#FFF'}
                     changeValueImmediately={false}
-                    renderInsideCircle={() => <View resizeMode='stretch' style={styles.checkImage} />}
+                    renderInsideCircle={() => <View resizeMode='stretch' style={this.state.Checked?styles.checkImage:styles.uncheck} />}
                     circleActiveColor={'#FFF'}
                     circleInActiveColor={'#FFF'}
                     switchLeftPx={5}

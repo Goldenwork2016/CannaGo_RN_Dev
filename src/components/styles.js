@@ -152,6 +152,12 @@ export const styles = StyleSheet.create({
         borderRadius:10.5,
         backgroundColor:'#61D273'
     },
+    uncheck: {
+        width: 21,
+        height: 21,
+        borderRadius:10.5,
+        backgroundColor:'red'
+    },
     forgotBtn:{
         alignItems:'flex-end',
         marginTop:-10
