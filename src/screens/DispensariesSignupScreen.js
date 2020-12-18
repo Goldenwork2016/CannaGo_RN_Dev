@@ -156,7 +156,7 @@ export default class DispensariesSignupScreen extends Component {
                   <Text style={{color:'#61D273', fontSize:10, fontFamily:'Poppins-Regular'}}>Terms & Conditions</Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={styles.signinBtn} onPress={()=>{this.props.navigation.navigate("App")}}>
+              <TouchableOpacity style={styles.signinBtn} onPress={()=>{this.props.navigation.navigate("Main")}}>
                 <Text style={styles.signinTxt1}>Create Account</Text>
               </TouchableOpacity>
             </View>

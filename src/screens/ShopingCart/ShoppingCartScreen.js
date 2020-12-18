@@ -132,9 +132,6 @@ export default class ShoppingCartScreen extends Component {
           <View style={{ backgroundColor: '#61D273', height: '100%', width: '100%' }}>
             <View style={{ ...styles.container, backgroundColor: '#61D273', position: 'absolute' }}>
               <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 60 : 40 }}>
-                <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
-                  <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
-                </TouchableOpacity>
                 <View style={styles.personUploadgImage}>
                   <Text style={{ ...styles.inputTxt, color: "white", alignSelf: 'center', marginTop: -30, fontSize: 28, fontFamily: 'Poppins-SemiBold' }}>Order Histroy</Text>
                 </View>
@@ -246,11 +243,8 @@ export default class ShoppingCartScreen extends Component {
           <View style={{ backgroundColor: '#61D273', height: '100%', width: '100%' }}>
           <View style={{ ...styles.container, backgroundColor: '#61D273', position: 'absolute' }}>
             <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 60 : 40 }}>
-              <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
-                <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
-              </TouchableOpacity>
               <View style={styles.personUploadgImage}>
-                <Text style={{ ...styles.inputTxt, color: "white", alignSelf: 'center', marginTop: -30, fontSize: 28, fontFamily: 'Poppins-SemiBold' }}>Order Histroy</Text>
+                <Text style={{ ...styles.inputTxt, color: "white", alignSelf: 'center', marginTop: -30, fontSize: 28, fontFamily: 'Poppins-SemiBold' }}>Driver Histroy</Text>
               </View>
             </View>
           </View>
