@@ -112,6 +112,10 @@ export default class DriverSignUpScreen extends Component {
                             </View>
                             <View style={styles.inputItem}>
                                 <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Model"></TextInput>
+                            </View>
+                            <View style={styles.inputItem}>
+                                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                                 <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Color"></TextInput>
                             </View>
                             <View style={styles.inputItem}>

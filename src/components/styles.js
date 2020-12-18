@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
         shadowOpacity: 0.7,
         alignSelf:'flex-end',
         margin: '5%',
+        elevation:5
     },
     logoImage:{ 
         width: 162, 

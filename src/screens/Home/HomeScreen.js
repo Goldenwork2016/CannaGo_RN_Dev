@@ -151,7 +151,7 @@ export default class HomeScreen extends Component {
               <TouchableOpacity style={styles.addItemBtn} onPress={()=>{this.props.navigation.navigate("AddStoreItemScreen")}}>
                 <Image source={require('../../assets/iamges/addImage.png')} resizeMode='stretch' style={styles.addImage} />
               </TouchableOpacity>
-              <View style={{paddingHorizontal:'5%', flex:1, paddingBottom:150}}>
+              <View style={{paddingHorizontal:'5%', flex:1, paddingBottom:Platform.OS=='ios'?150:100}}>
                 <FlatList
                     numColumns={2}
                     columnWrapperStyle={{justifyContent:'space-between'}}

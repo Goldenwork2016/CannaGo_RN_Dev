@@ -7,7 +7,7 @@ import {styles} from '../components/styles'
 const consumers_logo = require('../assets/iamges/logo.png');
 const driver_logo = require('../assets/iamges/driver_logo.png');
 const seller_logo = require('../assets/iamges/seller_log.png');
-const usertype =  "consumer";
+var usertype =  "consumer";
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -25,7 +25,7 @@ export default class LoginScreen extends Component {
     await AsyncStorage.setItem('usertype', "consumer");
   }
 
-  changefirst = async() => {
+  changefirst = () => {
     if(this.state.isConsumers){
       this.change_logo(3)
     } else {
@@ -59,9 +59,7 @@ export default class LoginScreen extends Component {
         await AsyncStorage.setItem('usertype', "driver");
         break;
     }
-    usertype = await AsyncStorage.getItem("usertype");
-    // alert(ssss)
-    
+    usertype = (await AsyncStorage.getItem("usertype")).toString();
   }
 
   ChangeState = async() => {
@@ -86,6 +84,14 @@ export default class LoginScreen extends Component {
     }
   }
 
+  routing = () => {
+    if (this.state.isDriver === true) {
+      return this.props.navigation.navigate('Driver')
+    } else {
+      return this.props.navigation.navigate('Main')
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -96,16 +102,16 @@ export default class LoginScreen extends Component {
             <View style={styles.inputArea}>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder={this.state.isDispensaries?"Owner's Email Address":"Email Address"}></TextInput>
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder={this.state.isDispensaries?"Dispensary Email Address":"Email Address"}></TextInput>
               </View>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
                 <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Password"></TextInput>
               </View>
-              <TouchableOpacity style={styles.forgotBtn} onPress={()=>{this.props.navigation.navigate("ForgotPasswordScreen")}}>
+              <TouchableOpacity style={styles.forgotBtn} onPress={()=>this.props.navigation.navigate("ForgotPasswordScreen")}>
                 <Text style={{fontFamily:'Poppins-Regular',color:'#7E7E7E', fontSize:13}}>Forgot Password?</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.signinBtn} onPress={()=>{this.props.navigation.navigate("App")}}>
+              <TouchableOpacity style={styles.signinBtn} onPress={()=>{this.routing()}}>
                 <Text style={styles.signinTxt1}>Sign in</Text>
               </TouchableOpacity>
               <Text style={styles.dontaccountTxt}>Don't have an account?</Text>

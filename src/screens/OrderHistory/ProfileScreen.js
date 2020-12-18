@@ -113,7 +113,7 @@ export default class ProfileScreen extends Component {
                   <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                   <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Contact Support</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{...styles.inputItem,  borderColor:'red', borderWidth:0.5}} onPress={() => { this.props.navigation.navigate('LoginScreen') }}>
+                <TouchableOpacity style={{ ...styles.inputItem, borderColor: 'red', borderWidth: 0.5 }} onPress={() => { this.props.navigation.navigate('LoginScreen') }}>
                   <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                   <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Log Out</Text>
                 </TouchableOpacity>
@@ -121,59 +121,117 @@ export default class ProfileScreen extends Component {
             </View>
             <View style={{ height: 150 }}></View>
           </ScrollView> :
-          <ScrollView style={{ width: '100%' }}>
-            <View style={styles.container}>
-              <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 40 : 20 }}>
-                <Text style={{...styles.DetailTitle, marginTop:7, position:'absolute'}}>Profile</Text>
-                <View style={styles.switchShadow}>
-                  <Switch
-                    value={this.state.Checked}
-                    onValueChange={() => this._onChangeSwitch()}
-                    disabled={false}
-                    barHeight={30}
-                    switchWidthMultiplier={2.5}
-                    // outerCircleStyle={{ width: 30 }}
-                    circleBorderWidth={0}
-                    activeTextStyle={{ alignItems: "flex-end", color:"#878787", fontSize:10, fontFamily:'Poppins-Regular'}}
-                    inactiveTextStyle={{ alignItems: "flex-start", color:"#878787", fontSize:10, fontFamily:'Poppins-Regular', marginLeft:0, paddingLeft:0 }}
-                    activeText={'Offline'}
-                    inActiveText={'Online'}
-                    backgroundActive={'#FFF'}
-                    backgroundInactive={'#FFF'}
-                    changeValueImmediately={false}
-                    renderInsideCircle={() => <View resizeMode='stretch' style={this.state.Checked?styles.uncheck:styles.checkImage} />}
-                    circleActiveColor={'#FFF'}
-                    circleInActiveColor={'#FFF'}
-                    switchLeftPx={5}
-                    switchRightPx={5}
+          this.state.usertype == "dispensaries" ?
+            <ScrollView style={{ width: '100%' }}>
+              <View style={styles.container}>
+                <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 40 : 20 }}>
+                  <Text style={{ ...styles.DetailTitle, marginTop: 7, position: 'absolute' }}>Profile</Text>
+                  <View style={styles.switchShadow}>
+                    <Switch
+                      value={this.state.Checked}
+                      onValueChange={() => this._onChangeSwitch()}
+                      disabled={false}
+                      barHeight={30}
+                      switchWidthMultiplier={2.5}
+                      // outerCircleStyle={{ width: 30 }}
+                      circleBorderWidth={0}
+                      activeTextStyle={{ alignItems: "flex-end", color: "#878787", fontSize: 10, fontFamily: 'Poppins-Regular' }}
+                      inactiveTextStyle={{ alignItems: "flex-start", color: "#878787", fontSize: 10, fontFamily: 'Poppins-Regular', marginLeft: 0, paddingLeft: 0 }}
+                      activeText={'Offline'}
+                      inActiveText={'Online'}
+                      backgroundActive={'#FFF'}
+                      backgroundInactive={'#FFF'}
+                      changeValueImmediately={false}
+                      renderInsideCircle={() => <View resizeMode='stretch' style={this.state.Checked ? styles.uncheck : styles.checkImage} />}
+                      circleActiveColor={'#FFF'}
+                      circleInActiveColor={'#FFF'}
+                      switchLeftPx={5}
+                      switchRightPx={5}
                     />
+                  </View>
+                  <View style={{ ...styles.storeUploadgImage, marginTop: 10, borderRadius: 10 }}>
+                    <Image source={this.state.avatarSource} resizeMode='cover' style={{ ...styles.storeImage1, borderRadius: 10 }} />
+                    <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
+                      <Image source={require('../../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-                <View style={{...styles.storeUploadgImage,marginTop:10, borderRadius:10}}>
-                  <Image source={this.state.avatarSource} resizeMode='cover' style={{...styles.storeImage1, borderRadius:10}} />
-                  <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
-                    <Image source={require('../../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
+                <View style={styles.inputArea}>
+                  <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', marginTop: 20, fontSize: 40, }}>$1,325.70</Text>
+                  <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', color: '#7a7a7b', marginBottom: 20 }}>Available Balance</Text>
+                  <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("DispensaryUpdateScreen") }}>
+                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                    <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Dispensary Information</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.inputItem} onPress={() => this.refs.modal6.open()}>
+                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                    <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Contact Support</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{ ...styles.inputItem, borderColor: 'red', borderWidth: 0.5 }} onPress={() => { this.props.navigation.navigate("LoginScreen") }}>
+                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                    <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Log out</Text>
                   </TouchableOpacity>
                 </View>
               </View>
-              <View style={styles.inputArea}>
-                <Text style={{...styles.SignInfoTxt, textAlign:'center', marginTop:20, fontSize:40,}}>$1,325.70</Text>
-                <Text style={{...styles.SignInfoTxt, textAlign:'center', color:'#7a7a7b', marginBottom:20}}>Available Balance</Text>
-                <TouchableOpacity style={styles.inputItem} onPress={()=>{this.props.navigation.navigate("DispensaryUpdateScreen")}}>
-                  <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                  <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Dispensary Information</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.inputItem}  onPress={() => this.refs.modal6.open()}>
-                  <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                  <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Contact Support</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{...styles.inputItem,  borderColor:'red', borderWidth:0.5}} onPress={()=>{this.props.navigation.navigate("LoginScreen")}}>
-                  <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                  <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Log out</Text>
-                </TouchableOpacity>
+              <View style={{ height: 150 }}></View>
+            </ScrollView> :
+            <ScrollView style={{ width: '100%' }}>
+              <View style={styles.container}>
+                <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 40 : 20 }}>
+                  <View style={styles.switchShadow}>
+                    <Switch
+                      value={this.state.Checked}
+                      onValueChange={() => this._onChangeSwitch()}
+                      disabled={false}
+                      barHeight={30}
+                      switchWidthMultiplier={2.5}
+                      // outerCircleStyle={{ width: 30 }}
+                      circleBorderWidth={0}
+                      activeTextStyle={{ alignItems: "flex-end", color: "#878787", fontSize: 10, fontFamily: 'Poppins-Regular' }}
+                      inactiveTextStyle={{ alignItems: "flex-start", color: "#878787", fontSize: 10, fontFamily: 'Poppins-Regular', marginLeft: 0, paddingLeft: 0 }}
+                      activeText={'Offline'}
+                      inActiveText={'Online'}
+                      backgroundActive={'#FFF'}
+                      backgroundInactive={'#FFF'}
+                      changeValueImmediately={false}
+                      renderInsideCircle={() => <View resizeMode='stretch' style={this.state.Checked ? styles.uncheck : styles.checkImage} />}
+                      circleActiveColor={'#FFF'}
+                      circleInActiveColor={'#FFF'}
+                      switchLeftPx={5}
+                      switchRightPx={5}
+                    />
+                  </View>
+                  <View style={styles.personUploadgImage}>
+                    <View style={styles.personImageArea}>
+                      <View style={styles.personImageArea1}>
+                        <Image source={this.state.avatarSource} resizeMode='cover' style={styles.personImage} />
+                      </View>
+                    </View>
+                    <TouchableOpacity style={{ ...styles.addBtn, bottom: 50 }} onPress={() => { this.chooseImage() }}>
+                      <Image source={require('../../assets/iamges/addImage.png')} resizeMode='stretch' style={styles.addImage} />
+                    </TouchableOpacity>
+                    <Text style={{ ...styles.inputTxt, color: '#121214', alignSelf: 'center', marginTop: 20 }}>John H, 25</Text>
+                  </View>
+                </View>
+                <View style={styles.inputArea}>
+                  <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', marginTop: 0, fontSize: 40, }}>$275.70</Text>
+                  <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', color: '#7a7a7b', marginBottom: 20 }}>Available Balance</Text>
+                  <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("DriverInformationScreen") }}>
+                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                    <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Driver Information</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.inputItem} onPress={() => this.refs.modal6.open()}>
+                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                    <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Contact Support</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{ ...styles.inputItem, borderColor: 'red', borderWidth: 0.5 }} onPress={() => { this.props.navigation.navigate('LoginScreen') }}>
+                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                    <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Log Out</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-            <View style={{ height: 150 }}></View>
-          </ScrollView>
+              <View style={{ height: 150 }}></View>
+            </ScrollView>
         }
         <Modal style={styles.modal1} position={"bottom"} ref={"modal6"} swipeArea={20}>
           <TouchableOpacity style={styles.closeBtn} onPress={() => { this.closeModal() }}>

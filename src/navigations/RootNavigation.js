@@ -8,7 +8,10 @@ import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import DispensariesSignupScreen from '../screens/DispensariesSignupScreen';
 import DriverSignupScreen from '../screens/DriverSignupScreen';
 
-import TabBarScreen from './TabBarNavigation'
+import { TabNavigation, TabDriverNavigation } from './TabBarNavigation'
+
+const MainTabNav = createAppContainer(TabNavigation)
+const DriverTabNav = createAppContainer(TabDriverNavigation)
 
 const AuthStack = createStackNavigator(
     {
@@ -48,25 +51,34 @@ const AuthStack = createStackNavigator(
     }
 )
 
-const AppStack = createStackNavigator({
+const MainStack = createStackNavigator({
     Tabbar: {
-        screen: TabBarScreen,
+        screen: MainTabNav,
         navigationOptions: {
             headerShown: false
         }
     },
 })
 
+const DriverStack = createStackNavigator({
+    TabBar: {
+        screen: DriverTabNav,
+        navigationOptions: {
+            headerShown: false
+        }
+    }
+})
+
 // const App = createAppContainer(RootNavigation);
 // export default App;
-
 
 export default createAppContainer(
     createSwitchNavigator(
         {
             Splash: SplashScreen,
             Auth: AuthStack,
-            App: AppStack
+            Main: MainStack,
+            Driver: DriverStack
         },
         {
             initialRouteName: 'Splash'
