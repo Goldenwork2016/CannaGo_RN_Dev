@@ -11,9 +11,7 @@ export default class SplashScreen extends Component {
     this._bootstrapAsync();
   }
 
-  componentDidMount = async () => {
-
-  }
+  
 
   _bootstrapAsync = async () => {
     setTimeout(() => {

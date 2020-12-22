@@ -783,6 +783,63 @@ export const styles = StyleSheet.create({
         color:'#707070',
         fontFamily:'Poppins-Regular',
         marginRight:10
-    }
+    },
+    modalView: {
+        width: '100%',
+        height: 200,
+        borderRadius: 5,
+        alignSelf: 'center',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    TitleTxt1: {
+        color: '#61D273',
+        fontSize: 30,
+        marginTop: 30,
+        marginBottom: 10,
+        width: '100%',
+        textAlign: "center",
+        fontFamily:'Poppins-Regular',
+    },
+    Description: {
+        color: "#7a7a7b",
+        fontSize: 15,
+        marginBottom: 20,
+        fontFamily:'Poppins-Regular',
+    },
+    QuitWorkout: {
+        width: 100,
+        height: 40,
+        borderWidth: 2,
+        borderColor: '#61D273',
+        justifyContent: "center",
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderRadius: 20,
+        marginBottom: 20,
+        backgroundColor: '#61D273',
+    },
+    Dismiss: {
+        color: 'black',
+        fontSize: 20,
+    },
+    modalView1: {
+        width: '100%',
+        height: 300,
+        borderRadius: 5,
+        alignSelf: 'center',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    Description1: {
+        color: "#7a7a7b",
+        fontSize: 15,
+        marginBottom: 20,
+        fontFamily:'Poppins-Regular',
+        alignItems:'center',
+        alignSelf:'center'
+    },
 })
 
