@@ -25,6 +25,7 @@ export default class DispensariesSignupScreen extends Component {
     this.state = {
       avatarSource: NonImage,
       ischecked: false,
+      ischecked1: false,
       displayName:'',
       checkImage: checkImage,
       uncheckImage: uncheckImage,
@@ -53,6 +54,7 @@ export default class DispensariesSignupScreen extends Component {
       isModalVisible11:false,
       isModalVisible12:false,
       isModalVisible13:false,
+      isModalVisible14:false,
       timeFlag: false,
       isloading: false,
       loggedIn: false,
@@ -102,9 +104,12 @@ export default class DispensariesSignupScreen extends Component {
   checkfun = async () => {
     await this.setState({ ischecked: !this.state.ischecked });
   }
+  checkfun1 = async () => {
+    await this.setState({ ischecked1: !this.state.ischecked1 });
+  }
 
   SingUp = () => {
-    const {fristName, lastName, ownerPhoneNum, ownerEmail, password, conPassword, storeName, storePhoneNum, storeAdress, storeHours, companyName, fein, userType} = this.state;
+    const {fristName, lastName, ownerPhoneNum, ownerEmail, password, conPassword, storeName, storePhoneNum, storeAdress, storeHours, companyName, fein, userType, ischecked, ischecked1} = this.state;
     if(fristName == ""){
       this.setState({ isModalVisible1: true })
     } else if(lastName == ""){
@@ -121,6 +126,8 @@ export default class DispensariesSignupScreen extends Component {
     }
     else if (password != conPassword){
       this.setState({ isModalVisible7: true })
+    } else if(ischecked==false){
+      this.setState({ isModalVisible14: true })
     }
     else if(storeName == ""){
       this.setState({ isModalVisible8: true })
@@ -139,7 +146,10 @@ export default class DispensariesSignupScreen extends Component {
     }
     else if(fein == ""){
       this.setState({ isModalVisible13: true })
-    }
+    } 
+    else if(ischecked1 == false){
+      this.setState({ isModalVisible14: true })
+    } 
     else {
       var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
       this.setState({ isLoading: true })
@@ -274,8 +284,8 @@ export default class DispensariesSignupScreen extends Component {
                 <TextInput keyboardType="number-pad" style={{ ...styles.inputTxt, fontSize: 11 }} placeholderTextColor="#7a7a7b" placeholder="FEIN (Federal Employer Identification Number)" value={this.state.fein} onChangeText={(text) => { this.setState({ fein: text }) }}></TextInput>
               </View>
               <View style={styles.TermsArea}>
-                <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun() }}>
-                  <Image source={this.state.ischecked ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
+                <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun1() }}>
+                  <Image source={this.state.ischecked1 ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
                 </TouchableOpacity>
                 <Text style={styles.termsTxt}>By checking this I agree to CannaGo's  </Text>
                 <TouchableOpacity style={styles.forgotBtn1}>
@@ -413,6 +423,15 @@ export default class DispensariesSignupScreen extends Component {
               <Text style={styles.TitleTxt1}>OOPS!</Text>
               <Text style={styles.Description}>Please input FEIN</Text>
               <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible13: false })}>
+                  <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible14}>
+          <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>You need to agree our Terms and Conditions</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible14: false })}>
                   <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
               </TouchableOpacity>
           </View>
