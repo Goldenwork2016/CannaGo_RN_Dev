@@ -158,8 +158,8 @@ export default class AddStoreItemScreen extends Component {
     try {
       this.setState({ isLoading: false })
       clearTimeout(myTimer)
-      var newItemKey = Firebase.database.ref().child('Items').push().key;
-      Firebase.database().ref('Items/' + newItemKey).update({
+      console.log(newItemKey);
+      Firebase.database().ref('Items/').update({
         itemNum1: itemNum1,
         feeValue: feeValue,
         priceValue: priceValue,

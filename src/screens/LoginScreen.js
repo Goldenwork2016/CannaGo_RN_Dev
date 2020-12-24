@@ -30,6 +30,7 @@ export default class LoginScreen extends Component {
       isModalVisible3:false,
       isModalVisible4:false,
       isModalVisible5:false,
+      isModalVisible6:false,
       timeFlag: false,
       isloading: false,
       loggedIn: false,
@@ -130,7 +131,11 @@ export default class LoginScreen extends Component {
         .then(function(user){
           self.setState({ isLoading: false })
           clearTimeout(myTimer)
-          self.props.navigation.navigate('Main')
+          self.setState({ isModalVisible6: true })
+            setTimeout(() => {
+              self.props.navigation.navigate('Main')
+              self.setState({ isModalVisible6: false })
+            }, 2000)
         })
         .catch((error) => {
           console.log(error)
@@ -242,6 +247,12 @@ export default class LoginScreen extends Component {
               <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible5: false })}>
                   <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
               </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible6}>
+          <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+            <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+            <Text style={{...styles.Description1, fontSize:20, color:"#61D273", fontFamily:'Poppins-Regular'}}>Welcome to CannaGo App!</Text>
           </View>
         </Modal>
       </View>

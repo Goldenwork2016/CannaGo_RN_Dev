@@ -504,6 +504,7 @@ export default class DispensariesSignupScreen extends Component {
       isModalVisible14: false,
       isModalVisible15: false,
       isModalVisible16: false,
+      isModalVisible17: false,
       timeFlag: false,
       isloading: false,
       loggedIn: false,
@@ -530,7 +531,7 @@ export default class DispensariesSignupScreen extends Component {
       timeFlag: true,
       isLoading: false
     })
-    this.setState({isModalVisible16:true})
+    this.setState({ isModalVisible16: true })
   }
 
   chooseImage = async () => {
@@ -693,7 +694,11 @@ export default class DispensariesSignupScreen extends Component {
               profileimage: img_url,
               userType: userType,
             });
-            this.props.navigation.navigate('Main')
+            this.setState({ isModalVisible17: true })
+            setTimeout(() => {
+              this.props.navigation.navigate('Main')
+              this.setState({ isModalVisible17: false })
+            }, 2000)
             // user.sendEmailVerification().then(function () {
             //   console.log('email sent!!!');// Email sent.
             //   this.showAlert("Created new account successfully! please check your email! if you login, you need email verification.");
@@ -969,6 +974,12 @@ export default class DispensariesSignupScreen extends Component {
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible16: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible17}>
+          <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+            <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome to CannaGo App!</Text>
           </View>
         </Modal>
       </View>

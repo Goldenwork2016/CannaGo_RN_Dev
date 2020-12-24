@@ -834,7 +834,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     Description1: {
-        color: "#7a7a7b",
+        color: "#000000",
         fontSize: 15,
         marginBottom: 20,
         fontFamily:'Poppins-Regular',
