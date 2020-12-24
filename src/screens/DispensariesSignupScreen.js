@@ -503,6 +503,7 @@ export default class DispensariesSignupScreen extends Component {
       isModalVisible13: false,
       isModalVisible14: false,
       isModalVisible15: false,
+      isModalVisible16: false,
       timeFlag: false,
       isloading: false,
       loggedIn: false,
@@ -529,7 +530,7 @@ export default class DispensariesSignupScreen extends Component {
       timeFlag: true,
       isLoading: false
     })
-    alert('network error')
+    this.setState({isModalVisible16:true})
   }
 
   chooseImage = async () => {
@@ -957,6 +958,15 @@ export default class DispensariesSignupScreen extends Component {
             <Text style={styles.TitleTxt1}>OOPS!</Text>
             <Text style={styles.Description}>Please select profile image</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible15: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible16}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>Internet connection failed</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible16: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
           </View>

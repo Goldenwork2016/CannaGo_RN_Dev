@@ -29,6 +29,7 @@ export default class LoginScreen extends Component {
       isModalVisible2:false,
       isModalVisible3:false,
       isModalVisible4:false,
+      isModalVisible5:false,
       timeFlag: false,
       isloading: false,
       loggedIn: false,
@@ -45,7 +46,7 @@ export default class LoginScreen extends Component {
       timeFlag: true,
       isLoading: false
     })
-    alert('network error')
+    this.setState({isModalVisible5:true})
   }
 
   changefirst = () => {
@@ -233,6 +234,15 @@ export default class LoginScreen extends Component {
                     <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
                 </TouchableOpacity>
             </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible5}>
+          <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Email or password is wrong</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible5: false })}>
+                  <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+          </View>
         </Modal>
       </View>
     );
