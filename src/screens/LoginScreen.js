@@ -252,7 +252,7 @@ export default class LoginScreen extends Component {
         <Modal isVisible={this.state.isModalVisible6}>
           <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
             <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-            <Text style={{...styles.Description1, fontSize:20, color:"#61D273", fontFamily:'Poppins-Regular'}}>Welcome to CannaGo App!</Text>
+            <Text style={{...styles.Description1, fontSize:20, color:"#61D273", fontFamily:'Poppins-Regular'}}>Welcome back to CannaGo App!</Text>
           </View>
         </Modal>
       </View>
