@@ -7,6 +7,10 @@ import RNFetchBlob from "react-native-fetch-blob";
 import { styles } from '../../components/styles'
 import Firebase from '../../../config/firebase'
 
+import { func, string, bool, array, object } from "prop-types";
+import { connect } from "react-redux";
+import { load } from "./../../store/reducers/user";
+
 import NonImage from '../../assets/iamges/product4.png'
 import uncheckImage from '../../assets/iamges/uncheckImage.png'
 import checkImage from '../../assets/iamges/checkImage.png'
@@ -17,7 +21,7 @@ const options = {
   chooseFromLibraryButtonTitle: 'Choose photo from library'
 }
 
-export default class AddStoreItemScreen extends Component {
+class AddStoreItemScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,9 +36,19 @@ export default class AddStoreItemScreen extends Component {
       productName: "",
       Tag: "",
       Description: "",
-      img_url: "",
+      img_url: '',
       timeFlag: false,
       isloading: false,
+      isModalVisible1: false,
+      isModalVisible2: false,
+      isModalVisible3: false,
+      isModalVisible4: false,
+      isModalVisible5: false,
+      isModalVisible6: false,
+      isModalVisible7: false,
+      isModalVisible9: false,
+      isModalVisible8: false,
+      userId: Firebase.auth().currentUser.uid
     };
   }
 
@@ -151,25 +165,72 @@ export default class AddStoreItemScreen extends Component {
     });
   };
 
-  AddStore = () => {
+  AddStore = async () => {
     const { img_url, itemNum1, feeValue, priceValue, GpriceValue, productName, Tag, Description } = this.state
+    const { load } = this.props
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
     this.setState({ isLoading: true })
     try {
       this.setState({ isLoading: false })
       clearTimeout(myTimer)
-      console.log(newItemKey);
-      Firebase.database().ref('Items/').update({
-        itemNum1: itemNum1,
-        feeValue: feeValue,
-        priceValue: priceValue,
-        GpriceValue: GpriceValue,
-        productName: productName,
-        Tag: Tag,
-        Description: Description,
-        itemImage: img_url,
-      });
-      this.props.navigation.navigate("HomeScreen")
+      if (img_url == '') {
+        this.setState({ isModalVisible1: true })
+      } else if (feeValue == "") {
+        this.setState({ isModalVisible2: true })
+      } else if (priceValue == "") {
+        this.setState({ isModalVisible3: true })
+      } else if (GpriceValue == "") {
+        this.setState({ isModalVisible4: true })
+      } else if (productName == "") {
+        this.setState({ isModalVisible5: true })
+      } else if (Tag == "") {
+        this.setState({ isModalVisible6: true })
+      } else if (Description == "") {
+        this.setState({ isModalVisible7: true })
+      } else {
+        var newItemKey = Firebase.database().ref().child('Items').push().key;
+        await Firebase.database().ref('Items/' + this.state.userId + '/' + newItemKey).update({
+          id: newItemKey,
+          itemNum1: itemNum1,
+          feeValue: feeValue,
+          priceValue: priceValue,
+          GpriceValue: GpriceValue,
+          productName: productName,
+          Tag: Tag,
+          Description: Description,
+          itemImage: img_url,
+        });
+
+        var data = []
+        var row
+        await Firebase.database()
+          .ref('Items/' + this.state.userId)
+          .once("value")
+          .then(snapshot => {
+            snapshot.forEach(element => {
+              row = {
+                Description: element.val().Description,
+                GpriceValue: element.val().GpriceValue,
+                Tag: element.val().Tag,
+                feeValue: element.val().feeValue,
+                id: element.val().id,
+                itemImage: element.val().itemImage,
+                itemNum1: element.val().itemNum1,
+                priceValue: element.val().priceValue,
+                productName: element.val().productName
+              }
+              data.push(row)
+            });
+            // console.log(data)
+            load(data)
+          });
+
+        this.setState({ isModalVisible8: true })
+        setTimeout(() => {
+          this.props.navigation.navigate("HomeScreen")
+          this.setState({ isModalVisible8: false })
+        }, 2000)
+      }
     }
     catch (error) {
       console.log(error.toString())
@@ -192,6 +253,7 @@ export default class AddStoreItemScreen extends Component {
                 <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
               </TouchableOpacity>
               <View style={styles.AddItemImage}>
+                {/* <Image source={{uri:this.state.img_url}} resizeMode='cover' style={styles.storeImage2} /> */}
                 <Image source={this.state.avatarSource} resizeMode='cover' style={styles.storeImage2} />
                 <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
                   <Image source={require('../../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
@@ -235,7 +297,7 @@ export default class AddStoreItemScreen extends Component {
             <View style={{ ...styles.inputArea, marginTop: 0 }}>
               <Text style={{ ...styles.quantityNum, marginBottom: 10 }}>Name of Product</Text>
               <View style={styles.inputItem}>
-                <TextInput style={{ ...styles.inputTxt, marginLeft: 20 }} placeholderTextColor="#7a7a7b" placeholder="Enter items's Name" onChangeText={(text) => { this.setState({ productName: text }) }}></TextInput>
+                <TextInput style={{ ...styles.inputTxt, marginLeft: 20 }} placeholderTextColor="#7a7a7b" placeholder="Enter item's Name" onChangeText={(text) => { this.setState({ productName: text }) }}></TextInput>
               </View>
               <Text style={{ ...styles.quantityNum, marginBottom: 10 }}>Tags</Text>
               <View style={styles.inputItem}>
@@ -252,7 +314,94 @@ export default class AddStoreItemScreen extends Component {
           </View>
           <View style={{ height: 150 }}></View>
         </ScrollView>
+        <Modal isVisible={this.state.isModalVisible1}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>Please select image</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible1: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible2}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>Please input fees</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible2: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible3}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>Please input product price</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible3: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible4}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>Please input gross price</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible4: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible5}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>Please input item's name</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible5: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible6}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>Please input item's tag for search</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible6: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible7}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>Please input item's description</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible7: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible8}>
+          <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+            <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome to CannaGo App!</Text>
+          </View>
+        </Modal>
       </View>
     );
   }
 }
+
+AddStoreItemScreen.propTypes = {
+  load: func,
+  real_data: array,
+};
+
+const mapDispatchToProps = dispatch => ({
+  load: ( data ) => cc(load(data)),
+});
+
+const mapStateToProps = ({ user }) => ({
+  real_data: user.real_data,
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AddStoreItemScreen);

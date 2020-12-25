@@ -1,4 +1,5 @@
-import { LOGIN, LOGOUT, COURSE_SEL, VIDEO_SEL } from '../actions/user.actions';
+import { LOGIN, LOGOUT, COURSE_SEL, LOAD, VIDEO_SEL } from '../actions/user.actions';
+
 const initialState = {
     userkey: '',
     email: '',
@@ -14,8 +15,9 @@ const initialState = {
     co_key2: '',
     v_key1:'',
     v_key2:'',
+    real_data: []
 };
-const countReducer = (state = initialState, action) => {
+export default countReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN:
             return {
@@ -35,7 +37,12 @@ const countReducer = (state = initialState, action) => {
                 v_key1: action.v_key1,
                 v_key2: action.v_key2,
             };
-
+        
+        case LOAD:
+            return {
+                ...state,
+                real_data: action.data
+            }
         case LOGOUT:
             return {
                 ...state,
@@ -70,4 +77,13 @@ const countReducer = (state = initialState, action) => {
             return state;
     }
 }
-export default countReducer;
+// export default countReducer;
+
+export const load = (data) => async (dispatch) => {
+
+    console.log("sdfsdf",data)
+
+    // const payload = {data: data}
+    dispatch({ type: LOAD, data });
+    
+};

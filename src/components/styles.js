@@ -498,8 +498,9 @@ export const styles = StyleSheet.create({
         marginTop:15
     },
     productImage:{
-        width:93,
-        height:124,
+        width:"100%",
+        height:"100%",
+        borderTopLeftRadius:30
     },
     storeDes:{
         width:'100%',
