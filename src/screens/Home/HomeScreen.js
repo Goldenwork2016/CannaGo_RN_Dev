@@ -58,8 +58,8 @@ class HomeScreen extends Component {
     console.log("real", real_data)
     const usertype = await AsyncStorage.getItem("usertype");
     await this.setState({ usertype: usertype })
-    var data = []
-    var row
+    // var data = []
+    // var row
     // Firebase.database()
     //     .ref('Items')
     //     .once("value")

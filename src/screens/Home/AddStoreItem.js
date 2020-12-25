@@ -11,7 +11,7 @@ import { func, string, bool, array, object } from "prop-types";
 import { connect } from "react-redux";
 import { load } from "./../../store/reducers/user";
 
-import NonImage from '../../assets/iamges/product4.png'
+import NonImage from '../../assets/iamges/blankImage.png'
 import uncheckImage from '../../assets/iamges/uncheckImage.png'
 import checkImage from '../../assets/iamges/checkImage.png'
 
@@ -165,7 +165,7 @@ class AddStoreItemScreen extends Component {
     });
   };
 
-  AddStore = async () => {
+  AddStore = async() => {
     const { img_url, itemNum1, feeValue, priceValue, GpriceValue, productName, Tag, Description } = this.state
     const { load } = this.props
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
@@ -200,10 +200,9 @@ class AddStoreItemScreen extends Component {
           Description: Description,
           itemImage: img_url,
         });
-
         var data = []
-        var row
-        await Firebase.database()
+      var row
+      await Firebase.database()
           .ref('Items/' + this.state.userId)
           .once("value")
           .then(snapshot => {
@@ -218,13 +217,12 @@ class AddStoreItemScreen extends Component {
                 itemNum1: element.val().itemNum1,
                 priceValue: element.val().priceValue,
                 productName: element.val().productName
-              }
-              data.push(row)
-            });
+              } 
+              data.push(row)  
+            });  
             // console.log(data)
             load(data)
           });
-
         this.setState({ isModalVisible8: true })
         setTimeout(() => {
           this.props.navigation.navigate("HomeScreen")
@@ -235,6 +233,11 @@ class AddStoreItemScreen extends Component {
     catch (error) {
       console.log(error.toString())
     }
+  }
+
+  changeValue = async(text) => {
+    var value = text
+    await this.setState({ feeValue: value.toFxied(2)})
   }
 
   render() {
@@ -278,7 +281,7 @@ class AddStoreItemScreen extends Component {
               <View style={{ ...styles.inputArea, width: '28%' }}>
                 <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Our fees</Text>
                 <View style={{ ...styles.inputItem, alignItems: 'center' }}>
-                  <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" placeholder="$12.94" onChangeText={(text) => { this.setState({ feeValue: text }) }}></TextInput>
+                  <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.feeValue} placeholder="$12.94" onChangeText={(text) => {  this.setState({ feeValue: text })  }}></TextInput>
                 </View>
               </View>
               <View style={{ ...styles.inputArea, width: '30%' }}>
@@ -380,7 +383,7 @@ class AddStoreItemScreen extends Component {
         <Modal isVisible={this.state.isModalVisible8}>
           <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
             <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome to CannaGo App!</Text>
+            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>New item is added</Text>
           </View>
         </Modal>
       </View>
@@ -394,7 +397,7 @@ AddStoreItemScreen.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  load: ( data ) => cc(load(data)),
+  load: ( data ) => dispatch(load(data)),
 });
 
 const mapStateToProps = ({ user }) => ({
