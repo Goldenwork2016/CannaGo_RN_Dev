@@ -381,7 +381,8 @@ export const styles = StyleSheet.create({
     },
     storeImage2:{
         width:"100%",
-        height:"100%"
+        height:"100%",
+        borderRadius:5
     },
     paymethodAdd:{
         width:20,
@@ -840,7 +841,8 @@ export const styles = StyleSheet.create({
         marginBottom: 20,
         fontFamily:'Poppins-Regular',
         alignItems:'center',
-        alignSelf:'center'
+        alignSelf:'center',
+        textAlign:'center'
     },
 })
 
