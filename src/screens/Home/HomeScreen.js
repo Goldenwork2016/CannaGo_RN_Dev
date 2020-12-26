@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, FlatList, Dimensions } from 'react-native';
+import { View, Text, Image, ScrollView, FlatList, Dimensions, RefreshControl } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 import Firebase from '../../../config/firebase'
@@ -50,6 +50,7 @@ class HomeScreen extends Component {
       ],
       contentList1: [
       ],
+      refreshing:false
     };
   }
 
@@ -112,6 +113,12 @@ class HomeScreen extends Component {
     // })  
   }
 
+  _onRefresh = () =>{
+    this.setState({refreshing:true})
+    const { real_data } = this.props
+    this.setState({refreshing:false})
+  }
+
   _rendermakelist({ item, index }) {
     return (
       <TouchableOpacity style={styles.StoreItem} onPress={() => { this.props.navigation.navigate("TouchableOpacity") }}>
@@ -159,6 +166,12 @@ class HomeScreen extends Component {
             </TouchableOpacity>
             <View style={{ paddingHorizontal: '5%', height: '100%', paddingBottom: Platform.OS == 'ios' ? 150 : 100, width: '100%' }}>
               <FlatList
+                refreshControl={
+                  <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => this._onRefresh()}
+                  />
+                }
                 numColumns={2}
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
                 // showsVerticalScrollIndicator={true}
@@ -167,7 +180,7 @@ class HomeScreen extends Component {
                   <TouchableOpacity style={{ width: width, height: 201, marginHorizontal: 10, marginTop: 30 }} onPress={() => { this.props.navigation.navigate('UpdateItemScreen', { item: item }) }}>
                     <View style={{ justifyContent: 'center', height: 134, alignItems: 'center', borderWidth: 2, borderColor: '#61D273', borderTopLeftRadius: 30 }}>
                       <Image source={real_data.length == 0 ? item.ImageUrl : { uri: item.itemImage }} resizeMode='stretch' style={styles.productImage} />
-                      <Text style={styles.desTxt1}>{item.priceValue}</Text>
+                      <Text style={styles.desTxt1}>{parseFloat(item.priceValue).toFixed(2)}</Text>
                     </View>
                     <View style={styles.storeDes}>
                       <Text style={styles.desTxt}>{item.productName}</Text>
@@ -193,7 +206,7 @@ HomeScreen.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  load: ( data ) => dispatch(load(data)),
+  load: (data) => dispatch(load(data)),
 });
 
 const mapStateToProps = ({ user }) => ({
