@@ -165,7 +165,7 @@ class AddStoreItemScreen extends Component {
     });
   };
 
-  AddStore = async() => {
+  AddStore = async () => {
     const { img_url, itemNum1, feeValue, priceValue, GpriceValue, productName, Tag, Description } = this.state
     const { load } = this.props
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
@@ -201,8 +201,8 @@ class AddStoreItemScreen extends Component {
           itemImage: img_url,
         });
         var data = []
-      var row
-      await Firebase.database()
+        var row
+        await Firebase.database()
           .ref('Items/' + this.state.userId)
           .once("value")
           .then(snapshot => {
@@ -217,9 +217,9 @@ class AddStoreItemScreen extends Component {
                 itemNum1: element.val().itemNum1,
                 priceValue: element.val().priceValue,
                 productName: element.val().productName
-              } 
-              data.push(row)  
-            });  
+              }
+              data.push(row)
+            });
             // console.log(data)
             load(data)
           });
@@ -235,9 +235,9 @@ class AddStoreItemScreen extends Component {
     }
   }
 
-  changeValue = async(text) => {
+  changeValue = async (text) => {
     var value = text
-    await this.setState({ feeValue: value.toFxied(2)})
+    await this.setState({ feeValue: value.toFxied(2) })
   }
 
   render() {
@@ -281,22 +281,22 @@ class AddStoreItemScreen extends Component {
               <View style={{ ...styles.inputArea, width: '28%' }}>
                 <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Our fees</Text>
                 <View style={{ ...styles.inputItem, alignItems: 'center' }}>
-                  <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.feeValue} placeholder="$12.94" onChangeText={(text) => {  this.setState({ feeValue: text })  }} 
-                  onBlur={() => {this.setState({feeValue:parseFloat(this.state.feeValue).toFixed(2)})}}></TextInput>
+                  <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.feeValue} placeholder="$12.94" onChangeText={(text) => { this.setState({ feeValue: text }) }}
+                    onBlur={() => { this.setState({ feeValue: parseFloat(this.state.feeValue).toFixed(2) }) }}></TextInput>
                 </View>
               </View>
               <View style={{ ...styles.inputArea, width: '30%' }}>
                 <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Product Price</Text>
                 <View style={styles.inputItem}>
                   <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.priceValue} placeholder="$15.34" onChangeText={(text) => { this.setState({ priceValue: text }) }}
-                  onBlur={() => {this.setState({priceValue:parseFloat(this.state.priceValue).toFixed(2)})}}></TextInput>
+                    onBlur={() => { this.setState({ priceValue: parseFloat(this.state.priceValue).toFixed(2) }) }}></TextInput>
                 </View>
               </View>
               <View style={{ ...styles.inputArea, width: '30%' }}>
                 <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Gross Price</Text>
                 <View style={styles.inputItem}>
                   <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.GpriceValue} placeholder="$13.50" onChangeText={(text) => { this.setState({ GpriceValue: text }) }}
-                  onBlur={() => {this.setState({GpriceValue:parseFloat(this.state.GpriceValue).toFixed(2)})}}></TextInput>
+                    onBlur={() => { this.setState({ GpriceValue: parseFloat(this.state.GpriceValue).toFixed(2) }) }}></TextInput>
                 </View>
               </View>
             </View>
@@ -400,7 +400,7 @@ AddStoreItemScreen.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  load: ( data ) => dispatch(load(data)),
+  load: (data) => dispatch(load(data)),
 });
 
 const mapStateToProps = ({ user }) => ({

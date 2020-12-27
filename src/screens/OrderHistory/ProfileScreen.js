@@ -4,8 +4,15 @@ import ImagePicker from 'react-native-image-picker';
 import Modal from 'react-native-modalbox';
 import { Switch } from 'react-native-switch';
 import AsyncStorage from '@react-native-community/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
+import RNFetchBlob from "react-native-fetch-blob";
+import Firebase from '../../../config/firebase'
 
 import { styles } from '../../components/styles'
+
+import { func, string, bool, object, array } from "prop-types";
+import { connect } from "react-redux";
+import { load, userInfo } from "../../store/reducers/user";
 
 import NonImage from '../../assets/iamges/storeImage1.png'
 import uncheckImage from '../../assets/iamges/uncheckImage.png'
@@ -17,7 +24,7 @@ const options = {
   chooseFromLibraryButtonTitle: 'Choose photo from library'
 }
 
-export default class ProfileScreen extends Component {
+class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,12 +35,41 @@ export default class ProfileScreen extends Component {
       modalVisible: false,
       usertype: 'consumer',
       Checked: true,
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNum: '',
+      password: '',
+      profileimage: '',
+      storeName: '',
+      storePhoneNum: '',
+      storeAddress: '',
+      storeHours: '',
+      companyName: '',
+      fein: '',
+      userId: Firebase.auth().currentUser.uid,
     };
   }
 
   componentDidMount = async () => {
+    const { real_data, user_real_info } = this.props
     const usertype = await AsyncStorage.getItem("usertype");
-    await this.setState({ usertype: usertype })
+    await this.setState({ usertype: usertype });
+    this.setState({
+      firstName: user_real_info.firstName,
+      lastName: user_real_info.lastName,
+      email: user_real_info.email,
+      phoneNum: user_real_info.phoneNum,
+      password: user_real_info.password,
+      storeName: user_real_info.storePhoneNum,
+      storePhoneNum: user_real_info.storePhoneNum,
+      storeHours: user_real_info.storeHours,
+      storeAddress: user_real_info.storeAddress,
+      companyName: user_real_info.companyName,
+      fein: user_real_info.fein,
+      profileimage: user_real_info.profileimage,
+      userType: user_real_info.userType
+    })
   }
 
   closeModal = () => {
@@ -60,9 +96,17 @@ export default class ProfileScreen extends Component {
   //   });
   // }
 
-  chooseImage = () => {
+  NetworkSensor = async () => {
+    await this.setState({
+      timeFlag: true,
+      isLoading: false
+    })
+    // alert('network error')
+  }
+
+  chooseImage = async () => {
     ImagePicker.showImagePicker(options, response => {
-      console.log("Response = ", response);
+      console.log("Response = ", response.uri);
 
       if (response.didCancel) {
         console.log("User cancelled image picker");
@@ -70,18 +114,130 @@ export default class ProfileScreen extends Component {
         console.log("ImagePicker Error: ", response.error);
       } else {
         const source = { uri: response.uri };
+        // console.log(response.data);
+        const Blob = RNFetchBlob.polyfill.Blob;    //firebase image upload
+        const fs = RNFetchBlob.fs;
+        window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+        window.Blob = Blob;
+
+        const Fetch = RNFetchBlob.polyfill.Fetch
+        // replace built-in fetch
+        window.fetch = new Fetch({
+          // enable this option so that the response data conversion handled automatically
+          auto: true,
+          // when receiving response data, the module will match its Content-Type header
+          // with strings in this array. If it contains any one of string in this array, 
+          // the response body will be considered as binary data and the data will be stored
+          // in file system instead of in memory.
+          // By default, it only store response data to file system when Content-Type 
+          // contains string `application/octet`.
+          binaryContentTypes: [
+            'image/',
+            'video/',
+            'audio/',
+            'foo/',
+          ]
+        }).build()
+
+        let uploadBlob = null;
+
+        var path = Platform.OS === "ios" ? response.uri.replace("file://", "") : response.uri
+
+        var d = new Date();
+        var _name = d.getHours() + d.getMinutes() + d.getSeconds() + 'img.jpg';
+
+        fs.readFile(path, "base64")
+          .then(data => {
+            //console.log(data);
+            let mime = "image/jpg";
+            return Blob.build(data, { type: `${mime};BASE64` });
+          })
+          .then(blob => {
+            uploadBlob = blob;
+            Firebase
+              .storage()
+              .ref("ProfileImages/" + _name)
+              .put(blob)
+              .then(() => {
+                uploadBlob.close();
+                return Firebase
+                  .storage()
+                  .ref("ProfileImages/" + _name)
+                  .getDownloadURL();
+              })
+              .then(async uploadedFile => {
+                console.log("++++++++++++");
+                console.log({ uploadedFile });
+                await this.setState({ img_url: uploadedFile })
+                console.log(this.state.img_url);
+              })
+              .catch(error => {
+                console.log({ error });
+              });
+          });
+
         this.setState({
           avatarSource: source
         });
+        this.update()
       }
     });
   };
+
+  async update() {
+    const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, storePhoneNum, storeAddress, storeHours, companyName, fein } = this.state
+    alert("sfsdfsdfsdfsdf")
+    var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
+    await Firebase.database().ref('user/' + this.state.userId).update({
+      fristName: firstName,
+      lastName: lastName,
+      email: email,
+      phoneNum: phoneNum,
+      password: password,
+      storeName: storeName,
+      storePhoneNum: storePhoneNum,
+      storeAdress: storeAddress,
+      storeHours: storeHours,
+      companyName: companyName,
+      fein: fein,
+      userType: userType,
+      profileimage: profileimage
+    });
+    const { user_real_info } = this.props
+    var updateUserInfo_row
+    await Firebase.database()
+      .ref('user/' + this.state.userId)
+      .once("value")
+      .then(snapshot => {
+        console.log("====++=======================================");
+        console.log(snapshot)
+        updateUserInfo_row = {
+          fristName: snapshot.fristName,
+          lastName: snapshot.lastName,
+          email: snapshot.email,
+          phoneNum: snapshot.phoneNum,
+          password: snapshot.password,
+          storeName: snapshot.storeName,
+          storePhoneNum: snapshot.storePhoneNum,
+          storeAdress: snapshot.storeAddress,
+          storeHours: snapshot.storeHours,
+          companyName: snapshot.companyName,
+          fein: snapshot.fein,
+          userType: snapshot.userType,
+          profileimage: snapshot.profileimage,
+        }
+        console.log("___________+++++++++++++++++++++++++______________")
+        console.log(updateUserInfo_row)
+        userInfo(updateUserInfo_row)
+      });
+  }
 
   checkfun = async () => {
     await this.setState({ ischecked: !this.state.ischecked });
   }
 
   render() {
+    const { real_data, user_real_info } = this.props
     return (
       <View style={styles.container}>
         {this.state.usertype == "consumer" ?
@@ -150,7 +306,7 @@ export default class ProfileScreen extends Component {
                     />
                   </View>
                   <View style={{ ...styles.storeUploadgImage, marginTop: 10, borderRadius: 10 }}>
-                    <Image source={this.state.avatarSource} resizeMode='cover' style={{ ...styles.storeImage1, borderRadius: 10 }} />
+                    <Image source={{ uri: user_real_info.profileimage }} resizeMode='cover' style={{ ...styles.storeImage1, borderRadius: 10 }} />
                     <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
                       <Image source={require('../../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
                     </TouchableOpacity>
@@ -254,3 +410,23 @@ export default class ProfileScreen extends Component {
     );
   }
 }
+
+ProfileScreen.propTypes = {
+  load: func,
+  real_data: array,
+};
+
+const mapDispatchToProps = dispatch => ({
+  load: (data) => dispatch(load(data)),
+  userInfo: (updateUserInfo_row) => dispatch(userInfo(updateUserInfo_row)),
+});
+
+const mapStateToProps = ({ user }) => ({
+  real_data: user.real_data,
+  user_real_info: user.user_real_info
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ProfileScreen);

@@ -1,63 +1,55 @@
-import { LOGIN, LOGOUT, COURSE_SEL, LOAD, VIDEO_SEL } from '../actions/user.actions';
+import { LOGIN, LOGOUT, UPDATE_USERINFO, COURSE_SEL, LOAD, VIDEO_SEL } from '../actions/user.actions';
 
 const initialState = {
-    userkey: '',
-    email: '',
-    password: '',
-    username: '',
-    lastest_date: '',
-    loggedIn: false,
-    paidState: false,
-    photo_url: '',
-    ca_key1: '',
-    ca_key2: '',
-    co_key1: '',
-    co_key2: '',
-    v_key1:'',
-    v_key2:'',
-    real_data: []
+    // companyName: '',
+    // email: '',
+    // fein: '',
+    // firstName: '',
+    // lastName: '',
+    // password: '',
+    // profileimage: '',
+    // storeAddress: '',
+    // storeName: '',
+    // storeHours: '',
+    // storePhoneNum: '',
+    // userType: '',
+    user_real_info:'',
+    real_data: [],
+    updateUpdateInfo:''
 };
 export default countReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN:
             return {
                 ...state,
-                userkey: action.userkey,
-                email: action.email,
-                password: action.password,
-                username: action.username,
-                loggedIn: true,
-                paidState: action.paidState,
-                lastest_date: action.lastest_date,
-                photo_url: action.photo_url,
-                ca_key1: action.ca_key1,
-                ca_key2: action.ca_key2,
-                co_key1: action.co_key1,
-                co_key2: action.co_key2,
-                v_key1: action.v_key1,
-                v_key2: action.v_key2,
+                user_real_info:action.user_info
             };
-        
+
         case LOAD:
             return {
                 ...state,
                 real_data: action.data
             }
+        case UPDATE_USERINFO:
+            return {
+                ...state,
+                user_real_info: action.updateUpdateInfo
+            }
         case LOGOUT:
             return {
                 ...state,
-                userkey: '',
+                companyName: '',
                 email: '',
+                fein: '',
+                firstName: '',
+                lastName: '',
                 password: '',
-                username: '',
-                loggedIn: false,
-                paidState: false,
-                co_key1: '',
-                co_key2: '',
-                ca_key1: '',
-                ca_key2: '',
-                v_key1:'',
-                v_key2:'',
+                profileimage: '',
+                storeAddress: '',
+                storeName: '',
+                storeHours: '',
+                storePhoneNum: '',
+                userType: '',
             };
         case COURSE_SEL:
             return {
@@ -65,7 +57,7 @@ export default countReducer = (state = initialState, action) => {
                 ca_key1: action.ca_key1,
                 ca_key2: action.ca_key2,
                 co_key1: action.co_key1,
-                co_key2: action.co_key2,   
+                co_key2: action.co_key2,
             }
         case VIDEO_SEL:
             return {
@@ -81,9 +73,17 @@ export default countReducer = (state = initialState, action) => {
 
 export const load = (data) => async (dispatch) => {
 
-    console.log("sdfsdf",data)
+    console.log("sdfsdf", data)
 
     // const payload = {data: data}
     dispatch({ type: LOAD, data });
-    
+
+};
+export const userInfo = (user_info) => async (dispatch) => {
+
+    console.log("sdfsdf", user_info)
+
+    // const payload = {data: data}
+    dispatch({ type: LOGIN, user_info });
+
 };

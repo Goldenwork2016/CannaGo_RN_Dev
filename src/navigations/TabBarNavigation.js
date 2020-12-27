@@ -19,6 +19,7 @@ import ProfileScreen from '../screens/OrderHistory/ProfileScreen'
 import ProfileInfoScreen from '../screens/OrderHistory/ProfileInfoScreen'
 import DispensaryUpdateScreen from '../screens/OrderHistory/DispensaryUpdateScreen'
 import DriverInformationScreen from '../screens/OrderHistory/DriverInformationScreen'
+import ChangePasswordScreen from '../screens/OrderHistory/ChangePasswordScreen'
 
 import AppTabbar from './AppTabBar';
 
@@ -169,8 +170,8 @@ const OrderHistory = createStackNavigator(
                 headerShown: false,
             }
         },
-        DriverInformationScreen: {
-            screen: DriverInformationScreen,
+        ChangePasswordScreen: {
+            screen: ChangePasswordScreen,
             navigationOptions: {
                 headerShown: false,
             }

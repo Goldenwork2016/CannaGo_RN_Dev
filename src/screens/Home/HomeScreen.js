@@ -56,7 +56,7 @@ class HomeScreen extends Component {
 
   componentDidMount = async () => {
     const { real_data } = this.props
-    console.log("real", real_data)
+    console.log("real++++++", real_data)
     const usertype = await AsyncStorage.getItem("usertype");
     await this.setState({ usertype: usertype })
     // var data = []

@@ -8,7 +8,7 @@ import { styles } from '../components/styles'
 
 import { func, string, bool, object, array } from "prop-types";
 import { connect } from "react-redux";
-import { load } from "./../store/reducers/user";
+import { load, userInfo } from "./../store/reducers/user";
 
 const consumers_logo = require('../assets/iamges/logo.png');
 const driver_logo = require('../assets/iamges/driver_logo.png');
@@ -135,8 +135,10 @@ class LoginScreen extends Component {
         Firebase.auth().signInWithEmailAndPassword(email, password)
           .then(function (user) {
 
-            const { load } = self.props
+            const { load, userInfo } = self.props
             var data = []
+            var user_info
+            var user_row
             var row
             Firebase.database()
               .ref('Items/' + user.user.uid)
@@ -158,6 +160,31 @@ class LoginScreen extends Component {
                 });
                 // console.log(data)
                 load(data)
+              });
+
+            Firebase.database()
+              .ref('user/' + user.user.uid)
+              .on("value", snapshot => {
+                console.log(snapshot)
+                user_info
+                user_row = {
+                  companyName: snapshot.val().companyName,
+                  email: snapshot.val().email,
+                  fein: snapshot.val().fein,
+                  phoneNum:snapshot.val().phoneNum,
+                  firstName: snapshot.val().fristName,
+                  lastName: snapshot.val().lastName,
+                  password: snapshot.val().password,
+                  profileimage: snapshot.val().profileimage,
+                  storeAddress: snapshot.val().storeAdress,
+                  storeName: snapshot.val().storeName,
+                  storeHours: snapshot.val().storeHours,
+                  storePhoneNum: snapshot.val().storePhoneNum,
+                  userType: snapshot.val().userType,
+                }
+                user_info = user_row;
+                // console.log(data)
+                userInfo(user_info)
               });
 
             self.setState({ isLoading: false })
@@ -297,11 +324,13 @@ LoginScreen.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  load: ( data ) => dispatch(load(data)),
+  load: (data) => dispatch(load(data)),
+  userInfo: (user_info) => dispatch(userInfo(user_info)),
 });
 
 const mapStateToProps = ({ user }) => ({
   real_data: user.real_data,
+  user_real_info:user.user_real_info
 });
 
 export default connect(

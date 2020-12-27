@@ -298,19 +298,19 @@ class UpdateItemScreen extends Component {
               <View style={{ ...styles.inputArea, width: '28%' }}>
                 <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Our fees</Text>
                 <View style={{ ...styles.inputItem, alignItems: 'center' }}>
-                  <TextInput value={feeValue} onChangeText={value => this.setState({ feeValue: value })} onBlur={() => {this.setState({feeValue:parseFloat(this.state.feeValue).toFixed(2)})}} style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" placeholder="$12.90"></TextInput>
+                  <TextInput value={feeValue} onChangeText={value => this.setState({ feeValue: value })} onBlur={() => { this.setState({ feeValue: parseFloat(this.state.feeValue).toFixed(2) }) }} style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" placeholder="$12.90"></TextInput>
                 </View>
               </View>
               <View style={{ ...styles.inputArea, width: '30%' }}>
                 <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Product Price</Text>
                 <View style={styles.inputItem}>
-                  <TextInput value={priceValue} onChangeText={value => this.setState({ priceValue: value })} onBlur={() => {this.setState({priceValue:parseFloat(this.state.priceValue).toFixed(2)})}} style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" placeholder="$15.33"></TextInput>
+                  <TextInput value={priceValue} onChangeText={value => this.setState({ priceValue: value })} onBlur={() => { this.setState({ priceValue: parseFloat(this.state.priceValue).toFixed(2) }) }} style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" placeholder="$15.33"></TextInput>
                 </View>
               </View>
               <View style={{ ...styles.inputArea, width: '30%' }}>
                 <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Gross Price</Text>
                 <View style={styles.inputItem}>
-                  <TextInput value={GpriceValue} onChangeText={value => this.setState({ GpriceValue: value })} onBlur={() => {this.setState({GpriceValue:parseFloat(this.state.GpriceValue).toFixed(2)})}} style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" placeholder="$13.55"></TextInput>
+                  <TextInput value={GpriceValue} onChangeText={value => this.setState({ GpriceValue: value })} onBlur={() => { this.setState({ GpriceValue: parseFloat(this.state.GpriceValue).toFixed(2) }) }} style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" placeholder="$13.55"></TextInput>
                 </View>
               </View>
             </View>
