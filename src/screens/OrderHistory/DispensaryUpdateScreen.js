@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import Modal from 'react-native-modal';
 
 import { styles } from '../../components/styles'
 
@@ -43,6 +44,7 @@ class DispensaryUpdateScreen extends Component {
       companyName: '',
       fein: '',
       userId: Firebase.auth().currentUser.uid,
+      isModalVisible1: false,
     };
   }
 
@@ -135,10 +137,11 @@ class DispensaryUpdateScreen extends Component {
         console.log(updateUserInfo_row)
         userInfo(updateUserInfo_row)
       });
-    // this.setState({ isModalVisible1: true })
-    // setTimeout(() => {
+    this.setState({ isModalVisible1: true })
+    setTimeout(() => {
+      this.setState({ isModalVisible1: false })
       this.props.navigation.navigate("ProfileScreen")
-    // }, 2000)
+    }, 3000)
   }
 
   checkfun = async () => {
@@ -177,7 +180,7 @@ class DispensaryUpdateScreen extends Component {
                 <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <TextInput onChangeText={value => this.setState({ phoneNum: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" value={phoneNum} placeholder="(786)-212-2578"></TextInput>
               </View>
-              <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("ChangePasswordScreen",{passowrd:password}) }}>
+              <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("ChangePasswordScreen", { passowrd: password }) }}>
                 <Image source={require('../../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
                 <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Change Password</Text>
               </TouchableOpacity>
@@ -243,6 +246,12 @@ class DispensaryUpdateScreen extends Component {
           </View>
           <View style={{ height: 150 }}></View>
         </ScrollView>
+        <Modal isVisible={this.state.isModalVisible1}>
+          <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+            <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Profile informations are updated.</Text>
+          </View>
+        </Modal>
       </View>
     );
   }

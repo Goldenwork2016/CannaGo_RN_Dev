@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import Modal from 'react-native-modalbox';
+import Modal1 from 'react-native-modal';
 import { Switch } from 'react-native-switch';
 import AsyncStorage from '@react-native-community/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -49,7 +50,9 @@ class ProfileScreen extends Component {
       fein: '',
       userId: Firebase.auth().currentUser.uid,
       availableBal: 0,
-      isModalVisible1: false
+      isModalVisible1: false,
+      timeFlag: false,
+      isloading: false,
     };
   }
 
@@ -118,6 +121,7 @@ class ProfileScreen extends Component {
       } else if (response.error) {
         console.log("ImagePicker Error: ", response.error);
       } else {
+        this.setState({ isLoading: true })
         const source = { uri: response.uri };
         // console.log(response.data);
         const Blob = RNFetchBlob.polyfill.Blob;    //firebase image upload
@@ -175,6 +179,8 @@ class ProfileScreen extends Component {
                 console.log({ uploadedFile });
                 await this.setState({ profileimage: uploadedFile })
                 console.log(this.state.profileimage);
+                this.setState({ isLoading: false })
+                this.update()
                 this.setState({ isModalVisible1: true })
                 setTimeout(() => {
                   this.setState({ isModalVisible1: false })
@@ -188,7 +194,6 @@ class ProfileScreen extends Component {
         this.setState({
           avatarSource: source
         });
-        this.update()
       }
     });
   };
@@ -196,6 +201,7 @@ class ProfileScreen extends Component {
   async update() {
     const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, availableBal, storePhoneNum, storeAddress, storeHours, companyName, fein } = this.state
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
+    // alert("sdfsffds")
     await Firebase.database().ref('user/' + this.state.userId).update({
       fristName: firstName,
       lastName: lastName,
@@ -249,6 +255,11 @@ class ProfileScreen extends Component {
     const { profileimage, availableBal } = this.state
     return (
       <View style={styles.container}>
+        <Spinner
+          visible={this.state.isLoading}
+          textContent={'Updating photo...'}
+          textStyle={{ color: 'white' }}
+        />
         {this.state.usertype == "consumer" ?
           <ScrollView style={{ width: '100%' }}>
             <View style={styles.container}>
@@ -415,12 +426,12 @@ class ProfileScreen extends Component {
             </TouchableOpacity>
           </View>
         </Modal>
-        <Modal isVisible={this.state.isModalVisible1}>
+        <Modal1 isVisible={this.state.isModalVisible1}>
           <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
             <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Profile image uploaded.</Text>
+            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Profile image is uploaded.</Text>
           </View>
-        </Modal>
+        </Modal1>
       </View>
     );
   }
