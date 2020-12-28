@@ -48,7 +48,8 @@ class ProfileScreen extends Component {
       companyName: '',
       fein: '',
       userId: Firebase.auth().currentUser.uid,
-      availableBal:0,
+      availableBal: 0,
+      isModalVisible1: false
     };
   }
 
@@ -174,6 +175,10 @@ class ProfileScreen extends Component {
                 console.log({ uploadedFile });
                 await this.setState({ profileimage: uploadedFile })
                 console.log(this.state.profileimage);
+                this.setState({ isModalVisible1: true })
+                setTimeout(() => {
+                  this.setState({ isModalVisible1: false })
+                }, 2000)
               })
               .catch(error => {
                 console.log({ error });
@@ -317,7 +322,7 @@ class ProfileScreen extends Component {
                   </View>
                 </View>
                 <View style={styles.inputArea}>
-                  <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', marginTop: 20, fontSize: 40, }}>${availableBal}</Text>
+                  <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', marginTop: 20, fontSize: 40, }}>$0</Text>
                   <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', color: '#7a7a7b', marginBottom: 20 }}>Available Balance</Text>
                   <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("DispensaryUpdateScreen") }}>
                     <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
@@ -408,6 +413,12 @@ class ProfileScreen extends Component {
             <TouchableOpacity style={styles.sendBtn} onPress={() => { this.closeModal() }}>
               <Text style={styles.sendTxt}>Send</Text>
             </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible1}>
+          <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+            <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Profile image uploaded.</Text>
           </View>
         </Modal>
       </View>
