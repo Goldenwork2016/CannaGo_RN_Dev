@@ -181,6 +181,7 @@ class LoginScreen extends Component {
                   storeHours: snapshot.val().storeHours,
                   storePhoneNum: snapshot.val().storePhoneNum,
                   userType: snapshot.val().userType,
+                  availableBal:snapshot.val().availableBal,
                 }
                 user_info = user_row;
                 // console.log(data)

@@ -48,6 +48,7 @@ class ProfileScreen extends Component {
       companyName: '',
       fein: '',
       userId: Firebase.auth().currentUser.uid,
+      availableBal:0,
     };
   }
 
@@ -68,7 +69,8 @@ class ProfileScreen extends Component {
       companyName: user_real_info.companyName,
       fein: user_real_info.fein,
       profileimage: user_real_info.profileimage,
-      userType: user_real_info.userType
+      userType: user_real_info.userType,
+      availableBal: user_real_info.availableBal,
     })
     console.log("++++++++++++++")
     console.log(this.state.profileimage)
@@ -187,7 +189,7 @@ class ProfileScreen extends Component {
   };
 
   async update() {
-    const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, storePhoneNum, storeAddress, storeHours, companyName, fein } = this.state
+    const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, availableBal, storePhoneNum, storeAddress, storeHours, companyName, fein } = this.state
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
     await Firebase.database().ref('user/' + this.state.userId).update({
       fristName: firstName,
@@ -202,7 +204,8 @@ class ProfileScreen extends Component {
       companyName: companyName,
       fein: fein,
       userType: userType,
-      profileimage: profileimage
+      profileimage: profileimage,
+      availableBal: availableBal,
     });
     const { userInfo } = this.props
     var updateUserInfo_row
@@ -238,7 +241,7 @@ class ProfileScreen extends Component {
   }
 
   render() {
-    const { profileimage } = this.state
+    const { profileimage, availableBal } = this.state
     return (
       <View style={styles.container}>
         {this.state.usertype == "consumer" ?
@@ -314,7 +317,7 @@ class ProfileScreen extends Component {
                   </View>
                 </View>
                 <View style={styles.inputArea}>
-                  <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', marginTop: 20, fontSize: 40, }}>$1,325.70</Text>
+                  <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', marginTop: 20, fontSize: 40, }}>${availableBal}</Text>
                   <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', color: '#7a7a7b', marginBottom: 20 }}>Available Balance</Text>
                   <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("DispensaryUpdateScreen") }}>
                     <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />

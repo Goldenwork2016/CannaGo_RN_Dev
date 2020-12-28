@@ -693,6 +693,7 @@ export default class DispensariesSignupScreen extends Component {
               fein: fein,
               profileimage: img_url,
               userType: userType,
+              availableBal:0
             });
             this.setState({ isModalVisible17: true })
             setTimeout(() => {
