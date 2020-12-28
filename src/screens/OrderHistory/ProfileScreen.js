@@ -55,7 +55,7 @@ class ProfileScreen extends Component {
     const { real_data, user_real_info } = this.props
     const usertype = await AsyncStorage.getItem("usertype");
     await this.setState({ usertype: usertype });
-    this.setState({
+    await this.setState({
       firstName: user_real_info.firstName,
       lastName: user_real_info.lastName,
       email: user_real_info.email,
@@ -70,6 +70,8 @@ class ProfileScreen extends Component {
       profileimage: user_real_info.profileimage,
       userType: user_real_info.userType
     })
+    console.log("++++++++++++++")
+    console.log(this.state.profileimage)
   }
 
   closeModal = () => {
@@ -168,8 +170,8 @@ class ProfileScreen extends Component {
               .then(async uploadedFile => {
                 console.log("++++++++++++");
                 console.log({ uploadedFile });
-                await this.setState({ img_url: uploadedFile })
-                console.log(this.state.img_url);
+                await this.setState({ profileimage: uploadedFile })
+                console.log(this.state.profileimage);
               })
               .catch(error => {
                 console.log({ error });
@@ -203,7 +205,7 @@ class ProfileScreen extends Component {
       userType: userType,
       profileimage: profileimage
     });
-    const { user_real_info } = this.props
+    const { userInfo } = this.props
     var updateUserInfo_row
     await Firebase.database()
       .ref('user/' + this.state.userId)
@@ -237,7 +239,7 @@ class ProfileScreen extends Component {
   }
 
   render() {
-    const { real_data, user_real_info } = this.props
+    const { profileimage } = this.state
     return (
       <View style={styles.container}>
         {this.state.usertype == "consumer" ?
@@ -306,7 +308,7 @@ class ProfileScreen extends Component {
                     />
                   </View>
                   <View style={{ ...styles.storeUploadgImage, marginTop: 10, borderRadius: 10 }}>
-                    <Image source={{ uri: user_real_info.profileimage }} resizeMode='cover' style={{ ...styles.storeImage1, borderRadius: 10 }} />
+                    <Image source={{ uri: profileimage }} resizeMode='cover' style={{ ...styles.storeImage1, borderRadius: 10 }} />
                     <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
                       <Image source={require('../../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
                     </TouchableOpacity>

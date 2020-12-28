@@ -108,7 +108,7 @@ class DispensaryUpdateScreen extends Component {
       userType: userType,
       profileimage: profileimage
     });
-    const { user_real_info } = this.props
+    const { userInfo } = this.props
     var updateUserInfo_row
     await Firebase.database()
       .ref('user/' + this.state.userId)
@@ -188,10 +188,10 @@ class DispensaryUpdateScreen extends Component {
                 <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <TextInput onChangeText={value => this.setState({ storeName: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" value={storeName} placeholder="Cannabis Station"></TextInput>
               </View>
-              {/* <View style={styles.inputItem}>
+              <View style={styles.inputItem}>
                 <Image source={require('../../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" value={user_real_info.storePhoneNum} placeholder="ourstore@gmail.com"></TextInput>
-              </View> */}
+                <TextInput style={styles.inputTxt} onChangeText={value => this.setState({ email: value })} placeholderTextColor="#7a7a7b" value={email} placeholder="ourstore@gmail.com"></TextInput>
+              </View>
               <View style={styles.inputItem}>
                 <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <TextInput onChangeText={value => this.setState({ storePhoneNum: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" value={storePhoneNum} placeholder="(404)-212-1232"></TextInput>
