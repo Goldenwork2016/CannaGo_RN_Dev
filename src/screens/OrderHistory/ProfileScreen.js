@@ -188,7 +188,6 @@ class ProfileScreen extends Component {
 
   async update() {
     const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, storePhoneNum, storeAddress, storeHours, companyName, fein } = this.state
-    alert("sfsdfsdfsdfsdf")
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
     await Firebase.database().ref('user/' + this.state.userId).update({
       fristName: firstName,
