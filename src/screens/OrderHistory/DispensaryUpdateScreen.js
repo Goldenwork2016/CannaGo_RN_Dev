@@ -39,7 +39,10 @@ class DispensaryUpdateScreen extends Component {
       profileimage: '',
       storeName: '',
       storePhoneNum: '',
-      storeAddress: '',
+      storeStreetAdress: '',
+      city:'',
+      GA:'GA',
+      zipCode:'',
       storeHours: '',
       companyName: '',
       fein: '',
@@ -93,7 +96,7 @@ class DispensaryUpdateScreen extends Component {
   // };
 
   async update() {
-    const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, storePhoneNum, storeAddress, storeHours, companyName, fein } = this.state
+    const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, storePhoneNum, storeStreetAdress, city, GA, zipCode, storeHours, companyName, fein } = this.state
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
     await Firebase.database().ref('user/' + this.state.userId).update({
       fristName: firstName,
@@ -103,7 +106,10 @@ class DispensaryUpdateScreen extends Component {
       password: password,
       storeName: storeName,
       storePhoneNum: storePhoneNum,
-      storeAdress: storeAddress,
+      storeStreetAdress: storeStreetAdress,
+      city: city,
+      GA: GA,
+      zipCode: zipCode,
       storeHours: storeHours,
       companyName: companyName,
       fein: fein,
@@ -126,7 +132,10 @@ class DispensaryUpdateScreen extends Component {
           password: snapshot.password,
           storeName: snapshot.storeName,
           storePhoneNum: snapshot.storePhoneNum,
-          storeAdress: snapshot.storeAddress,
+          storeStreetAdress: snapshot.storeStreetAdress,
+          city: snapshot.city,
+          GA: snapshot.GA,
+          zipCode: snapshot.zipCode,
           storeHours: snapshot.storeHours,
           companyName: snapshot.companyName,
           fein: snapshot.fein,
@@ -149,7 +158,7 @@ class DispensaryUpdateScreen extends Component {
   }
 
   render() {
-    const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, storePhoneNum, storeAddress, storeHours, companyName, fein } = this.state
+    const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, storePhoneNum, storeStreetAdress, city, GA, zipCode, storeHours, companyName, fein } = this.state
     return (
       <View style={styles.container}>
         <ScrollView style={{ width: '100%' }}>
@@ -191,18 +200,29 @@ class DispensaryUpdateScreen extends Component {
                 <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <TextInput onChangeText={value => this.setState({ storeName: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" value={storeName} placeholder="Cannabis Station"></TextInput>
               </View>
-              <View style={styles.inputItem}>
+              {/* <View style={styles.inputItem}>
                 <Image source={require('../../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
                 <TextInput style={styles.inputTxt} onChangeText={value => this.setState({ email: value })} placeholderTextColor="#7a7a7b" value={email} placeholder="ourstore@gmail.com"></TextInput>
-              </View>
+              </View> */}
               <View style={styles.inputItem}>
                 <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <TextInput onChangeText={value => this.setState({ storePhoneNum: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" value={storePhoneNum} placeholder="(404)-212-1232"></TextInput>
               </View>
               <View style={styles.inputItem}>
                 <Image source={require('../../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
-                <TextInput onChangeText={value => this.setState({ storeAddress: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" value={storeAddress} placeholder="369 MCDaniel Street, NW, Miami, FL, 313..."></TextInput>
+                <TextInput onChangeText={value => this.setState({ storeStreetAdress: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" value={storeStreetAdress} placeholder="369 MCDaniel Street, NW, Miami, FL, 313..."></TextInput>
               </View>
+              <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                  <View style={styles.inputItem2}>
+                    <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" placeholder="City" value={city} onChangeText={(text) => { this.setState({ city: text }) }}></TextInput>
+                  </View>
+                  <View style={styles.inputItem2}>
+                    <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" editable={false} placeholder="GA" value="GA" value={GA} onChangeText={(text) => { this.setState({ GA: text }) }}></TextInput>
+                  </View>
+                  <View style={styles.inputItem2}>
+                    <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" placeholder="Zip Code" value={zipCode} onChangeText={(text) => { this.setState({ zipCode: text }) }}></TextInput>
+                  </View>
+                </View>
               <View style={styles.inputItem}>
                 <Image source={require('../../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
                 <TextInput onChangeText={value => this.setState({ storeHours: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" value={storeHours} placeholder="Dispensary's Hours"></TextInput>

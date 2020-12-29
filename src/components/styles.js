@@ -136,6 +136,13 @@ export const styles = StyleSheet.create({
         width:'70%',
         fontFamily:'Poppins-Regular'
     },
+    inputTxt2:{
+        fontSize:13,
+        color:'#000',
+        width:'70%',
+        fontFamily:'Poppins-Regular',
+        textAlign:'center'
+    },
     
     inputItem:{
         flexDirection:'row',
@@ -146,6 +153,17 @@ export const styles = StyleSheet.create({
         borderColor:'#e9e9e9',
         marginBottom:22,
         width:'100%'
+    },
+    inputItem2:{
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center',
+        height:55,
+        borderRadius:27.5,
+        borderWidth:1,
+        borderColor:'#e9e9e9',
+        marginBottom:22,
+        width:'32%'
     },
     checkImage: {
         width: 21,

@@ -484,7 +484,10 @@ export default class DispensariesSignupScreen extends Component {
       conPassword: '',
       storeName: '',
       storePhoneNum: '',
-      storeAdress: '',
+      storeStreetAdress: '',
+      city:'',
+      GA:'GA',
+      zipCode:'',
       storeHours: '',
       companyName: '',
       img_url: '',
@@ -506,6 +509,8 @@ export default class DispensariesSignupScreen extends Component {
       isModalVisible15: false,
       isModalVisible16: false,
       isModalVisible17: false,
+      isModalVisible18: false,
+      isModalVisible19: false,
       timeFlag: false,
       isloading: false,
       loggedIn: false,
@@ -622,9 +627,12 @@ export default class DispensariesSignupScreen extends Component {
   }
 
   SingUp = () => {
-    const { fristName, lastName, ownerPhoneNum, ownerEmail, password, conPassword, storeName, storePhoneNum, storeAdress, storeHours, companyName, fein, img_url, userType, ischecked, ischecked1 } = this.state;
+    const { fristName, lastName, ownerPhoneNum, ownerEmail, password, conPassword, storeName, storePhoneNum, storeStreetAdress, GA, zipCode, storeHours, companyName, fein, img_url, userType, ischecked, ischecked1 } = this.state;
     console.log(img_url);
-    if (fristName == "") {
+    if (img_url == "") {
+      this.setState({ isModalVisible15: true })
+    }
+    else if (fristName == "") {
       this.setState({ isModalVisible1: true })
     } else if (lastName == "") {
       this.setState({ isModalVisible2: true })
@@ -647,8 +655,14 @@ export default class DispensariesSignupScreen extends Component {
     else if (storePhoneNum == "") {
       this.setState({ isModalVisible9: true })
     }
-    else if (storeAdress == "") {
+    else if (storeStreetAdress == "") {
       this.setState({ isModalVisible10: true })
+    }
+    else if (city == "") {
+      this.setState({ isModalVisible18: true })
+    }
+    else if (zipCode == "") {
+      this.setState({ isModalVisible19: true })
     }
     else if (storeHours == "") {
       this.setState({ isModalVisible11: true })
@@ -664,9 +678,6 @@ export default class DispensariesSignupScreen extends Component {
     }
     else if (ischecked1 == false) {
       this.setState({ isModalVisible14: true })
-    }
-    else if (img_url == "") {
-      this.setState({ isModalVisible15: true })
     }
     else {
       var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
@@ -689,6 +700,8 @@ export default class DispensariesSignupScreen extends Component {
               storeName: storeName,
               storePhoneNum: storePhoneNum,
               storeAdress: storeAdress,
+              GA:GA,
+              zipCode:zipCode,
               storeHours: storeHours,
               companyName: companyName,
               fein: fein,
@@ -779,7 +792,18 @@ export default class DispensariesSignupScreen extends Component {
                 </View>
                 <View style={styles.inputItem}>
                   <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
-                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Address" value={this.state.storeAdress} onChangeText={(text) => { this.setState({ storeAdress: text }) }}></TextInput>
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Street Address" value={this.state.storeStreetAdress} onChangeText={(text) => { this.setState({ storeStreetAdress: text }) }}></TextInput>
+                </View>
+                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                  <View style={styles.inputItem2}>
+                    <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" placeholder="City" value={this.state.city} onChangeText={(text) => { this.setState({ city: text }) }}></TextInput>
+                  </View>
+                  <View style={styles.inputItem2}>
+                    <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" editable={false} placeholder="GA" value="GA" value={this.state.GA} onChangeText={(text) => { this.setState({ GA: text }) }}></TextInput>
+                  </View>
+                  <View style={styles.inputItem2}>
+                    <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" placeholder="Zip Code" value={this.state.zipCode} onChangeText={(text) => { this.setState({ zipCode: text }) }}></TextInput>
+                  </View>
                 </View>
                 <View style={styles.inputItem}>
                   <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
@@ -919,7 +943,7 @@ export default class DispensariesSignupScreen extends Component {
           <Modal isVisible={this.state.isModalVisible10}>
             <View style={styles.modalView}>
               <Text style={styles.TitleTxt1}>OOPS!</Text>
-              <Text style={styles.Description}>Please input dispensary's address</Text>
+              <Text style={styles.Description}>Please input dispensary's street address</Text>
               <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible10: false })}>
                 <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
               </TouchableOpacity>
@@ -983,6 +1007,24 @@ export default class DispensariesSignupScreen extends Component {
             <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
               <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
               <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome to CannaGo App!</Text>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible18}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input city name</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible18: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible19}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input Zipe Code</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible19: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
             </View>
           </Modal>
         </KeyboardAwareScrollView>
