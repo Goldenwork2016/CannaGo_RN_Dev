@@ -87,3 +87,11 @@ export const userInfo = (user_info) => async (dispatch) => {
     dispatch({ type: LOGIN, user_info });
 
 };
+export const updateUserInfo = (user_info) => async (dispatch) => {
+
+    console.log("sdfsdf", user_info)
+
+    // const payload = {data: data}
+    dispatch({ type: UPDATE_USERINFO, user_info });
+
+};

@@ -224,7 +224,7 @@ class LoginScreen extends Component {
             <View style={styles.inputArea}>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder={this.state.isDispensaries ? "Dispensary Email Address" : "Email Address"} onChangeText={(text) => { this.setState({ email: text }) }}></TextInput>
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder={this.state.isDispensaries ? "Owner's Email Address" : "Email Address"} onChangeText={(text) => { this.setState({ email: text }) }}></TextInput>
               </View>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />

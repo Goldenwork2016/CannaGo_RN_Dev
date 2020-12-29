@@ -11,7 +11,7 @@ import { func, string, bool, array, object } from "prop-types";
 import { connect } from "react-redux";
 import { load } from "./../../store/reducers/user";
 
-import NonImage from '../../assets/iamges/blankImage.png'
+import NonImage from '../../assets/iamges/emptyItem.png'
 import uncheckImage from '../../assets/iamges/uncheckImage.png'
 import checkImage from '../../assets/iamges/checkImage.png'
 

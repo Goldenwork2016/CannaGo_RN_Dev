@@ -7,7 +7,7 @@ import { styles } from '../../components/styles'
 
 import { func, string, bool, object, array } from "prop-types";
 import { connect } from "react-redux";
-import user, { load, userInfo } from "../../store/reducers/user";
+import { load, userInfo, updateUserInfo } from "../../store/reducers/user";
 import Spinner from 'react-native-loading-spinner-overlay';
 import Firebase from '../../../config/firebase'
 
@@ -110,7 +110,7 @@ class DispensaryUpdateScreen extends Component {
       userType: userType,
       profileimage: profileimage
     });
-    const { userInfo } = this.props
+    const { updateUserInfo } = this.props
     var updateUserInfo_row
     await Firebase.database()
       .ref('user/' + this.state.userId)
@@ -135,7 +135,7 @@ class DispensaryUpdateScreen extends Component {
         }
         console.log("___________+++++++++++++++++++++++++______________")
         console.log(updateUserInfo_row)
-        userInfo(updateUserInfo_row)
+        updateUserInfo(updateUserInfo_row)
       });
     this.setState({ isModalVisible1: true })
     setTimeout(() => {
@@ -264,7 +264,7 @@ DispensaryUpdateScreen.propTypes = {
 
 const mapDispatchToProps = dispatch => ({
   load: (data) => dispatch(load(data)),
-  userInfo: (updateUserInfo_row) => dispatch(userInfo(updateUserInfo_row)),
+  updateUserInfo: (updateUserInfo_row) => dispatch(updateUserInfo(updateUserInfo_row)),
 });
 
 const mapStateToProps = ({ user }) => ({

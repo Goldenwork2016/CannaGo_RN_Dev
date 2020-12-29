@@ -13,7 +13,7 @@ import { styles } from '../../components/styles'
 
 import { func, string, bool, object, array } from "prop-types";
 import { connect } from "react-redux";
-import { load, userInfo } from "../../store/reducers/user";
+import { load, userInfo, updateUserInfo } from "../../store/reducers/user";
 
 import NonImage from '../../assets/iamges/storeImage1.png'
 import uncheckImage from '../../assets/iamges/uncheckImage.png'
@@ -175,10 +175,11 @@ class ProfileScreen extends Component {
                   .getDownloadURL();
               })
               .then(async uploadedFile => {
-                console.log("++++++++++++");
+                console.log("++++++++++++_______________");
                 console.log({ uploadedFile });
                 await this.setState({ profileimage: uploadedFile })
                 console.log(this.state.profileimage);
+                console.log("++++++++++++_______________++++++++++");
                 this.setState({ isLoading: false })
                 this.update()
                 this.setState({ isModalVisible1: true })
@@ -201,7 +202,6 @@ class ProfileScreen extends Component {
   async update() {
     const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, availableBal, storePhoneNum, storeAddress, storeHours, companyName, fein } = this.state
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
-    // alert("sdfsffds")
     await Firebase.database().ref('user/' + this.state.userId).update({
       fristName: firstName,
       lastName: lastName,
@@ -218,15 +218,15 @@ class ProfileScreen extends Component {
       profileimage: profileimage,
       availableBal: availableBal,
     });
-    const { userInfo } = this.props
-    var updateUserInfo_row
+    const { updateUserInfo } = this.props
+    var updateUserInfo_row1
     await Firebase.database()
       .ref('user/' + this.state.userId)
       .once("value")
       .then(snapshot => {
         console.log("====++=======================================");
         console.log(snapshot)
-        updateUserInfo_row = {
+        updateUserInfo_row1 = {
           fristName: snapshot.fristName,
           lastName: snapshot.lastName,
           email: snapshot.email,
@@ -242,8 +242,8 @@ class ProfileScreen extends Component {
           profileimage: snapshot.profileimage,
         }
         console.log("___________+++++++++++++++++++++++++______________")
-        console.log(updateUserInfo_row)
-        userInfo(updateUserInfo_row)
+        console.log(updateUserInfo_row1)
+        updateUserInfo(updateUserInfo_row1)
       });
   }
 
@@ -444,7 +444,7 @@ ProfileScreen.propTypes = {
 
 const mapDispatchToProps = dispatch => ({
   load: (data) => dispatch(load(data)),
-  userInfo: (updateUserInfo_row) => dispatch(userInfo(updateUserInfo_row)),
+  updateUserInfo: (updateUserInfo_row1) => dispatch(updateUserInfo(updateUserInfo_row1)),
 });
 
 const mapStateToProps = ({ user }) => ({

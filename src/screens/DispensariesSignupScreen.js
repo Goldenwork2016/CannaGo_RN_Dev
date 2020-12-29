@@ -450,8 +450,9 @@ import Modal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { styles } from '../components/styles'
 import RNFetchBlob from "react-native-fetch-blob";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-import NonImage from '../assets/iamges/storeImage1.png'
+import NonImage from '../assets/iamges/emptyPhoto.png'
 import uncheckImage from '../assets/iamges/uncheckImage.png'
 import checkImage from '../assets/iamges/checkImage.png'
 import Firebase from 'firebase';
@@ -693,7 +694,7 @@ export default class DispensariesSignupScreen extends Component {
               fein: fein,
               profileimage: img_url,
               userType: userType,
-              availableBal:0
+              availableBal: 0
             });
             this.setState({ isModalVisible17: true })
             setTimeout(() => {
@@ -718,273 +719,274 @@ export default class DispensariesSignupScreen extends Component {
   render() {
     return (
       <View style={styles.container} >
-        <Spinner
-          visible={this.state.isLoading}
-          textContent={'Creating your account...'}
-          textStyle={{ color: 'white' }}
-        />
-        <ScrollView style={{ width: '100%' }}>
-          <View style={styles.container}>
-            <View style={{ width: '100%', alignItems: 'center', marginTop: 40 }}>
-              <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
-                <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
-              </TouchableOpacity>
-              <View style={styles.storeUploadgImage}>
-                <Image source={this.state.avatarSource} resizeMode='cover' style={styles.storeImage1} />
-                <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
-                  <Image source={require('../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
+        <KeyboardAwareScrollView>
+          <Spinner
+            visible={this.state.isLoading}
+            textContent={'Creating your account...'}
+            textStyle={{ color: 'white' }}
+          />
+          <ScrollView style={{ width: '100%' }}>
+            <View style={styles.container}>
+              <View style={{ width: '100%', alignItems: 'center', marginTop: 40 }}>
+                <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
+                  <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                 </TouchableOpacity>
+                <View style={styles.storeUploadgImage}>
+                  <Image source={this.state.avatarSource} resizeMode='cover' style={styles.storeImage1} />
+                  <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
+                    <Image source={require('../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-            <View style={styles.inputArea}>
-              <View style={styles.SignInfoArea}>
-                <Text style={styles.SignInfoTxt}>Sign Up Information</Text>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <TextInput style={styles.inputTxt} name="fristName" value={this.state.fristName} placeholderTextColor="#7a7a7b" placeholder="First Name" onChangeText={(text) => { this.setState({ fristName: text }) }}></TextInput>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Last Name" value={this.state.lastName} onChangeText={(text) => { this.setState({ lastName: text }) }}></TextInput>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Owner's Email Address" value={this.state.ownerEmail} onChangeText={(text) => { this.setState({ ownerEmail: text }) }}></TextInput>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <TextInput keyboardType="number-pad" style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Owner's Phone Number" value={this.state.ownerPhoneNum} onChangeText={(text) => { this.setState({ ownerPhoneNum: text }) }}></TextInput>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" secureTextEntry={true} placeholder="Password" value={this.state.password} onChangeText={(text) => { this.setState({ password: text }) }}></TextInput>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" secureTextEntry={true} placeholder="Retype password" value={this.state.conPassword} onChangeText={(text) => { this.setState({ conPassword: text }) }}></TextInput>
-              </View>
-              <View style={styles.SignInfoArea}>
-                <Text style={styles.SignInfoTxt}>Dispensary Information</Text>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary Store Name" value={this.state.storeName} onChangeText={(text) => { this.setState({ storeName: text }) }}></TextInput>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <TextInput keyboardType="number-pad" style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Phone Number" value={this.state.storePhoneNum} onChangeText={(text) => { this.setState({ storePhoneNum: text }) }}></TextInput>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Address" value={this.state.storeAdress} onChangeText={(text) => { this.setState({ storeAdress: text }) }}></TextInput>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Hours" value={this.state.storeHours} onChangeText={(text) => { this.setState({ storeHours: text }) }}></TextInput>
-              </View>
-              <View style={styles.TermsArea}>
-                <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun() }}>
-                  <Image source={this.state.ischecked ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
-                </TouchableOpacity>
-                <Text style={{ ...styles.termsTxt, width: '90%', marginTop: 10 }}>By checking I am an authorized signatory of this business, with the power to commit to binding agreements</Text>
-              </View>
-              {/* <TouchableOpacity style={styles.inputItem}>
+              <View style={styles.inputArea}>
+                <View style={styles.SignInfoArea}>
+                  <Text style={styles.SignInfoTxt}>Sign Up Information</Text>
+                </View>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                  <TextInput style={styles.inputTxt} name="fristName" value={this.state.fristName} placeholderTextColor="#7a7a7b" placeholder="First Name" onChangeText={(text) => { this.setState({ fristName: text }) }}></TextInput>
+                </View>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Last Name" value={this.state.lastName} onChangeText={(text) => { this.setState({ lastName: text }) }}></TextInput>
+                </View>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Owner's Email Address" value={this.state.ownerEmail} onChangeText={(text) => { this.setState({ ownerEmail: text }) }}></TextInput>
+                </View>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                  <TextInput keyboardType="number-pad" style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Owner's Phone Number" value={this.state.ownerPhoneNum} onChangeText={(text) => { this.setState({ ownerPhoneNum: text }) }}></TextInput>
+                </View>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" secureTextEntry={true} placeholder="Password" value={this.state.password} onChangeText={(text) => { this.setState({ password: text }) }}></TextInput>
+                </View>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" secureTextEntry={true} placeholder="Retype password" value={this.state.conPassword} onChangeText={(text) => { this.setState({ conPassword: text }) }}></TextInput>
+                </View>
+                <View style={styles.SignInfoArea}>
+                  <Text style={styles.SignInfoTxt}>Dispensary Information</Text>
+                </View>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary Store Name" value={this.state.storeName} onChangeText={(text) => { this.setState({ storeName: text }) }}></TextInput>
+                </View>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                  <TextInput keyboardType="number-pad" style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Phone Number" value={this.state.storePhoneNum} onChangeText={(text) => { this.setState({ storePhoneNum: text }) }}></TextInput>
+                </View>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Address" value={this.state.storeAdress} onChangeText={(text) => { this.setState({ storeAdress: text }) }}></TextInput>
+                </View>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Hours" value={this.state.storeHours} onChangeText={(text) => { this.setState({ storeHours: text }) }}></TextInput>
+                </View>
+                <View style={styles.TermsArea}>
+                  <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun() }}>
+                    <Image source={this.state.ischecked ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
+                  </TouchableOpacity>
+                  <Text style={{ ...styles.termsTxt, width: '90%', marginTop: 10 }}>By checking I am an authorized signatory of this business, with the power to commit to binding agreements</Text>
+                </View>
+                {/* <TouchableOpacity style={styles.inputItem}>
                 <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <Text style={{...styles.inputTxt, color:'#7a7a7b'}}>Scan Driver's License</Text>
                 <Image source={require('../assets/iamges/arrow-left.png')} resizeMode='stretch' style={styles.arrowleft} />
               </TouchableOpacity> */}
-              <View style={{ ...styles.SignInfoArea, marginTop: 20 }}>
-                <Text style={styles.SignInfoTxt}>Tax Information</Text>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Business entity/Company name" value={this.state.companyName} onChangeText={(text) => { this.setState({ companyName: text }) }}></TextInput>
-              </View>
-              <Text style={{ ...styles.termsTxt, width: '90%', marginTop: -10, marginBottom: 10 }}>Ensure this matches the official tax documents for your business.</Text>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <TextInput keyboardType="number-pad" style={{ ...styles.inputTxt, fontSize: 11 }} placeholderTextColor="#7a7a7b" placeholder="FEIN (Federal Employer Identification Number)" value={this.state.fein} onChangeText={(text) => { this.setState({ fein: text }) }}></TextInput>
-              </View>
-              <View style={styles.TermsArea}>
-                <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun1() }}>
-                  <Image source={this.state.ischecked1 ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
+                <View style={{ ...styles.SignInfoArea, marginTop: 20 }}>
+                  <Text style={styles.SignInfoTxt}>Tax Information</Text>
+                </View>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Business entity/Company name" value={this.state.companyName} onChangeText={(text) => { this.setState({ companyName: text }) }}></TextInput>
+                </View>
+                <Text style={{ ...styles.termsTxt, width: '90%', marginTop: -10, marginBottom: 10 }}>Ensure this matches the official tax documents for your business.</Text>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                  <TextInput keyboardType="number-pad" style={{ ...styles.inputTxt, fontSize: 11 }} placeholderTextColor="#7a7a7b" placeholder="FEIN (Federal Employer Identification Number)" value={this.state.fein} onChangeText={(text) => { this.setState({ fein: text }) }}></TextInput>
+                </View>
+                <View style={styles.TermsArea}>
+                  <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun1() }}>
+                    <Image source={this.state.ischecked1 ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
+                  </TouchableOpacity>
+                  <Text style={styles.termsTxt}>By checking this I agree to CannaGo's  </Text>
+                  <TouchableOpacity style={styles.forgotBtn1}>
+                    <Text style={{ color: '#61D273', fontSize: 10, fontFamily: 'Poppins-Regular' }}>Terms & Conditions</Text>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity style={styles.signinBtn} onPress={() => { this.SingUp() }}>
+                  <Text style={styles.signinTxt1}>Create Account</Text>
                 </TouchableOpacity>
-                <Text style={styles.termsTxt}>By checking this I agree to CannaGo's  </Text>
-                <TouchableOpacity style={styles.forgotBtn1}>
-                  <Text style={{ color: '#61D273', fontSize: 10, fontFamily: 'Poppins-Regular' }}>Terms & Conditions</Text>
-                </TouchableOpacity>
               </View>
-              <TouchableOpacity style={styles.signinBtn} onPress={() => { this.SingUp() }}>
-                <Text style={styles.signinTxt1}>Create Account</Text>
+            </View>
+            <View style={{ height: 50 }}></View>
+          </ScrollView>
+          <Modal isVisible={this.state.isModalVisible1}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input your first name</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible1: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
               </TouchableOpacity>
             </View>
-          </View>
-          <View style={{ height: 50 }}></View>
-        </ScrollView>
-        <Modal isVisible={this.state.isModalVisible1}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input your first name</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible1: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible2}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input your last name</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible2: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible3}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input owner's email address</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible3: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible4}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Email type error, Please type again</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible4: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible5}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input your password</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible5: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible6}>
-          <View style={styles.modalView1}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <View style={{ width: "95%", alignSelf: 'center' }}>
-              <Text style={{ ...styles.Description, textAlign: 'center' }}>
-                Password must contain following:
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible2}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input your last name</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible2: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible3}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input owner's email address</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible3: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible4}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Email type error, Please type again</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible4: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible5}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input your password</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible5: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible6}>
+            <View style={styles.modalView1}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <View style={{ width: "95%", alignSelf: 'center' }}>
+                <Text style={{ ...styles.Description, textAlign: 'center' }}>
+                  Password must contain following:
                     </Text>
-              <Text style={styles.Description1}>
-                A lowercase letter{'\n'}
+                <Text style={styles.Description1}>
+                  A lowercase letter{'\n'}
                         A capital letter{'\n'}
                         A number{'\n'}
                         A special character{'\n'}
                         Minimum 8 characters
                     </Text>
+              </View>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible6: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible6: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible7}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Password doesn't match</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible7: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible8}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input dispensary store name</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible8: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible9}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input dispensary's phone number</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible9: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible10}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input dispensary's address</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible10: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible11}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input dispensary's hours</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible11: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible12}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input company name</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible12: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible13}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input FEIN</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible13: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible14}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>You need to agree our Terms and Conditions</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible14: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible15}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please select profile image</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible15: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible16}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Internet connection failed</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible16: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible17}>
-          <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
-            <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome to CannaGo App!</Text>
-          </View>
-        </Modal>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible7}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Password doesn't match</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible7: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible8}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input dispensary store name</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible8: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible9}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input dispensary's phone number</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible9: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible10}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input dispensary's address</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible10: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible11}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input dispensary's hours</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible11: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible12}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input company name</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible12: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible13}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input FEIN</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible13: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible14}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>You need to agree our Terms and Conditions</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible14: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible15}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please Select Store Image</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible15: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible16}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Internet connection failed</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible16: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible17}>
+            <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+              <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome to CannaGo App!</Text>
+            </View>
+          </Modal>
+        </KeyboardAwareScrollView>
       </View>
-
     );
   }
 }
