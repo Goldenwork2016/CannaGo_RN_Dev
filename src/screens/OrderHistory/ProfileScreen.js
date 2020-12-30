@@ -257,7 +257,7 @@ class ProfileScreen extends Component {
       <View style={styles.container}>
         <Spinner
           visible={this.state.isLoading}
-          textContent={'Updating photo...'}
+          textContent={'Updating store image...'}
           textStyle={{ color: 'white' }}
         />
         {this.state.usertype == "consumer" ?
@@ -429,7 +429,7 @@ class ProfileScreen extends Component {
         <Modal1 isVisible={this.state.isModalVisible1}>
           <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
             <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Profile image is uploaded.</Text>
+            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Store image is uploaded.</Text>
           </View>
         </Modal1>
       </View>

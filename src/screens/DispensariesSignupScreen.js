@@ -485,9 +485,9 @@ export default class DispensariesSignupScreen extends Component {
       storeName: '',
       storePhoneNum: '',
       storeStreetAdress: '',
-      city:'',
-      GA:'GA',
-      zipCode:'',
+      city: '',
+      GA: 'GA',
+      zipCode: '',
       storeHours: '',
       companyName: '',
       img_url: '',
@@ -700,8 +700,8 @@ export default class DispensariesSignupScreen extends Component {
               storeName: storeName,
               storePhoneNum: storePhoneNum,
               storeAdress: storeAdress,
-              GA:GA,
-              zipCode:zipCode,
+              GA: GA,
+              zipCode: zipCode,
               storeHours: storeHours,
               companyName: companyName,
               fein: fein,
@@ -731,8 +731,8 @@ export default class DispensariesSignupScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container} >
-        <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView style={{flex:1}}>
+        <View style={styles.container} >
           <Spinner
             visible={this.state.isLoading}
             textContent={'Creating your account...'}
@@ -794,7 +794,7 @@ export default class DispensariesSignupScreen extends Component {
                   <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
                   <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Street Address" value={this.state.storeStreetAdress} onChangeText={(text) => { this.setState({ storeStreetAdress: text }) }}></TextInput>
                 </View>
-                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <View style={styles.inputItem2}>
                     <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" placeholder="City" value={this.state.city} onChangeText={(text) => { this.setState({ city: text }) }}></TextInput>
                   </View>
@@ -1027,8 +1027,8 @@ export default class DispensariesSignupScreen extends Component {
               </TouchableOpacity>
             </View>
           </Modal>
-        </KeyboardAwareScrollView>
-      </View>
+        </View>
+      </KeyboardAwareScrollView>
     );
   }
 }
