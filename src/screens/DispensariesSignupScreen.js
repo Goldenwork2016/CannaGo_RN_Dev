@@ -37,7 +37,7 @@
 //       conPassword: '',
 //       storeName: '',
 //       storePhoneNum: '',
-//       storeAdress: '',
+//       storeStreetAdress: '',
 //       storeHours: '',
 //       companyName: '',
 //       fein: '',
@@ -109,7 +109,7 @@
 //   }
 
 //   SingUp = () => {
-//     const {fristName, lastName, ownerPhoneNum, ownerEmail, password, conPassword, storeName, storePhoneNum, storeAdress, storeHours, companyName, fein, userType, ischecked, ischecked1} = this.state;
+//     const {fristName, lastName, ownerPhoneNum, ownerEmail, password, conPassword, storeName, storePhoneNum, storeStreetAdress, storeHours, companyName, fein, userType, ischecked, ischecked1} = this.state;
 // if(fristName == ""){
 //   this.setState({ isModalVisible1: true })
 // } else if(lastName == ""){
@@ -135,7 +135,7 @@
 // else if(storePhoneNum == ""){
 //   this.setState({ isModalVisible9: true })
 // }
-// else if(storeAdress == ""){
+// else if(storeStreetAdress == ""){
 //   this.setState({ isModalVisible10: true })
 // }
 // else if(storeHours == ""){
@@ -170,7 +170,7 @@
 //               password: password,
 //               storeName: storeName,
 //               storePhoneNum: storePhoneNum,
-//               storeAdress: storeAdress,
+//               storeStreetAdress: storeStreetAdress,
 //               storeHours: storeHours,
 //               companyName: companyName,
 //               fein: fein,
@@ -254,7 +254,7 @@
 //               </View>
 //               <View style={styles.inputItem}>
 //                 <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
-//                 <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Address"  value={this.state.storeAdress} onChangeText={(text) => { this.setState({ storeAdress: text }) }}></TextInput>
+//                 <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Address"  value={this.state.storeStreetAdress} onChangeText={(text) => { this.setState({ storeStreetAdress: text }) }}></TextInput>
 //               </View>
 //               <View style={styles.inputItem}>
 //                 <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
@@ -627,7 +627,8 @@ export default class DispensariesSignupScreen extends Component {
   }
 
   SingUp = () => {
-    const { fristName, lastName, ownerPhoneNum, ownerEmail, password, conPassword, storeName, storePhoneNum, storeStreetAdress, GA, zipCode, storeHours, companyName, fein, img_url, userType, ischecked, ischecked1 } = this.state;
+    const { fristName, lastName, ownerPhoneNum, ownerEmail, password, conPassword, storeName, storePhoneNum, storeStreetAdress, GA, zipCode, storeHours, companyName, fein, img_url, userType, ischecked, city, ischecked1 } = this.state;
+    console.log("++++++++++++++++_______");
     console.log(img_url);
     if (img_url == "") {
       this.setState({ isModalVisible15: true })
@@ -699,7 +700,8 @@ export default class DispensariesSignupScreen extends Component {
               password: password,
               storeName: storeName,
               storePhoneNum: storePhoneNum,
-              storeAdress: storeAdress,
+              storeStreetAdress: storeStreetAdress,
+              city: city,
               GA: GA,
               zipCode: zipCode,
               storeHours: storeHours,

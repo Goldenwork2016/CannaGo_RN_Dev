@@ -171,17 +171,19 @@ class LoginScreen extends Component {
                   companyName: snapshot.val().companyName,
                   email: snapshot.val().email,
                   fein: snapshot.val().fein,
-                  phoneNum:snapshot.val().phoneNum,
+                  phoneNum: snapshot.val().phoneNum,
                   firstName: snapshot.val().fristName,
                   lastName: snapshot.val().lastName,
                   password: snapshot.val().password,
                   profileimage: snapshot.val().profileimage,
-                  storeAddress: snapshot.val().storeAdress,
+                  storeAddress: snapshot.val().storeStreetAdress,
                   storeName: snapshot.val().storeName,
                   storeHours: snapshot.val().storeHours,
                   storePhoneNum: snapshot.val().storePhoneNum,
                   userType: snapshot.val().userType,
-                  availableBal:snapshot.val().availableBal,
+                  availableBal: snapshot.val().availableBal,
+                  GA: snapshot.val().GA,
+                  zipCode: snapshot.val().zipCode,
                 }
                 user_info = user_row;
                 // console.log(data)
@@ -331,7 +333,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = ({ user }) => ({
   real_data: user.real_data,
-  user_real_info:user.user_real_info
+  user_real_info: user.user_real_info
 });
 
 export default connect(

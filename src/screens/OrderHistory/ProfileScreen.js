@@ -60,24 +60,69 @@ class ProfileScreen extends Component {
     const { real_data, user_real_info } = this.props
     const usertype = await AsyncStorage.getItem("usertype");
     await this.setState({ usertype: usertype });
-    await this.setState({
-      firstName: user_real_info.firstName,
-      lastName: user_real_info.lastName,
-      email: user_real_info.email,
-      phoneNum: user_real_info.phoneNum,
-      password: user_real_info.password,
-      storeName: user_real_info.storePhoneNum,
-      storePhoneNum: user_real_info.storePhoneNum,
-      storeHours: user_real_info.storeHours,
-      storeAddress: user_real_info.storeAddress,
-      companyName: user_real_info.companyName,
-      fein: user_real_info.fein,
-      profileimage: user_real_info.profileimage,
-      userType: user_real_info.userType,
-      availableBal: user_real_info.availableBal,
-    })
-    console.log("++++++++++++++")
-    console.log(this.state.profileimage)
+    // await this.setState({
+    //   firstName: user_real_info.firstName,
+    //   lastName: user_real_info.lastName,
+    //   email: user_real_info.email,
+    //   phoneNum: user_real_info.phoneNum,
+    //   password: user_real_info.password,
+    //   storeName: user_real_info.storeName,
+    //   storePhoneNum: user_real_info.storePhoneNum,
+    //   storeHours: user_real_info.storeHours,
+    //   storeAddress: user_real_info.storeAddress,
+    //   companyName: user_real_info.companyName,
+    //   fein: user_real_info.fein,
+    //   profileimage: user_real_info.profileimage,
+    //   userType: user_real_info.userType,
+    //   availableBal: user_real_info.availableBal,
+    // })
+    // console.log("++++++++++++++")
+    // console.log(this.state.profileimage)
+
+    Firebase.database()
+      .ref('user/' + this.state.userId)
+      .on("value", async (snapshot) => {
+        console.log(snapshot);
+        user_data = {
+          GA: snapshot.val().GA,
+          availableBal: snapshot.val().availableBal,
+          companyName: snapshot.val().companyName,
+          email: snapshot.val().email,
+          fein: snapshot.val().fein,
+          firstName: snapshot.val().fristName,
+          lastName: snapshot.val().lastName,
+          password: snapshot.val().password,
+          phoneNum: snapshot.val().phoneNum,
+          profileimage: snapshot.val().profileimage,
+          storeHours: snapshot.val().storeHours,
+          storeName: snapshot.val().storeName,
+          storePhoneNum: snapshot.val().storePhoneNum,
+          storeStreetAdress: snapshot.val().storeStreetAdress,
+          userType: snapshot.val().userType,
+          zipCode: snapshot.val().zipCode,
+          city: snapshot.val().city,
+          // data.push(row)
+        };
+        console.log(user_data);
+        await this.setState({
+          firstName: user_data.firstName,
+          lastName: user_data.lastName,
+          email: user_data.email,
+          phoneNum: user_data.phoneNum,
+          password: user_data.password,
+          storeName: user_data.storeName,
+          storePhoneNum: user_data.storePhoneNum,
+          storeHours: user_data.storeHours,
+          storeAddress: user_data.storeAddress,
+          companyName: user_data.companyName,
+          fein: user_data.fein,
+          profileimage: user_data.profileimage,
+          userType: user_data.userType,
+          zipCode: user_data.zipCode,
+          storeStreetAdress: user_data.storeStreetAdress,
+          city: user_data.city,
+        })
+      })
   }
 
   closeModal = () => {
@@ -88,21 +133,6 @@ class ProfileScreen extends Component {
   _onChangeSwitch() {
     this.setState({ Checked: !this.state.Checked })
   }
-
-  // chooseImage = () => {
-  //   ImagePicker.showImagePicker(options, async (response) => {
-  //       console.log('Response = ', response);
-  //       if (response.didCancel) {
-  //           console.log('User cancelled image picker');
-  //       } else if (response.error) {
-  //           console.log('ImagePicker Error: ', response.error);
-  //       } else {
-  //           console.log(response.uri)
-  //           const source = { uri: response.uri };
-  //           const URL = response.data;
-  //       }
-  //   });
-  // }
 
   NetworkSensor = async () => {
     await this.setState({
@@ -203,48 +233,48 @@ class ProfileScreen extends Component {
     const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, availableBal, storePhoneNum, storeAddress, storeHours, companyName, fein } = this.state
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
     await Firebase.database().ref('user/' + this.state.userId).update({
-      fristName: firstName,
-      lastName: lastName,
-      email: email,
-      phoneNum: phoneNum,
-      password: password,
-      storeName: storeName,
-      storePhoneNum: storePhoneNum,
-      storeAdress: storeAddress,
-      storeHours: storeHours,
-      companyName: companyName,
-      fein: fein,
-      userType: userType,
+    //   fristName: firstName,
+    //   lastName: lastName,
+    //   email: email,
+    //   phoneNum: phoneNum,
+    //   password: password,
+    //   storeName: storeName,
+    //   storePhoneNum: storePhoneNum,
+    //   storeStreetAdress: storeAddress,
+    //   storeHours: storeHours,
+    //   companyName: companyName,
+    //   fein: fein,
+    //   userType: userType,
       profileimage: profileimage,
-      availableBal: availableBal,
+      // availableBal: availableBal,
     });
-    const { updateUserInfo } = this.props
-    var updateUserInfo_row1
-    await Firebase.database()
-      .ref('user/' + this.state.userId)
-      .once("value")
-      .then(snapshot => {
-        console.log("====++=======================================");
-        console.log(snapshot)
-        updateUserInfo_row1 = {
-          fristName: snapshot.fristName,
-          lastName: snapshot.lastName,
-          email: snapshot.email,
-          phoneNum: snapshot.phoneNum,
-          password: snapshot.password,
-          storeName: snapshot.storeName,
-          storePhoneNum: snapshot.storePhoneNum,
-          storeAdress: snapshot.storeAddress,
-          storeHours: snapshot.storeHours,
-          companyName: snapshot.companyName,
-          fein: snapshot.fein,
-          userType: snapshot.userType,
-          profileimage: snapshot.profileimage,
-        }
-        console.log("___________+++++++++++++++++++++++++______________")
-        console.log(updateUserInfo_row1)
-        updateUserInfo(updateUserInfo_row1)
-      });
+    // const { updateUserInfo } = this.props
+    // var updateUserInfo_row
+    // await Firebase.database()
+    //   .ref('user/' + this.state.userId)
+    //   .once("value")
+    //   .then(snapshot => {
+    //     console.log("====++=======================================");
+    //     console.log(snapshot)
+    //     updateUserInfo_row = {
+    //       fristName: snapshot.fristName,
+    //       lastName: snapshot.lastName,
+    //       email: snapshot.email,
+    //       phoneNum: snapshot.phoneNum,
+    //       password: snapshot.password,
+    //       storeName: snapshot.storeName,
+    //       storePhoneNum: snapshot.storePhoneNum,
+    //       storeStreetAdress: snapshot.storeAddress,
+    //       storeHours: snapshot.storeHours,
+    //       companyName: snapshot.companyName,
+    //       fein: snapshot.fein,
+    //       userType: snapshot.userType,
+    //       profileimage: snapshot.profileimage,
+    //     }
+    //     console.log("___________+++++++++++++++++++++++++______________")
+    //     console.log(updateUserInfo_row)
+    //     updateUserInfo(updateUserInfo_row)
+    //   });
   }
 
   checkfun = async () => {
@@ -444,7 +474,7 @@ ProfileScreen.propTypes = {
 
 const mapDispatchToProps = dispatch => ({
   load: (data) => dispatch(load(data)),
-  updateUserInfo: (updateUserInfo_row1) => dispatch(updateUserInfo(updateUserInfo_row1)),
+  // updateUserInfo: (updateUserInfo_row) => dispatch(updateUserInfo(updateUserInfo_row)),
 });
 
 const mapStateToProps = ({ user }) => ({

@@ -8,8 +8,8 @@ const firebaseConfig = {
     projectId: "cannago-23721",
     storageBucket: "cannago-23721.appspot.com",
     messagingSenderId: "705433366225",
-    appId: "1:705433366225:web:8c09662f7e4fe3e160dff0",
-    measurementId: "G-3SPXELQ1GQ"
+    appId: "1:705433366225:web:19f6b8db84b9cf0d60dff0",
+    measurementId: "G-Z04Z1C5JP7"
 };
 if (!firebase.apps.length) {
     Firebase = firebase.initializeApp(firebaseConfig);

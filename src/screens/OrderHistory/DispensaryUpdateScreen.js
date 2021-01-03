@@ -49,27 +49,79 @@ class DispensaryUpdateScreen extends Component {
       fein: '',
       userId: Firebase.auth().currentUser.uid,
       isModalVisible1: false,
+      real_data: ''
     };
   }
 
-  componentDidMount = async () => {
-    const { real_data, user_real_info } = this.props
-    this.setState({
-      firstName: user_real_info.firstName,
-      lastName: user_real_info.lastName,
-      email: user_real_info.email,
-      phoneNum: user_real_info.phoneNum,
-      password: user_real_info.password,
-      storeName: user_real_info.storePhoneNum,
-      storePhoneNum: user_real_info.storePhoneNum,
-      storeHours: user_real_info.storeHours,
-      storeAddress: user_real_info.storeAddress,
-      companyName: user_real_info.companyName,
-      fein: user_real_info.fein,
-      profileimage: user_real_info.profileimage,
-      userType: user_real_info.userType
-    })
+  componentDidMount = () => {
+    Firebase.database()
+      .ref('user/' + this.state.userId)
+      .on("value", async (snapshot) => {
+        console.log(snapshot);
+        user_data = {
+          GA: snapshot.val().GA,
+          availableBal: snapshot.val().availableBal,
+          companyName: snapshot.val().companyName,
+          email: snapshot.val().email,
+          fein: snapshot.val().fein,
+          firstName: snapshot.val().fristName,
+          lastName: snapshot.val().lastName,
+          password: snapshot.val().password,
+          phoneNum: snapshot.val().phoneNum,
+          profileimage: snapshot.val().profileimage,
+          storeHours: snapshot.val().storeHours,
+          storeName: snapshot.val().storeName,
+          storePhoneNum: snapshot.val().storePhoneNum,
+          storeStreetAdress: snapshot.val().storeStreetAdress,
+          userType: snapshot.val().userType,
+          zipCode: snapshot.val().zipCode,
+          city: snapshot.val().city,
+          // data.push(row)
+        };
+        console.log(user_data);
+        await this.setState({
+          firstName: user_data.firstName,
+          lastName: user_data.lastName,
+          email: user_data.email,
+          phoneNum: user_data.phoneNum,
+          password: user_data.password,
+          storeName: user_data.storeName,
+          storePhoneNum: user_data.storePhoneNum,
+          storeHours: user_data.storeHours,
+          storeAddress: user_data.storeAddress,
+          companyName: user_data.companyName,
+          fein: user_data.fein,
+          profileimage: user_data.profileimage,
+          userType: user_data.userType,
+          zipCode: user_data.zipCode,
+          storeStreetAdress: user_data.storeStreetAdress,
+          city: user_data.city,
+        })
+      })
   }
+
+  // componentDidMount = async () => {
+  //   const { real_data, user_real_info } = this.props
+  //   console.log(user_real_info);
+  //   this.setState({
+  //     firstName: user_real_info.firstName,
+  //     lastName: user_real_info.lastName,
+  //     email: user_real_info.email,
+  //     phoneNum: user_real_info.phoneNum,
+  //     password: user_real_info.password,
+  //     storeName: user_real_info.storePhoneNum,
+  //     storePhoneNum: user_real_info.storePhoneNum,
+  //     storeHours: user_real_info.storeHours,
+  //     storeAddress: user_real_info.storeAddress,
+  //     companyName: user_real_info.companyName,
+  //     fein: user_real_info.fein,
+  //     profileimage: user_real_info.profileimage,
+  //     userType: user_real_info.userType,
+  //     zipCode: user_real_info.zipCode,
+  //     storeStreetAdress: user_real_info.storeStreetAdress,
+  //     city: user_real_info.city,
+  //   })
+  // }
 
   NetworkSensor = async () => {
     await this.setState({
@@ -98,60 +150,66 @@ class DispensaryUpdateScreen extends Component {
 
   async update() {
     const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, storePhoneNum, storeStreetAdress, city, GA, zipCode, storeHours, companyName, fein } = this.state
+    console.log(firstName);
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
-    await Firebase.database().ref('user/' + this.state.userId).update({
-      fristName: firstName,
-      lastName: lastName,
-      email: email,
-      phoneNum: phoneNum,
-      password: password,
-      storeName: storeName,
-      storePhoneNum: storePhoneNum,
-      storeStreetAdress: storeStreetAdress,
-      city: city,
-      GA: GA,
-      zipCode: zipCode,
-      storeHours: storeHours,
-      companyName: companyName,
-      fein: fein,
-      userType: userType,
-      profileimage: profileimage
-    });
-    const { updateUserInfo } = this.props
-    var updateUserInfo_row
-    await Firebase.database()
-      .ref('user/' + this.state.userId)
-      .once("value")
-      .then(snapshot => {
-        console.log("====++=======================================");
-        console.log(snapshot)
-        updateUserInfo_row = {
-          fristName: snapshot.fristName,
-          lastName: snapshot.lastName,
-          email: snapshot.email,
-          phoneNum: snapshot.phoneNum,
-          password: snapshot.password,
-          storeName: snapshot.storeName,
-          storePhoneNum: snapshot.storePhoneNum,
-          storeStreetAdress: snapshot.storeStreetAdress,
-          city: snapshot.city,
-          GA: snapshot.GA,
-          zipCode: snapshot.zipCode,
-          storeHours: snapshot.storeHours,
-          companyName: snapshot.companyName,
-          fein: snapshot.fein,
-          userType: snapshot.userType,
-          profileimage: snapshot.profileimage,
-        }
-        console.log("___________+++++++++++++++++++++++++______________")
-        console.log(updateUserInfo_row)
-        updateUserInfo(updateUserInfo_row)
+    try {
+      await Firebase.database().ref('user/' + this.state.userId).update({
+        fristName: firstName,
+        lastName: lastName,
+        email: email,
+        phoneNum: phoneNum,
+        password: password,
+        storeName: storeName,
+        storePhoneNum: storePhoneNum,
+        storeStreetAdress: storeStreetAdress,
+        // city: city,
+        GA: GA,
+        zipCode: zipCode,
+        storeHours: storeHours,
+        companyName: companyName,
+        fein: fein,
+        userType: userType,
+        profileimage: profileimage
       });
-    this.setState({ isModalVisible1: true })
-    setTimeout(() => {
-      this.setState({ isModalVisible1: false })
-      this.props.navigation.navigate("ProfileScreen")
-    }, 3000)
+      // const { updateUserInfo } = this.props
+      // var updateUserInfo_row
+      // await Firebase.database()
+      //   .ref('user/' + this.state.userId)
+      //   .once("value")
+      //   .then(snapshot => {
+      //     console.log("====++=======================================");
+      //     console.log(snapshot)
+      //     updateUserInfo_row = {
+      //       fristName: snapshot.fristName,
+      //       lastName: snapshot.lastName,
+      //       email: snapshot.email,
+      //       phoneNum: snapshot.phoneNum,
+      //       password: snapshot.password,
+      //       storeName: snapshot.storeName,
+      //       storePhoneNum: snapshot.storePhoneNum,
+      //       storeStreetAdress: snapshot.storeStreetAdress,
+      //       city: snapshot.city,
+      //       GA: snapshot.GA,
+      //       zipCode: snapshot.zipCode,
+      //       storeHours: snapshot.storeHours,
+      //       companyName: snapshot.companyName,
+      //       fein: snapshot.fein,
+      //       userType: snapshot.userType,
+      //       profileimage: snapshot.profileimage,
+      //     }
+      //     console.log("___________+++++++++++++++++++++++++______________")
+      //     console.log(updateUserInfo_row)
+      //     updateUserInfo(updateUserInfo_row)
+      //   });
+      this.setState({ isModalVisible1: true })
+      setTimeout(() => {
+        this.setState({ isModalVisible1: false })
+        this.props.navigation.navigate("ProfileScreen")
+      }, 3000)
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 
   checkfun = async () => {
@@ -159,9 +217,9 @@ class DispensaryUpdateScreen extends Component {
   }
 
   render() {
-    const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, storePhoneNum, storeStreetAdress, city, GA, zipCode, storeHours, companyName, fein } = this.state
+    const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, storePhoneNum, storeStreetAdress, city, GA, zipCode, storeHours, companyName, fein, } = this.state
     return (
-      <KeyboardAwareScrollView style={{flex:1}}>
+      <KeyboardAwareScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
           <ScrollView style={{ width: '100%' }}>
             <View style={styles.container}>
@@ -287,7 +345,7 @@ DispensaryUpdateScreen.propTypes = {
 
 const mapDispatchToProps = dispatch => ({
   load: (data) => dispatch(load(data)),
-  updateUserInfo: (updateUserInfo_row) => dispatch(updateUserInfo(updateUserInfo_row)),
+  // updateUserInfo: (updateUserInfo_row) => dispatch(updateUserInfo(updateUserInfo_row)),
 });
 
 const mapStateToProps = ({ user }) => ({
