@@ -22,7 +22,7 @@
 		4B4C0E6B2584989F0034548A /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B4C0E662584989E0034548A /* Poppins-Regular.ttf */; };
 		4B4C0E6C2584989F0034548A /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B4C0E672584989E0034548A /* Poppins-SemiBold.ttf */; };
 		4B4C0E722584EB6C0034548A /* NunitoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B4C0E712584EB6C0034548A /* NunitoSans-Bold.ttf */; };
-		4BB86334259D6A1C00CD68DC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BB86333259D6A1C00CD68DC /* GoogleService-Info.plist */; };
+		4B9DBEDA25A3557100B8A56B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B9DBED925A3557000B8A56B /* GoogleService-Info.plist */; };
 		77F38BE238BEB7609F60FC11 /* libPods-CannaGo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 769AD486E55C63D3611BF425 /* libPods-CannaGo.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		88A215E5E4477A388A694687 /* libPods-CannaGo-CannaGoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5248FE0C05731305FFA8E607 /* libPods-CannaGo-CannaGoTests.a */; };
@@ -70,7 +70,7 @@
 		4B4C0E662584989E0034548A /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Regular.ttf"; path = "../../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		4B4C0E672584989E0034548A /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-SemiBold.ttf"; path = "../../src/assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		4B4C0E712584EB6C0034548A /* NunitoSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NunitoSans-Bold.ttf"; path = "../../src/assets/fonts/NunitoSans-Bold.ttf"; sourceTree = "<group>"; };
-		4BB86333259D6A1C00CD68DC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Users/kk/Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4B9DBED925A3557000B8A56B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Users/kk/Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5248FE0C05731305FFA8E607 /* libPods-CannaGo-CannaGoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CannaGo-CannaGoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		599EC5819A98426706E80539 /* Pods-CannaGo-CannaGoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CannaGo-CannaGoTests.release.xcconfig"; path = "Target Support Files/Pods-CannaGo-CannaGoTests/Pods-CannaGo-CannaGoTests.release.xcconfig"; sourceTree = "<group>"; };
 		769AD486E55C63D3611BF425 /* libPods-CannaGo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CannaGo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,7 +139,7 @@
 		13B07FAE1A68108700A75B9A /* CannaGo */ = {
 			isa = PBXGroup;
 			children = (
-				4BB86333259D6A1C00CD68DC /* GoogleService-Info.plist */,
+				4B9DBED925A3557000B8A56B /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -371,7 +371,7 @@
 			files = (
 				4B4C0E6A2584989F0034548A /* NunitoSans-SemiBold.ttf in Resources */,
 				4B4C0E6C2584989F0034548A /* Poppins-SemiBold.ttf in Resources */,
-				4BB86334259D6A1C00CD68DC /* GoogleService-Info.plist in Resources */,
+				4B9DBEDA25A3557100B8A56B /* GoogleService-Info.plist in Resources */,
 				4B4C0E682584989F0034548A /* Poppins-Medium.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				4B4C0E6B2584989F0034548A /* Poppins-Regular.ttf in Resources */,
