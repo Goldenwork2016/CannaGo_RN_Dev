@@ -50,7 +50,8 @@ class HomeScreen extends Component {
       ],
       contentList1: [
       ],
-      refreshing:false
+      refreshing:false,
+      userId: Firebase.auth().currentUser.uid,
     };
   }
 
@@ -87,30 +88,30 @@ class HomeScreen extends Component {
     //     });
 
 
-    // Firebase.database()
-    // .ref("Items")
-    // .on("value", (snapshot) => {
-    //   data = []
-    //   snapshot.forEach(element => {
-    //     row = {
-    //       Description: element.val().Description,
-    //       GpriceValue: element.val().GpriceValue,
-    //       Tag: element.val().Tag,
-    //       feeValue: element.val().feeValue,
-    //       id: element.val().id,
-    //       itemImage: element.val().itemImage,
-    //       itemNum1: element.val().itemNum1,
-    //       priceValue: element.val().priceValue,
-    //       productName: element.val().productName
-    //     } 
-    //     data.push(row)  
-    //   });  
-    //   console.log(data)
-    //   this.setState({
-    //     real_data: data,
+    Firebase.database()
+    .ref("Items/" + this.state.userId)
+    .on("value", (snapshot) => {
+      data = []
+      snapshot.forEach(element => {
+        row = {
+          Description: element.val().Description,
+          GpriceValue: element.val().GpriceValue,
+          Tag: element.val().Tag,
+          feeValue: element.val().feeValue,
+          id: element.val().id,
+          itemImage: element.val().itemImage,
+          itemNum1: element.val().itemNum1,
+          priceValue: element.val().priceValue,
+          productName: element.val().productName
+        } 
+        data.push(row)  
+      });  
+      console.log(data)
+      this.setState({
+        real_data: data,
 
-    //   });
-    // })  
+      });
+    })  
   }
 
   _onRefresh = () =>{
@@ -133,7 +134,7 @@ class HomeScreen extends Component {
   }
 
   render() {
-    const { real_data } = this.props
+    const { real_data } = this.state
     return (
       <View style={{ flex: 1, alignItems: "center", }}>
         {this.state.usertype == "consumer" ?
