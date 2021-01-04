@@ -233,18 +233,18 @@ class ProfileScreen extends Component {
     const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, availableBal, storePhoneNum, storeAddress, storeHours, companyName, fein } = this.state
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
     await Firebase.database().ref('user/' + this.state.userId).update({
-    //   fristName: firstName,
-    //   lastName: lastName,
-    //   email: email,
-    //   phoneNum: phoneNum,
-    //   password: password,
-    //   storeName: storeName,
-    //   storePhoneNum: storePhoneNum,
-    //   storeStreetAdress: storeAddress,
-    //   storeHours: storeHours,
-    //   companyName: companyName,
-    //   fein: fein,
-    //   userType: userType,
+      //   fristName: firstName,
+      //   lastName: lastName,
+      //   email: email,
+      //   phoneNum: phoneNum,
+      //   password: password,
+      //   storeName: storeName,
+      //   storePhoneNum: storePhoneNum,
+      //   storeStreetAdress: storeAddress,
+      //   storeHours: storeHours,
+      //   companyName: companyName,
+      //   fein: fein,
+      //   userType: userType,
       profileimage: profileimage,
       // availableBal: availableBal,
     });
@@ -279,6 +279,15 @@ class ProfileScreen extends Component {
 
   checkfun = async () => {
     await this.setState({ ischecked: !this.state.ischecked });
+  }
+
+  logOut = async () => {
+    try {
+      await firebase.auth().signOut();
+      this.props.navigation.navigate('LoginScreen')
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   render() {
@@ -430,7 +439,7 @@ class ProfileScreen extends Component {
                     <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                     <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Contact Support</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={{ ...styles.inputItem, borderColor: 'red', borderWidth: 0.5 }} onPress={() => { this.props.navigation.navigate('LoginScreen') }}>
+                  <TouchableOpacity style={{ ...styles.inputItem, borderColor: 'red', borderWidth: 0.5 }} onPress={() => { this.logOut() }}>
                     <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                     <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Log Out</Text>
                   </TouchableOpacity>

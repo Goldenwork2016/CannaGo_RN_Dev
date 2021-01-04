@@ -164,7 +164,7 @@ class HomeScreen extends Component {
             <TouchableOpacity style={styles.addItemBtn} onPress={() => { this.props.navigation.navigate("AddStoreItemScreen") }}>
               <Image source={require('../../assets/iamges/addImage.png')} resizeMode='stretch' style={styles.addImage} />
             </TouchableOpacity>
-            <View style={{ paddingHorizontal: '5%', height: '100%', paddingBottom: Platform.OS == 'ios' ? 150 : 100, width: '100%' }}>
+            <View style={{ paddingHorizontal: '5%', height: '100%', paddingBottom: Platform.OS == 'ios' ? 200 : 100, width: '100%' }}>
               <FlatList
                 refreshControl={
                   <RefreshControl
