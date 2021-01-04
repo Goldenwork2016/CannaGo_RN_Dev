@@ -30,9 +30,9 @@ class AddStoreItemScreen extends Component {
       checkImage: checkImage,
       uncheckImage: uncheckImage,
       itemNum1: 1,
-      feeValue: "",
-      priceValue: "",
-      GpriceValue: "",
+      feeValue: 0.00,
+      priceValue: 0.00,
+      GpriceValue: 0.00,
       productName: "",
       Tag: "",
       Description: "",
@@ -50,7 +50,7 @@ class AddStoreItemScreen extends Component {
       isModalVisible8: false,
       isModalVisible9: false,
       userId: Firebase.auth().currentUser.uid,
-      isImageUploading:false,
+      isImageUploading: false,
     };
   }
 
@@ -137,7 +137,7 @@ class AddStoreItemScreen extends Component {
             return Blob.build(data, { type: `${mime};BASE64` });
           })
           .then(blob => {
-            this.setState({isImageUploading:true})
+            this.setState({ isImageUploading: true })
             uploadBlob = blob;
             Firebase
               .storage()
@@ -155,7 +155,7 @@ class AddStoreItemScreen extends Component {
                 console.log({ uploadedFile });
                 await this.setState({ img_url: uploadedFile })
                 console.log(this.state.img_url);
-                this.setState({isImageUploading:false})
+                this.setState({ isImageUploading: false })
                 this.setState({ isModalVisible9: true })
                 setTimeout(() => {
                   this.setState({ isModalVisible9: false })
@@ -248,6 +248,10 @@ class AddStoreItemScreen extends Component {
     await this.setState({ feeValue: value.toFxied(2) })
   }
 
+  changePrice = async (value) => {
+    await this.setState({ priceValue: value, feeValue: value * 0.3, GpriceValue: value * 0.7 })
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -294,22 +298,25 @@ class AddStoreItemScreen extends Component {
               <View style={{ ...styles.inputArea, width: '28%' }}>
                 <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Our fees</Text>
                 <View style={{ ...styles.inputItem, alignItems: 'center' }}>
-                  <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.feeValue} placeholder="$0.00" onChangeText={(text) => { this.setState({ feeValue: text }) }}
-                    onBlur={() => { this.setState({ feeValue: parseFloat(this.state.feeValue).toFixed(2) }) }}></TextInput>
+                  {/* <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.feeValue} placeholder="$0.00" onChangeText={(text) => { this.setState({ feeValue: text }) }}
+                    onBlur={() => { this.setState({ feeValue: parseFloat(this.state.feeValue).toFixed(2) }) }}></TextInput> */}
+                  <Text style={{ ...styles.inputTxt, marginLeft:20}}>${parseFloat(this.state.feeValue).toFixed(2)}</Text>
                 </View>
               </View>
               <View style={{ ...styles.inputArea, width: '30%' }}>
                 <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Product Price</Text>
                 <View style={styles.inputItem}>
-                  <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.priceValue} placeholder="$0.00" onChangeText={(text) => { this.setState({ priceValue: text }) }}
+                  <Text style={{marginLeft:20, marginRight:0}}>$</Text>
+                  <TextInput style={{ ...styles.inputTxt, marginLeft:0 }} placeholderTextColor="#7a7a7b" value={this.state.priceValue} placeholder="0.00" onChangeText={(text) => { this.changePrice(text) }}
                     onBlur={() => { this.setState({ priceValue: parseFloat(this.state.priceValue).toFixed(2) }) }}></TextInput>
                 </View>
               </View>
               <View style={{ ...styles.inputArea, width: '30%' }}>
                 <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Gross Price</Text>
                 <View style={styles.inputItem}>
-                  <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.GpriceValue} placeholder="$0.00" onChangeText={(text) => { this.setState({ GpriceValue: text }) }}
-                    onBlur={() => { this.setState({ GpriceValue: parseFloat(this.state.GpriceValue).toFixed(2) }) }}></TextInput>
+                  {/* <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.GpriceValue} placeholder="$0.00" onChangeText={(text) => { this.setState({ GpriceValue: text }) }}
+                    onBlur={() => { this.setState({ GpriceValue: parseFloat(this.state.GpriceValue).toFixed(2) }) }}></TextInput> */}
+                  <Text style={{ ...styles.inputTxt, marginLeft:20}}>${parseFloat(this.state.GpriceValue).toFixed(2)}</Text>
                 </View>
               </View>
             </View>
