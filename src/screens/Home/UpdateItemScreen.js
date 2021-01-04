@@ -41,8 +41,10 @@ class UpdateItemScreen extends Component {
       productName: '',
       userId: Firebase.auth().currentUser.uid,
       isModalVisible1: false,
+      isModalVisible2: false,
       timeFlag: false,
       isloading: false,
+      isImageUploading:false,
     };
   }
 
@@ -144,6 +146,7 @@ class UpdateItemScreen extends Component {
             return Blob.build(data, { type: `${mime};BASE64` });
           })
           .then(blob => {
+            this.setState({isImageUploading:true})
             uploadBlob = blob;
             Firebase
               .storage()
@@ -161,6 +164,11 @@ class UpdateItemScreen extends Component {
                 console.log({ uploadedFile });
                 await this.setState({ itemImage: uploadedFile })
                 console.log(this.state.img_url);
+                this.setState({isImageUploading:false})
+                this.setState({ isModalVisible2: true })
+                setTimeout(() => {
+                  this.setState({ isModalVisible2: false })
+                }, 2000)
               })
               .catch(error => {
                 console.log({ error });
@@ -266,6 +274,11 @@ class UpdateItemScreen extends Component {
           textContent={'Updating item...'}
           textStyle={{ color: 'white' }}
         />
+        <Spinner
+          visible={this.state.isImageUploading}
+          textContent={'Uploading item image...'}
+          textStyle={{ color: 'white' }}
+        />
         <ScrollView style={{ width: '100%' }}>
           <View style={styles.container}>
             <Text style={{ ...styles.CartTitle, marginTop: Platform.OS == 'ios' ? 7 : -10 }}>Edit Item in Your Store</Text>
@@ -343,6 +356,12 @@ class UpdateItemScreen extends Component {
           <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
             <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
             <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Item is updated</Text>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible2}>
+          <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+            <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Item image is updated</Text>
           </View>
         </Modal>
       </View>
