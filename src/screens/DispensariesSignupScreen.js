@@ -15,7 +15,10 @@ import Firebase from 'firebase';
 const options = {
   title: 'Choose Photo',
   takePhotoButtonTitle: 'Take photo with your camera',
-  chooseFromLibraryButtonTitle: 'Choose photo from library'
+  chooseFromLibraryButtonTitle: 'Choose photo from library',
+  maxWidth: 500,
+  maxHeight: 300,
+  quality: 0.5
 }
 
 let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
