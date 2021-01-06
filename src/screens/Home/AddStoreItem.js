@@ -5,6 +5,7 @@ import Modal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
 import RNFetchBlob from "react-native-fetch-blob";
 import { styles } from '../../components/styles'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Firebase from '../../../config/firebase'
 
 import { func, string, bool, array, object } from "prop-types";
@@ -257,168 +258,170 @@ class AddStoreItemScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Spinner
-          visible={this.state.isLoading}
-          textContent={'Adding item...'}
-          textStyle={{ color: 'white' }}
-        />
-        <Spinner
-          visible={this.state.isImageUploading}
-          textContent={'Uploading item image...'}
-          textStyle={{ color: 'white' }}
-        />
-        <ScrollView style={{ width: '100%' }}>
-          <View style={styles.container}>
-            <Text style={{ ...styles.CartTitle, marginTop: Platform.OS == 'ios' ? 7 : -10 }}>Add an Item to Your Store</Text>
-            <View style={{ width: '100%', alignItems: 'center', marginTop: 40 }}>
-              <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
-                <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
-              </TouchableOpacity>
-              <View style={styles.AddItemImage}>
-                {/* <Image source={{uri:this.state.img_url}} resizeMode='cover' style={styles.storeImage2} /> */}
-                <Image source={this.state.avatarSource} resizeMode='cover' style={styles.storeImage2} />
-                <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
-                  <Image source={require('../../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
+      <KeyboardAwareScrollView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <Spinner
+            visible={this.state.isLoading}
+            textContent={'Adding item...'}
+            textStyle={{ color: 'white' }}
+          />
+          <Spinner
+            visible={this.state.isImageUploading}
+            textContent={'Uploading item image...'}
+            textStyle={{ color: 'white' }}
+          />
+          <ScrollView style={{ width: '100%' }}>
+            <View style={styles.container}>
+              <Text style={{ ...styles.CartTitle, marginTop: Platform.OS == 'ios' ? 7 : -10 }}>Add an Item to Your Store</Text>
+              <View style={{ width: '100%', alignItems: 'center', marginTop: 40 }}>
+                <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
+                  <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                 </TouchableOpacity>
-              </View>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 50 }}>
-              <Text style={styles.quantityNum}>Quantity in Stock</Text>
-              <View style={{ ...styles.countItem, marginTop: 0 }}>
-                <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Minuscart() }}>
-                  <Text style={styles.cartAddBtn}>-</Text>
-                </TouchableOpacity>
-                <View style={styles.cartAccountArea}>
-                  <Text style={styles.cartAddBtn}>{this.state.itemNum1}</Text>
+                <View style={styles.AddItemImage}>
+                  {/* <Image source={{uri:this.state.img_url}} resizeMode='cover' style={styles.storeImage2} /> */}
+                  <Image source={this.state.avatarSource} resizeMode='cover' style={styles.storeImage2} />
+                  <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
+                    <Image source={require('../../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Addcart() }}>
-                  <Text style={styles.cartAddBtn}>+</Text>
-                </TouchableOpacity>
               </View>
-            </View>
-            <View style={{ flexDirection: 'row', width: '90%', justifyContent: 'space-between' }}>
-              <View style={{ ...styles.inputArea, width: '28%' }}>
-                <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Our fees</Text>
-                <View style={{ ...styles.inputItem, alignItems: 'center' }}>
-                  {/* <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.feeValue} placeholder="$0.00" onChangeText={(text) => { this.setState({ feeValue: text }) }}
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 50 }}>
+                <Text style={styles.quantityNum}>Quantity in Stock</Text>
+                <View style={{ ...styles.countItem, marginTop: 0 }}>
+                  <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Minuscart() }}>
+                    <Text style={styles.cartAddBtn}>-</Text>
+                  </TouchableOpacity>
+                  <View style={styles.cartAccountArea}>
+                    <Text style={styles.cartAddBtn}>{this.state.itemNum1}</Text>
+                  </View>
+                  <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Addcart() }}>
+                    <Text style={styles.cartAddBtn}>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={{ flexDirection: 'row', width: '90%', justifyContent: 'space-between' }}>
+                <View style={{ ...styles.inputArea, width: '28%' }}>
+                  <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Our fees</Text>
+                  <View style={{ ...styles.inputItem, alignItems: 'center' }}>
+                    {/* <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.feeValue} placeholder="$0.00" onChangeText={(text) => { this.setState({ feeValue: text }) }}
                     onBlur={() => { this.setState({ feeValue: parseFloat(this.state.feeValue).toFixed(2) }) }}></TextInput> */}
-                  <Text style={{ ...styles.inputTxt, marginLeft: 20 }}>${parseFloat(this.state.feeValue).toFixed(2)}</Text>
+                    <Text style={{ ...styles.inputTxt, marginLeft: 20 }}>${parseFloat(this.state.feeValue).toFixed(2)}</Text>
+                  </View>
                 </View>
-              </View>
-              <View style={{ ...styles.inputArea, width: '30%' }}>
-                <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Product Price</Text>
-                <View style={styles.inputItem}>
-                  <Text style={{ marginLeft: 20, marginRight: 0 }}>$</Text>
-                  <TextInput style={{ ...styles.inputTxt, marginLeft: 0 }} placeholderTextColor="#7a7a7b" value={this.state.priceValue} placeholder="0.00" onChangeText={(text) => { this.changePrice(text) }}
-                    onBlur={() => { this.setState({ priceValue: parseFloat(this.state.priceValue).toFixed(2) }) }}></TextInput>
+                <View style={{ ...styles.inputArea, width: '30%' }}>
+                  <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Product Price</Text>
+                  <View style={styles.inputItem}>
+                    <Text style={{ marginLeft: 20, marginRight: 0 }}>$</Text>
+                    <TextInput style={{ ...styles.inputTxt, marginLeft: 0 }} placeholderTextColor="#7a7a7b" value={this.state.priceValue} placeholder="0.00" onChangeText={(text) => { this.changePrice(text) }}
+                      onBlur={() => { this.setState({ priceValue: parseFloat(this.state.priceValue).toFixed(2) }) }}></TextInput>
+                  </View>
                 </View>
-              </View>
-              <View style={{ ...styles.inputArea, width: '30%' }}>
-                <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Gross Price</Text>
-                <View style={styles.inputItem}>
-                  {/* <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.GpriceValue} placeholder="$0.00" onChangeText={(text) => { this.setState({ GpriceValue: text }) }}
+                <View style={{ ...styles.inputArea, width: '30%' }}>
+                  <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Gross Price</Text>
+                  <View style={styles.inputItem}>
+                    {/* <TextInput style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" value={this.state.GpriceValue} placeholder="$0.00" onChangeText={(text) => { this.setState({ GpriceValue: text }) }}
                     onBlur={() => { this.setState({ GpriceValue: parseFloat(this.state.GpriceValue).toFixed(2) }) }}></TextInput> */}
-                  <Text style={{ ...styles.inputTxt, marginLeft: 20 }}>${parseFloat(this.state.GpriceValue).toFixed(2)}</Text>
+                    <Text style={{ ...styles.inputTxt, marginLeft: 20 }}>${parseFloat(this.state.GpriceValue).toFixed(2)}</Text>
+                  </View>
                 </View>
+              </View>
+              <View style={{ ...styles.inputArea, marginTop: 0 }}>
+                <Text style={{ ...styles.quantityNum, marginBottom: 10 }}>Name of Product</Text>
+                <View style={styles.inputItem}>
+                  <TextInput style={{ ...styles.inputTxt, marginLeft: 20 }} placeholderTextColor="#7a7a7b" placeholder="Enter item's Name" onChangeText={(text) => { this.setState({ productName: text }) }}></TextInput>
+                </View>
+                <Text style={{ ...styles.quantityNum, marginBottom: 10 }}>Tags</Text>
+                <View style={styles.inputItem}>
+                  <TextInput style={{ ...styles.inputTxt, marginLeft: 20 }} placeholderTextColor="#7a7a7b" placeholder="Enter Relevant Search Tags of Item..." onChangeText={(text) => { this.setState({ Tag: text }) }}></TextInput>
+                </View>
+                <Text style={{ ...styles.quantityNum, marginBottom: 10 }}>Description</Text>
+                <View style={styles.ContentItem}>
+                  <TextInput style={styles.specialInput} multiline={true} placeholderTextColor="#5E5E5E" placeholder="Enter Items Description..." onChangeText={(text) => { this.setState({ Description: text }) }} />
+                </View>
+                <TouchableOpacity style={{ ...styles.signinBtn, width: 170, alignSelf: 'center' }} onPress={() => { this.AddStore() }}>
+                  <Text style={styles.signinTxt1}>Add to Store</Text>
+                </TouchableOpacity>
               </View>
             </View>
-            <View style={{ ...styles.inputArea, marginTop: 0 }}>
-              <Text style={{ ...styles.quantityNum, marginBottom: 10 }}>Name of Product</Text>
-              <View style={styles.inputItem}>
-                <TextInput style={{ ...styles.inputTxt, marginLeft: 20 }} placeholderTextColor="#7a7a7b" placeholder="Enter item's Name" onChangeText={(text) => { this.setState({ productName: text }) }}></TextInput>
-              </View>
-              <Text style={{ ...styles.quantityNum, marginBottom: 10 }}>Tags</Text>
-              <View style={styles.inputItem}>
-                <TextInput style={{ ...styles.inputTxt, marginLeft: 20 }} placeholderTextColor="#7a7a7b" placeholder="Enter Relevant Search Tags of Item..." onChangeText={(text) => { this.setState({ Tag: text }) }}></TextInput>
-              </View>
-              <Text style={{ ...styles.quantityNum, marginBottom: 10 }}>Description</Text>
-              <View style={styles.ContentItem}>
-                <TextInput style={styles.specialInput} multiline={true} placeholderTextColor="#5E5E5E" placeholder="Enter Items Description..." onChangeText={(text) => { this.setState({ Description: text }) }} />
-              </View>
-              <TouchableOpacity style={{ ...styles.signinBtn, width: 170, alignSelf: 'center' }} onPress={() => { this.AddStore() }}>
-                <Text style={styles.signinTxt1}>Add to Store</Text>
+            <View style={{ height: 150 }}></View>
+          </ScrollView>
+          <Modal isVisible={this.state.isModalVisible1}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please select image</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible1: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
               </TouchableOpacity>
             </View>
-          </View>
-          <View style={{ height: 150 }}></View>
-        </ScrollView>
-        <Modal isVisible={this.state.isModalVisible1}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please select image</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible1: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible2}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input fees</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible2: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible3}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input product price</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible3: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible4}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input gross price</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible4: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible5}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input item's name</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible5: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible6}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input item's tag for search</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible6: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible7}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input item's description</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible7: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible8}>
-          <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
-            <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>New item is added</Text>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible9}>
-          <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
-            <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Item image is uploaded</Text>
-          </View>
-        </Modal>
-      </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible2}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input fees</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible2: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible3}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input product price</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible3: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible4}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input gross price</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible4: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible5}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input item's name</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible5: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible6}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input item's tag for search</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible6: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible7}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input item's description</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible7: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible8}>
+            <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+              <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>New item is added</Text>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible9}>
+            <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+              <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Item image is uploaded</Text>
+            </View>
+          </Modal>
+        </View>
+      </KeyboardAwareScrollView>
     );
   }
 }

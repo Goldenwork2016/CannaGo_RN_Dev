@@ -46,7 +46,7 @@ export default class DispensariesSignupScreen extends Component {
       city: '',
       GA: 'GA',
       zipCode: '',
-      storeHours: '',
+      storeHours: [],
       companyName: '',
       img_url: '',
       fein: '',
@@ -75,6 +75,12 @@ export default class DispensariesSignupScreen extends Component {
       loggedIn: false,
       isImageUploading:false,
     };
+  }
+
+  componentDidMount = async() => {
+    alert("sdfsfsdfsf")
+    await this.setState({storeHours: this.props.navigation.getParam("storeHour")})
+    console.log(this.state.storeHours);
   }
 
   // chooseImage = () => {
@@ -378,10 +384,10 @@ export default class DispensariesSignupScreen extends Component {
                     <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" placeholder="Zip Code" value={this.state.zipCode} onChangeText={(text) => { this.setState({ zipCode: text }) }}></TextInput>
                   </View>
                 </View>
-                <View style={styles.inputItem}>
-                  <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
-                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Dispensary's Hours" value={this.state.storeHours} onChangeText={(text) => { this.setState({ storeHours: text }) }}></TextInput>
-                </View>
+                <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("SelectStoreHourScreen")}}>
+                  <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage1} />
+                  <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Dispensary's Hours</Text>
+                </TouchableOpacity>
                 <View style={styles.TermsArea}>
                   <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun() }}>
                     <Image source={this.state.ischecked ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
