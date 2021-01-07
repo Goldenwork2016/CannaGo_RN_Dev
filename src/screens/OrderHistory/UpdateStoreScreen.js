@@ -138,7 +138,7 @@ export default class SelectStoreHourScreen extends Component {
                                 onConfirm={(time) => this.handleTimePicker(time, this.state.index, this.state.ii)}
                                 onCancel={this.hideTimePicker}
                             />
-                            <TouchableOpacity style={{ ...styles.signinBtn, marginTop: 100 }} onPress={() => { this.props.navigation.navigate("ShoppingCartScreen") }}>
+                            <TouchableOpacity style={{ ...styles.signinBtn, marginTop: 100 }} onPress={() => { this.props.navigation.navigate("DispensaryUpdateScreen", {storeHour:this.state.dayData})}}>
                                 <Text style={styles.signinTxt1}>Save Dispensary Hours</Text>
                             </TouchableOpacity>
                         </View>
