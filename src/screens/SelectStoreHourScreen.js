@@ -25,7 +25,8 @@ export default class SelectStoreHourScreen extends Component {
                 { id: 5, day: 'Thurs.', startTime: '', endTime: '', openStatus: "" },
                 { id: 6, day: 'Fri.', startTime: '', endTime: '', openStatus: "" },
                 { id: 7, day: 'Sat.', startTime: '', endTime: '', openStatus: "" },
-            ]
+            ],
+            renderValue:0,
         };
     }
 
@@ -46,8 +47,13 @@ export default class SelectStoreHourScreen extends Component {
         this.setState({ isTimeVisible: false })
     }
     _onChangeStatus = (value, index) => {
-        this.state.dayData[index].openStatus = value,
-        console.log(this.state.dayData);
+        this.state.dayData[index].openStatus = value
+        if (this.state.dayData[index].openStatus == "Closed") {
+            this.state.dayData[index].startTime = ""
+            this.state.dayData[index].endTime = ""
+        }
+        this.setState({renderValue:this.state.renderValue+1})
+        console.log(this.state.dayData)
     };
 
     render() {
@@ -92,7 +98,7 @@ export default class SelectStoreHourScreen extends Component {
                                                 <Text style={styles.selectTxt}>{item.day}</Text>
                                             </View>
                                             <View style={styles.selectArea}>
-                                                <TouchableOpacity style={styles.selectBtn} onPress={() => { this.setState({ isTimeVisible: true, index: index, ii: 1 }) }}>
+                                                <TouchableOpacity style={styles.selectBtn} onPress={() => { this.setState({ isTimeVisible: this.state.dayData[index].openStatus == "Open" ? true : false, index: index, ii: 1 }) }}>
                                                     <Text style={styles.selectTxt}>{item.startTime}</Text>
                                                     <Image source={require('../assets/iamges/arrowdown.png')} resizeMode='stretch' style={styles.arrowdown} />
                                                 </TouchableOpacity>
@@ -101,7 +107,7 @@ export default class SelectStoreHourScreen extends Component {
                                                 <Text style={styles.selectTxt}>To</Text>
                                             </View>
                                             <View style={styles.selectArea}>
-                                                <TouchableOpacity style={styles.selectBtn} onPress={() => { this.setState({ isTimeVisible: true, index: index, ii: 2 }) }}>
+                                                <TouchableOpacity style={styles.selectBtn} onPress={() => { this.setState({ isTimeVisible: this.state.dayData[index].openStatus == "Open" ? true : false, index: index, ii: 2 }) }}>
                                                     <Text style={styles.selectTxt}>{item.endTime}</Text>
                                                     <Image source={require('../assets/iamges/arrowdown.png')} resizeMode='stretch' style={styles.arrowdown} />
                                                 </TouchableOpacity>
@@ -117,7 +123,7 @@ export default class SelectStoreHourScreen extends Component {
                                 onConfirm={(time) => this.handleTimePicker(time, this.state.index, this.state.ii)}
                                 onCancel={this.hideTimePicker}
                             />
-                            <TouchableOpacity style={{ ...styles.signinBtn, marginTop: 100 }} onPress={() => { this.props.navigation.navigate("DispensariesSignupScreen", {storeHour:this.state.dayData}) }}>
+                            <TouchableOpacity style={{ ...styles.signinBtn, marginTop: 100 }} onPress={() => { this.props.navigation.navigate("DispensariesSignupScreen", { storeHour: this.state.dayData }) }}>
                                 <Text style={styles.signinTxt1}>Save Dispensary Hours</Text>
                             </TouchableOpacity>
                         </View>
