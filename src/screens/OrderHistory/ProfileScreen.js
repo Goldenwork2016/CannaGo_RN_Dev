@@ -28,6 +28,12 @@ const options = {
   quality: 0.5
 }
 
+let today = '';
+let today_day = '';
+let today_Hour = '';
+let today_minute = '';
+let now_Mins = ''
+
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
@@ -60,6 +66,10 @@ class ProfileScreen extends Component {
   }
 
   componentDidMount = async () => {
+    today = new Date();
+    today_day = today.getDay();
+    today_Hour = today.getHours()
+    today_minute = today.getMinutes();
     const { real_data, user_real_info } = this.props
     const usertype = await AsyncStorage.getItem("usertype");
     await this.setState({ usertype: usertype });
@@ -85,7 +95,6 @@ class ProfileScreen extends Component {
     Firebase.database()
       .ref('user/' + this.state.userId)
       .on("value", async (snapshot) => {
-        console.log(snapshot);
         user_data = {
           GA: snapshot.val().GA,
           availableBal: snapshot.val().availableBal,
@@ -106,7 +115,6 @@ class ProfileScreen extends Component {
           city: snapshot.val().city,
           // data.push(row)
         };
-        console.log(user_data);
         await this.setState({
           firstName: user_data.firstName,
           lastName: user_data.lastName,
@@ -126,6 +134,38 @@ class ProfileScreen extends Component {
           city: user_data.city,
         })
       })
+    console.log(this.state.storeHours);
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('didFocus', () => {
+      this.compareTime();
+    });
+    this.compareTime();
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
+  }
+
+  compareTime = () => {
+    now_Mins = today_Hour * 60 + today_minute
+    console.log(now_Mins)
+    this.state.storeHours.forEach(this.myFunction);
+  }
+
+  myFunction = (item, index) => {
+    if (index == today_day) {
+      var start_Time = item.startTime.split(" ")[0]
+      var end_Time = item.endTime.split(" ")[0]
+      var start_Time_Mins = parseInt(start_Time.split(":")[0]) * 60 + parseInt(start_Time.split(":")[1])
+      var end_Time_Mins = (parseInt(end_Time.split(":")[0]) + 12) * 60 + parseInt(end_Time.split(":")[1])
+      console.log(start_Time_Mins)
+      console.log(end_Time_Mins)
+      if (now_Mins >= start_Time_Mins && now_Mins <= end_Time_Mins){
+        this.setState({Checked:false})
+      } else{
+        this.setState({Checked:true})
+      }
+    }
   }
 
   closeModal = () => {
@@ -147,16 +187,12 @@ class ProfileScreen extends Component {
 
   chooseImage = async () => {
     ImagePicker.showImagePicker(options, response => {
-      console.log("Response = ", response.uri);
 
       if (response.didCancel) {
-        console.log("User cancelled image picker");
       } else if (response.error) {
-        console.log("ImagePicker Error: ", response.error);
       } else {
         this.setState({ isLoading: true })
         const source = { uri: response.uri };
-        // console.log(response.data);
         const Blob = RNFetchBlob.polyfill.Blob;    //firebase image upload
         const fs = RNFetchBlob.fs;
         window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
@@ -208,11 +244,7 @@ class ProfileScreen extends Component {
                   .getDownloadURL();
               })
               .then(async uploadedFile => {
-                console.log("++++++++++++_______________");
-                console.log({ uploadedFile });
                 await this.setState({ profileimage: uploadedFile })
-                console.log(this.state.profileimage);
-                console.log("++++++++++++_______________++++++++++");
                 this.setState({ isLoading: false })
                 this.update()
                 this.setState({ isModalVisible1: true })

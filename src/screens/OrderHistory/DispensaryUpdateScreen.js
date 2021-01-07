@@ -62,7 +62,6 @@ class DispensaryUpdateScreen extends Component {
     Firebase.database()
       .ref('user/' + this.state.userId)
       .on("value", async (snapshot) => {
-        console.log(snapshot);
         user_data = {
           GA: snapshot.val().GA,
           availableBal: snapshot.val().availableBal,
@@ -83,7 +82,6 @@ class DispensaryUpdateScreen extends Component {
           city: snapshot.val().city,
           // data.push(row)
         };
-        console.log(user_data);
         await this.setState({
           firstName: user_data.firstName,
           lastName: user_data.lastName,

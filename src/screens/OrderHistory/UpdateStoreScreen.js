@@ -29,6 +29,7 @@ export default class SelectStoreHourScreen extends Component {
             // ],
             dayData: [],
             userId: Firebase.auth().currentUser.uid,
+            count:0
         };
     }
 
@@ -49,7 +50,6 @@ export default class SelectStoreHourScreen extends Component {
     }
 
     handleTimePicker = (time, index, i) => {
-        console.log(index)
         if (i == 1) {
             this.state.dayData[index].startTime = dayjs(time).format('hh:mm A')
         } else {
@@ -58,7 +58,6 @@ export default class SelectStoreHourScreen extends Component {
         this.setState({
             isTimeVisible: false,
         })
-        console.log(time);
 
     }
     hideTimePicker = () => {
@@ -67,7 +66,7 @@ export default class SelectStoreHourScreen extends Component {
 
     _onChangeStatus = (value, index) => {
         this.state.dayData[index].openStatus = value,
-            console.log(this.state.dayData);
+        this.setState({count:this.state.count+1})
     };
 
     render() {
