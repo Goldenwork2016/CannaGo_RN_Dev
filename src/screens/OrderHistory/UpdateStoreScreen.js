@@ -4,7 +4,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { styles } from '../../components/styles';
 import dayjs from 'dayjs';
 import RNPickerSelect from "react-native-picker-select";
-
+import Firebase from '../../../config/firebase'
 import NonImage from '../../assets/iamges/productDetail1.png'
 
 export default class SelectStoreHourScreen extends Component {
@@ -18,16 +18,34 @@ export default class SelectStoreHourScreen extends Component {
             ii: '',
             isTimeVisible2: false,
             SunStartTime: '',
-            dayData: [
-                { id: 1, day: 'Sun.', startTime: '', endTime: '', openStatus:false },
-                { id: 2, day: 'Mon.', startTime: '', endTime: '', openStatus:false },
-                { id: 3, day: 'Tues.', startTime: '', endTime: '', openStatus:false },
-                { id: 4, day: 'Wed.', startTime: '', endTime: '', openStatus:false },
-                { id: 5, day: 'Thurs.', startTime: '', endTime: '', openStatus:false },
-                { id: 6, day: 'Fri.', startTime: '', endTime: '', openStatus:false },
-                { id: 7, day: 'Sat.', startTime: '', endTime: '', openStatus:false },
-            ]
+            // dayData: [
+            //     { id: 1, day: 'Sun.', startTime: '', endTime: '', openStatus:false },
+            //     { id: 2, day: 'Mon.', startTime: '', endTime: '', openStatus:false },
+            //     { id: 3, day: 'Tues.', startTime: '', endTime: '', openStatus:false },
+            //     { id: 4, day: 'Wed.', startTime: '', endTime: '', openStatus:false },
+            //     { id: 5, day: 'Thurs.', startTime: '', endTime: '', openStatus:false },
+            //     { id: 6, day: 'Fri.', startTime: '', endTime: '', openStatus:false },
+            //     { id: 7, day: 'Sat.', startTime: '', endTime: '', openStatus:false },
+            // ],
+            dayData: [],
+            userId: Firebase.auth().currentUser.uid,
         };
+    }
+
+    componentDidMount = () => {
+        Firebase.database()
+            .ref('user/' + this.state.userId)
+            .on("value", async (snapshot) => {
+                console.log(snapshot);
+                user_data = {
+                    storeHours: snapshot.val().storeHours,
+                    // data.push(row)
+                };
+                console.log(user_data);
+                await this.setState({
+                    dayData: user_data.storeHours,
+                })
+            })
     }
 
     handleTimePicker = (time, index, i) => {
@@ -46,6 +64,11 @@ export default class SelectStoreHourScreen extends Component {
     hideTimePicker = () => {
         this.setState({ isTimeVisible: false })
     }
+
+    _onChangeStatus = (value, index) => {
+        this.state.dayData[index].openStatus = value,
+            console.log(this.state.dayData);
+    };
 
     render() {
         return (
@@ -69,11 +92,13 @@ export default class SelectStoreHourScreen extends Component {
                                         <View style={styles.TimePickerRow}>
                                             <View style={styles.selectArea}>
                                                 <View style={styles.selectBtn}>
-                                                    <View style={{width:'75%', marginLeft:'5%'}}>
+                                                    <View style={{ width: '75%', marginLeft: '5%' }}>
                                                         <RNPickerSelect
                                                             placeholder={{ label: 'Select...' }}
-                                                            
-                                                            onValueChange={(value) => console.log(value)}
+                                                            value={this.state.dayData[index].openStatus}
+                                                            onValueChange={(value) => {
+                                                                this._onChangeStatus(value, index);
+                                                            }}
                                                             items={[
                                                                 { label: 'Closed', value: 'Closed' },
                                                                 { label: 'Open', value: 'Open' },

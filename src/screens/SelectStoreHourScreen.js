@@ -6,7 +6,6 @@ import dayjs from 'dayjs';
 import RNPickerSelect from "react-native-picker-select";
 
 import NonImage from '../assets/iamges/productDetail1.png'
-
 export default class SelectStoreHourScreen extends Component {
     constructor(props) {
         super(props);
@@ -46,7 +45,7 @@ export default class SelectStoreHourScreen extends Component {
     hideTimePicker = () => {
         this.setState({ isTimeVisible: false })
     }
-    _onChangeSite = (value, index) => {
+    _onChangeStatus = (value, index) => {
         this.state.dayData[index].openStatus = value,
         console.log(this.state.dayData);
     };
@@ -81,7 +80,7 @@ export default class SelectStoreHourScreen extends Component {
                                                                 { label: 'Open', value: 'Open' },
                                                             ]}
                                                             onValueChange={(value) => {
-                                                                this._onChangeSite(value, index);
+                                                                this._onChangeStatus(value, index);
                                                             }}
                                                         />
                                                     </View>
@@ -118,7 +117,7 @@ export default class SelectStoreHourScreen extends Component {
                                 onConfirm={(time) => this.handleTimePicker(time, this.state.index, this.state.ii)}
                                 onCancel={this.hideTimePicker}
                             />
-                            <TouchableOpacity style={{ ...styles.signinBtn, marginTop: 100 }} onPress={() => { this.props.navigation.push("DispensariesSignupScreen", {storeHour:this.state.dayData}) }}>
+                            <TouchableOpacity style={{ ...styles.signinBtn, marginTop: 100 }} onPress={() => { this.props.navigation.navigate("DispensariesSignupScreen", {storeHour:this.state.dayData}) }}>
                                 <Text style={styles.signinTxt1}>Save Dispensary Hours</Text>
                             </TouchableOpacity>
                         </View>

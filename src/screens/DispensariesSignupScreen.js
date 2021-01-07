@@ -73,14 +73,20 @@ export default class DispensariesSignupScreen extends Component {
       timeFlag: false,
       isloading: false,
       loggedIn: false,
-      isImageUploading:false,
+      isImageUploading: false,
     };
   }
 
-  componentDidMount = async() => {
-    alert("sdfsfsdfsf")
-    await this.setState({storeHours: this.props.navigation.getParam("storeHour")})
-    console.log(this.state.storeHours);
+  componentDidMount = () => {
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('didFocus', async() => {
+      await this.setState({ storeHours: this.props.navigation.getParam("storeHour") })
+      console.log(this.state.storeHours);
+    });
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
   }
 
   // chooseImage = () => {
@@ -155,7 +161,7 @@ export default class DispensariesSignupScreen extends Component {
             return Blob.build(data, { type: `${mime};BASE64` });
           })
           .then(blob => {
-            this.setState({isImageUploading:true})
+            this.setState({ isImageUploading: true })
             uploadBlob = blob;
             Firebase
               .storage()
@@ -173,7 +179,7 @@ export default class DispensariesSignupScreen extends Component {
                 console.log({ uploadedFile });
                 await this.setState({ img_url: uploadedFile })
                 console.log(this.state.img_url);
-                this.setState({isImageUploading:false})
+                this.setState({ isImageUploading: false })
                 this.setState({ isModalVisible20: true })
                 setTimeout(() => {
                   this.setState({ isModalVisible20: false })
@@ -305,7 +311,7 @@ export default class DispensariesSignupScreen extends Component {
 
   render() {
     return (
-      <KeyboardAwareScrollView style={{flex:1}}>
+      <KeyboardAwareScrollView style={{ flex: 1 }}>
         <View style={styles.container} >
           <Spinner
             visible={this.state.isLoading}
@@ -384,7 +390,7 @@ export default class DispensariesSignupScreen extends Component {
                     <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" placeholder="Zip Code" value={this.state.zipCode} onChangeText={(text) => { this.setState({ zipCode: text }) }}></TextInput>
                   </View>
                 </View>
-                <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("SelectStoreHourScreen")}}>
+                <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("SelectStoreHourScreen") }}>
                   <Image source={require('../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage1} />
                   <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Dispensary's Hours</Text>
                 </TouchableOpacity>
