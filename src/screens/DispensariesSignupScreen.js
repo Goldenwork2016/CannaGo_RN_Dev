@@ -70,6 +70,7 @@ export default class DispensariesSignupScreen extends Component {
       isModalVisible18: false,
       isModalVisible19: false,
       isModalVisible20: false,
+      isModalVisible21: false,
       timeFlag: false,
       isloading: false,
       loggedIn: false,
@@ -215,7 +216,8 @@ export default class DispensariesSignupScreen extends Component {
       this.setState({ isModalVisible1: true })
     } else if (lastName == "") {
       this.setState({ isModalVisible2: true })
-    } else if (ownerEmail == "") {
+    } 
+    else if (ownerEmail == "") {
       this.setState({ isModalVisible3: true })
     } else if (reg.test(ownerEmail) === false) {
       this.setState({ isModalVisible4: true })
@@ -259,14 +261,14 @@ export default class DispensariesSignupScreen extends Component {
       this.setState({ isModalVisible14: true })
     }
     else {
-      var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
+      // var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
       this.setState({ isLoading: true })
       try {
         Firebase
           .auth()
           .createUserWithEmailAndPassword(ownerEmail, password)
           .then((res) => {
-            console.log(res)
+            // console.log(res.Error)
             this.setState({ isLoading: false })
             clearTimeout(myTimer)
             var user = Firebase.auth().currentUser;
@@ -300,6 +302,11 @@ export default class DispensariesSignupScreen extends Component {
             // }.bind(this)).catch(function (error) {
             //   console.log(error);
             // });
+          }
+          )
+          .catch((error)=>{
+            this.setState({ isModalVisible21: true })
+            this.setState({ isLoading: false })
           })
       }
       catch (error) {
@@ -616,6 +623,15 @@ export default class DispensariesSignupScreen extends Component {
             <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
               <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
               <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Store image is updated</Text>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible21}>
+            <View style={{...styles.modalView, alignItems:'center'}}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={{...styles.Description, textAlign:'center'}}>The email address is already in use by another account.</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible21: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
             </View>
           </Modal>
         </View>
