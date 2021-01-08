@@ -719,6 +719,12 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 10
     },
+    OrderTxt: {
+        fontFamily: 'Poppins-Regular',
+        fontSize: 10,
+        color: 'white',
+        textAlign: 'center',
+    },
     historyContent: {
         flexDirection: 'row',
         marginTop: 20,
@@ -893,6 +899,24 @@ export const styles = StyleSheet.create({
         width: '17%',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    qualityArea: {
+        width: 94,
+        height: 22,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#BCBCBC',
+        borderRadius: 3,
+        marginLeft: 10
+    },
+    orderBtn: {
+        backgroundColor: '#3EA3E1',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 132,
+        height: 38,
+        borderRadius: 19,
+        marginRight: 10
     }
 })
 
