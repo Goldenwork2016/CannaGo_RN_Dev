@@ -57,7 +57,7 @@ class ProfileScreen extends Component {
       storeHours: '',
       companyName: '',
       fein: '',
-      userId: Firebase.auth().currentUser.uid,
+      userId: "",
       availableBal: 0,
       isModalVisible1: false,
       timeFlag: false,
@@ -72,6 +72,8 @@ class ProfileScreen extends Component {
     today_minute = today.getMinutes();
     const { real_data, user_real_info } = this.props
     const usertype = await AsyncStorage.getItem("usertype");
+    const userId = await AsyncStorage.getItem("userUid");
+    await this.setState({ userId: userId })
     await this.setState({ usertype: usertype });
     // await this.setState({
     //   firstName: user_real_info.firstName,
@@ -160,10 +162,10 @@ class ProfileScreen extends Component {
       var end_Time_Mins = (parseInt(end_Time.split(":")[0]) + 12) * 60 + parseInt(end_Time.split(":")[1])
       console.log(start_Time_Mins)
       console.log(end_Time_Mins)
-      if (now_Mins >= start_Time_Mins && now_Mins <= end_Time_Mins){
-        this.setState({Checked:false})
-      } else{
-        this.setState({Checked:true})
+      if (now_Mins >= start_Time_Mins && now_Mins <= end_Time_Mins) {
+        this.setState({ Checked: false })
+      } else {
+        this.setState({ Checked: true })
       }
     }
   }
@@ -318,8 +320,11 @@ class ProfileScreen extends Component {
 
   logOut = async () => {
     try {
-      await firebase.auth().signOut();
-      this.props.navigation.navigate('LoginScreen')
+      await Firebase.auth().signOut();
+      await AsyncStorage.setItem('Loggined', "");
+      await AsyncStorage.setItem("userUid", "")
+      await AsyncStorage.setItem("usertype", "")
+      await this.props.navigation.navigate('LoginScreen')
     } catch (e) {
       console.log(e);
     }
@@ -363,7 +368,7 @@ class ProfileScreen extends Component {
                   <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                   <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Contact Support</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ ...styles.inputItem, borderColor: 'red', borderWidth: 0.5 }} onPress={() => { this.props.navigation.navigate('LoginScreen') }}>
+                <TouchableOpacity style={{ ...styles.inputItem, borderColor: 'red', borderWidth: 0.5 }} onPress={() => { this.logOut() }}>
                   <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                   <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Log Out</Text>
                 </TouchableOpacity>
@@ -417,7 +422,7 @@ class ProfileScreen extends Component {
                     <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                     <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Contact Support</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={{ ...styles.inputItem, borderColor: 'red', borderWidth: 0.5 }} onPress={() => { this.props.navigation.navigate("LoginScreen") }}>
+                  <TouchableOpacity style={{ ...styles.inputItem, borderColor: 'red', borderWidth: 0.5 }} onPress={() => { this.logOut() }}>
                     <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                     <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Log out</Text>
                   </TouchableOpacity>

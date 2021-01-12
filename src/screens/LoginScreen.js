@@ -35,6 +35,9 @@ class LoginScreen extends Component {
       isModalVisible4: false,
       isModalVisible5: false,
       isModalVisible6: false,
+      isModalVisible7: false,
+      isModalVisible8: false,
+      isModalVisible9: false,
       timeFlag: false,
       isloading: false,
       loggedIn: false,
@@ -126,15 +129,13 @@ class LoginScreen extends Component {
         self.setState({ isModalVisible2: true })
       } else if (password == "") {
         self.setState({ isModalVisible3: true })
-      }
-      else if (reg_strong.test(password) === false) {
-        self.setState({ isModalVisible4: true })
       } else {
-        var myTimer = setTimeout(function () { self.NetworkSensor() }.bind(self), 25000)
+        // var myTimer = setTimeout(function () { self.NetworkSensor() }.bind(self), 25000)
         self.setState({ isLoading: true })
         Firebase.auth().signInWithEmailAndPassword(email, password)
           .then(function (user) {
-
+            AsyncStorage.setItem('Loggined', "Success");
+            AsyncStorage.setItem('userUid', user.user.uid);
             const { load, userInfo } = self.props
             var data = []
             var user_info
@@ -191,7 +192,7 @@ class LoginScreen extends Component {
               });
 
             self.setState({ isLoading: false })
-            clearTimeout(myTimer)
+            // clearTimeout(myTimer)
             self.setState({ isModalVisible6: true })
             setTimeout(() => {
               self.props.navigation.navigate('Main', { userUid: self.state.userUid })
@@ -199,7 +200,17 @@ class LoginScreen extends Component {
             }, 2000)
           })
           .catch((error) => {
-            console.log(error)
+            console.log(error.message)
+            if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
+              this.setState({ isModalVisible9: true })
+            }
+            if (error.message == "There is no user record corresponding to this identifier. The user may have been deleted.") {
+              this.setState({ isModalVisible8: true })
+            }
+            if (error.message == "The password is invalid or the user does not have a password.") {
+              this.setState({ isModalVisible7: true })
+            }
+            self.setState({ isLoading: false })
           })
       }
 
@@ -314,6 +325,35 @@ class LoginScreen extends Component {
           <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
             <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
             <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome back to CannaGo App!</Text>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible7}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>You have entered the wrong email or password.</Text>
+            <Text style={{...styles.Description, marginTop:-10}}>Please try again.</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible7: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible8}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>This email does not exist. </Text>
+            <Text style={{...styles.Description, marginTop:-10}}>Please create an account.</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible8: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible9}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>Your internet Connection is failed</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible9: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
           </View>
         </Modal>
       </View>

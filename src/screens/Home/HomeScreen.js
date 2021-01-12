@@ -17,7 +17,7 @@ class HomeScreen extends Component {
     this.state = {
       usertype: 'consumer',
       real_data: [],
-      userId: Firebase.auth().currentUser.uid,
+      userId: '',
       contentList: [
         {
           id: 1,
@@ -50,15 +50,18 @@ class HomeScreen extends Component {
       ],
       contentList1: [
       ],
-      refreshing:false,
-      userId: Firebase.auth().currentUser.uid,
+      refreshing: false,
     };
   }
 
   componentDidMount = async () => {
+    console.log(this.state.userId);
     const { real_data } = this.props
     console.log("real++++++", real_data)
     const usertype = await AsyncStorage.getItem("usertype");
+    const userId = await AsyncStorage.getItem("userUid");
+    await this.setState({ userId: userId})
+    console.log(this.state.userId)
     await this.setState({ usertype: usertype })
     // var data = []
     // var row
@@ -89,35 +92,36 @@ class HomeScreen extends Component {
 
 
     Firebase.database()
-    .ref("Items/" + this.state.userId)
-    .on("value", (snapshot) => {
-      data = []
-      snapshot.forEach(element => {
-        row = {
-          Description: element.val().Description,
-          GpriceValue: element.val().GpriceValue,
-          Tag: element.val().Tag,
-          feeValue: element.val().feeValue,
-          id: element.val().id,
-          itemImage: element.val().itemImage,
-          itemNum1: element.val().itemNum1,
-          priceValue: element.val().priceValue,
-          productName: element.val().productName
-        } 
-        data.push(row)  
-      });  
-      console.log(data)
-      this.setState({
-        real_data: data,
+      .ref("Items/" + this.state.userId)
+      .on("value", (snapshot) => {
+        data = []
+        snapshot.forEach(element => {
+          row = {
+            Description: element.val().Description,
+            GpriceValue: element.val().GpriceValue,
+            Tag: element.val().Tag,
+            feeValue: element.val().feeValue,
+            id: element.val().id,
+            itemImage: element.val().itemImage,
+            itemNum1: element.val().itemNum1,
+            priceValue: element.val().priceValue,
+            productName: element.val().productName
+          }
+          data.push(row)
+        });
+        console.log("_____________+++++++++++++_________________");
+        console.log(data)
+        this.setState({
+          real_data: data,
 
-      });
-    })  
+        });
+      })
   }
 
-  _onRefresh = () =>{
-    this.setState({refreshing:true})
+  _onRefresh = () => {
+    this.setState({ refreshing: true })
     const { real_data } = this.props
-    this.setState({refreshing:false})
+    this.setState({ refreshing: false })
   }
 
   _rendermakelist({ item, index }) {
@@ -179,8 +183,8 @@ class HomeScreen extends Component {
                 data={real_data.length == 0 ? this.state.contentList1 : real_data}
                 renderItem={({ item }) => (
                   <TouchableOpacity style={{ width: width, height: 201, marginHorizontal: 10, marginTop: 30 }} onPress={() => { this.props.navigation.navigate('UpdateItemScreen', { item: item }) }}>
-                    <View style={{ justifyContent: 'center', height: 134, alignItems: 'center', borderWidth: 2, borderColor: '#61D273', borderTopLeftRadius:30 }}>
-                      <Image source={real_data.length == 0 ? item.ImageUrl : { uri: item.itemImage }} resizeMode='stretch' style={{...styles.productImage,borderTopLeftRadius: Platform.OS === 'ios' ? 30 : 60}} />
+                    <View style={{ justifyContent: 'center', height: 134, alignItems: 'center', borderWidth: 2, borderColor: '#61D273', borderTopLeftRadius: 30 }}>
+                      <Image source={real_data.length == 0 ? item.ImageUrl : { uri: item.itemImage }} resizeMode='stretch' style={{ ...styles.productImage, borderTopLeftRadius: Platform.OS === 'ios' ? 30 : 60 }} />
                       <Text style={styles.desTxt1}>$ {parseFloat(item.priceValue).toFixed(2)}</Text>
                     </View>
                     <View style={styles.storeDes}>

@@ -6,6 +6,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { styles } from '../components/styles'
 import RNFetchBlob from "react-native-fetch-blob";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import AsyncStorage from '@react-native-community/async-storage';
 
 import NonImage from '../assets/iamges/emptyPhoto.png'
 import uncheckImage from '../assets/iamges/uncheckImage.png'
@@ -71,6 +72,7 @@ export default class DispensariesSignupScreen extends Component {
       isModalVisible19: false,
       isModalVisible20: false,
       isModalVisible21: false,
+      isModalVisible22: false,
       timeFlag: false,
       isloading: false,
       loggedIn: false,
@@ -80,7 +82,7 @@ export default class DispensariesSignupScreen extends Component {
 
   componentDidMount = () => {
     const { navigation } = this.props;
-    this.focusListener = navigation.addListener('didFocus', async() => {
+    this.focusListener = navigation.addListener('didFocus', async () => {
       await this.setState({ storeHours: this.props.navigation.getParam("storeHour") })
       console.log(this.state.storeHours);
     });
@@ -216,7 +218,7 @@ export default class DispensariesSignupScreen extends Component {
       this.setState({ isModalVisible1: true })
     } else if (lastName == "") {
       this.setState({ isModalVisible2: true })
-    } 
+    }
     else if (ownerEmail == "") {
       this.setState({ isModalVisible3: true })
     } else if (reg.test(ownerEmail) === false) {
@@ -269,8 +271,10 @@ export default class DispensariesSignupScreen extends Component {
           .createUserWithEmailAndPassword(ownerEmail, password)
           .then((res) => {
             // console.log(res.Error)
+            AsyncStorage.setItem('Loggined', "Success");
+            AsyncStorage.setItem('userUid', res.user.uid);
             this.setState({ isLoading: false })
-            clearTimeout(myTimer)
+            // clearTimeout(myTimer)
             var user = Firebase.auth().currentUser;
             Firebase.database().ref('user/' + res.user.uid).update({
               email: ownerEmail,
@@ -304,8 +308,13 @@ export default class DispensariesSignupScreen extends Component {
             // });
           }
           )
-          .catch((error)=>{
-            this.setState({ isModalVisible21: true })
+          .catch((error) => {
+            console.log(error)
+            if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
+              this.setState({ isModalVisible22: true })
+            } else {
+              this.setState({ isModalVisible21: true })
+            }
             this.setState({ isLoading: false })
           })
       }
@@ -622,14 +631,23 @@ export default class DispensariesSignupScreen extends Component {
           <Modal isVisible={this.state.isModalVisible20}>
             <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
               <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Store image is updated</Text>
+              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Store image is uploaded</Text>
             </View>
           </Modal>
           <Modal isVisible={this.state.isModalVisible21}>
-            <View style={{...styles.modalView, alignItems:'center'}}>
+            <View style={{ ...styles.modalView, alignItems: 'center' }}>
               <Text style={styles.TitleTxt1}>OOPS!</Text>
-              <Text style={{...styles.Description, textAlign:'center'}}>The email address is already in use by another account.</Text>
+              <Text style={{ ...styles.Description, textAlign: 'center' }}>The email address is already in use by another account.</Text>
               <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible21: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible22}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Your internet Connection is failed</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible22: false })}>
                 <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
               </TouchableOpacity>
             </View>

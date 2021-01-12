@@ -23,6 +23,7 @@
     "@react-native-firebase/auth": "^10.3.1",
     "@react-native-firebase/firestore": "^10.3.1",
     "@react-native-firebase/storage": "^10.3.1",
+    "blinkid-react-native": "^5.9.0",
     "dayjs": "^1.10.2",
     "firebase": "^8.2.1",
     "react": "16.13.1",

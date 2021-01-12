@@ -53,9 +53,14 @@ class AddStoreItemScreen extends Component {
       isModalVisible9: false,
       isModalVisible8: false,
       isModalVisible9: false,
-      userId: Firebase.auth().currentUser.uid,
+      userId: "",
       isImageUploading: false,
     };
+  }
+
+  componentDidMount = async () => {
+    const userId = await AsyncStorage.getItem("userUid");
+    await this.setState({ userId: userId })
   }
 
   // chooseImage = () => {
@@ -212,29 +217,30 @@ class AddStoreItemScreen extends Component {
           Description: Description,
           itemImage: img_url,
         });
-        var data = []
-        var row
-        await Firebase.database()
-          .ref('Items/' + this.state.userId)
-          .once("value")
-          .then(snapshot => {
-            snapshot.forEach(element => {
-              row = {
-                Description: element.val().Description,
-                GpriceValue: element.val().GpriceValue,
-                Tag: element.val().Tag,
-                feeValue: element.val().feeValue,
-                id: element.val().id,
-                itemImage: element.val().itemImage,
-                itemNum1: element.val().itemNum1,
-                priceValue: element.val().priceValue,
-                productName: element.val().productName
-              }
-              data.push(row)
-            });
-            // console.log(data)
-            load(data)
-          });
+        console.log("true");
+        // var data = []
+        // var row
+        // await Firebase.database()
+        //   .ref('Items/' + this.state.userId)
+        //   .once("value")
+        //   .then(snapshot => {
+        //     snapshot.forEach(element => {
+        //       row = {
+        //         Description: element.val().Description,
+        //         GpriceValue: element.val().GpriceValue,
+        //         Tag: element.val().Tag,
+        //         feeValue: element.val().feeValue,
+        //         id: element.val().id,
+        //         itemImage: element.val().itemImage,
+        //         itemNum1: element.val().itemNum1,
+        //         priceValue: element.val().priceValue,
+        //         productName: element.val().productName
+        //       }
+        //       data.push(row)
+        //     });
+        //     // console.log(data)
+        //     load(data)
+        //   });
         this.setState({ isModalVisible8: true })
         setTimeout(() => {
           this.props.navigation.navigate("HomeScreen")

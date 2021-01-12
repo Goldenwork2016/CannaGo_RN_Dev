@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ImageBackground, Image, Text } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import User from '../components/User';
 
 
 export default class SplashScreen extends Component {
@@ -11,11 +13,17 @@ export default class SplashScreen extends Component {
     this._bootstrapAsync();
   }
 
-  
+
 
   _bootstrapAsync = async () => {
+    const loginStatus = await AsyncStorage.getItem('Loggined')
+    const userType = await AsyncStorage.getItem('usertype');
+    console.log("++++++++++++++++++++++++++++++++++++++++++++++++++");
+    console.log(userType);
+    console.log(loginStatus);
     setTimeout(() => {
-      this.props.navigation.navigate('Auth')
+      this.props.navigation.navigate(loginStatus != "Success" ? 'Auth' : userType == "driver" ? 'Driver' : "Main");
+      // this.props.navigation.navigate('Auth')
     }, 3000)
   };
 
@@ -34,6 +42,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: 'center',
-    marginBottom:50
+    marginBottom: 50
   }
 })
