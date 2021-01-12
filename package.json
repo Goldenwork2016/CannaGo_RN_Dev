@@ -21,6 +21,7 @@
     "@react-native-community/picker": "^1.8.1",
     "@react-native-firebase/app": "^10.3.0",
     "@react-native-firebase/auth": "^10.3.1",
+    "@react-native-firebase/database": "^10.4.1",
     "@react-native-firebase/firestore": "^10.3.1",
     "@react-native-firebase/storage": "^10.3.1",
     "blinkid-react-native": "^5.9.0",
