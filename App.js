@@ -23,10 +23,10 @@ const licenseKey = Platform.select({
     android: 'sRwAAAAgb3JnLnJlYWN0anMubmF0aXZlLmZzdGFyLmNhbm5hZ2+uLqgu92xuqnYqkHR8Sr81G2E+bETfxW8gbfKXS26d78MwYaonbNaLonclr4el7d2bRO7TQM9yKotWQvQF7mPXDnBRNH564wUi7iRmkUqne8797YfL2yF53+mPqd1ecIQW9iJZ9sb3b0ZW2za0nhj/WOLs0zocgKmFZUn8R64sgAodyGfbxOCVnoUdOnr42CcovfbFH7azWMoujjyY10zZQ4kwoO7Xyeu6rhbCZhFYQ1Mn+jhAz7QFegYeag1zQt2F6FfOtyxOR29YqedothoA0fl1ig9K/YR1D7MnFOxqc3Xd60h8Rt4MXvxYir/On6sLMi5hBR0='
 })
 
-var renderIf = function(condition, content) {
+var renderIf = function (condition, content) {
     if (condition) {
         return content;
-    } 
+    }
     return null;
 }
 
@@ -125,8 +125,10 @@ export default class Sample extends Component {
             }
         } catch (error) {
             console.log(error);
-            this.setState({ showFrontImageDocument: false, resultFrontImageDocument: '', showBackImageDocument: false, resultBackImageDocument: '', showImageFace: false, resultImageFace: '', results: 'Scanning has been cancelled', showSuccessFrame: false,
-            successFrame: ''});
+            this.setState({
+                showFrontImageDocument: false, resultFrontImageDocument: '', showBackImageDocument: false, resultBackImageDocument: '', showImageFace: false, resultImageFace: '', results: 'Scanning has been cancelled', showSuccessFrame: false,
+                successFrame: ''
+            });
         }
     }
 
@@ -211,86 +213,86 @@ export default class Sample extends Component {
         let displaySuccessFrame = this.state.successFrame;
         let displayFields = this.state.results;
         return (
-        <View style={styles.container}>
-            <Text style={styles.label}>BlinkID</Text>
-            <View style={styles.buttonContainer}>
-            <Button
-                onPress={this.scan.bind(this)}
-                title="Scan"
-                color="#48B2E8"
-            />
+            <View style={styles.container}>
+                <Text style={styles.label}>BlinkID</Text>
+                <View style={styles.buttonContainer}>
+                    <Button
+                        onPress={this.scan.bind(this)}
+                        title="Scan"
+                        color="#48B2E8"
+                    />
+                </View>
+                <ScrollView
+                    automaticallyAdjustContentInsets={false}
+                    scrollEventThrottle={200} y>
+                    <Text style={styles.results}>{displayFields}</Text>
+                    {renderIf(this.state.showFrontImageDocument,
+                        <View style={styles.imageContainer}>
+                            <Image
+                                resizeMode='contain'
+                                source={{ uri: displayFrontImageDocument, scale: 3 }} style={styles.imageResult} />
+                        </View>
+                    )}
+                    {renderIf(this.state.showBackImageDocument,
+                        <View style={styles.imageContainer}>
+                            <Image
+                                resizeMode='contain'
+                                source={{ uri: displayBackImageDocument, scale: 3 }} style={styles.imageResult} />
+                        </View>
+                    )}
+                    {renderIf(this.state.showImageFace,
+                        <View style={styles.imageContainer}>
+                            <Image
+                                resizeMode='contain'
+                                source={{ uri: displayImageFace, scale: 3 }} style={styles.imageResult} />
+                        </View>
+                    )}
+                    {renderIf(this.state.showSuccessFrame,
+                        <View style={styles.imageContainer}>
+                            <Image
+                                resizeMode='contain'
+                                source={{ uri: displaySuccessFrame, scale: 3 }} style={styles.imageResult} />
+                        </View>
+                    )}
+                </ScrollView>
             </View>
-            <ScrollView
-            automaticallyAdjustContentInsets={false}
-            scrollEventThrottle={200}y>
-            <Text style={styles.results}>{displayFields}</Text>
-            {renderIf(this.state.showFrontImageDocument,
-                <View style={styles.imageContainer}>
-                <Image
-                    resizeMode='contain'
-                    source={{uri: displayFrontImageDocument, scale: 3}} style={styles.imageResult}/>
-                </View>
-            )}
-            {renderIf(this.state.showBackImageDocument,
-                <View style={styles.imageContainer}>
-                <Image
-                    resizeMode='contain'
-                    source={{uri: displayBackImageDocument, scale: 3}} style={styles.imageResult}/>
-                </View>
-            )}
-            {renderIf(this.state.showImageFace,
-                <View style={styles.imageContainer}>
-                <Image
-                    resizeMode='contain'
-                    source={{uri: displayImageFace, scale: 3}} style={styles.imageResult}/>
-                </View>
-            )}
-            {renderIf(this.state.showSuccessFrame,
-                <View style={styles.imageContainer}>
-                    <Image
-                    resizeMode='contain'
-                    source={{uri: displaySuccessFrame, scale: 3}} style={styles.imageResult}/>
-                </View>
-            )}
-            </ScrollView>
-        </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    backgroundColor: '#F5FCFF'
-  },
-  label: {
-    fontSize: 30,
-    textAlign: 'center',
-    marginTop: 50
-  },
-  buttonContainer: {
-    margin: 20
-  },
-  imageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
-  results: {
-    fontSize: 16,
-    textAlign: 'left',
-    margin: 10,
-  },
-  imageResult: {
-    flex: 1,
-    flexShrink: 1,
-    height: 200,
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 10
-  },
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'stretch',
+        backgroundColor: '#F5FCFF'
+    },
+    label: {
+        fontSize: 30,
+        textAlign: 'center',
+        marginTop: 50
+    },
+    buttonContainer: {
+        margin: 20
+    },
+    imageContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    results: {
+        fontSize: 16,
+        textAlign: 'left',
+        margin: 10,
+    },
+    imageResult: {
+        flex: 1,
+        flexShrink: 1,
+        height: 200,
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 10
+    },
 });
 
 AppRegistry.registerComponent('Sample', () => Sample);

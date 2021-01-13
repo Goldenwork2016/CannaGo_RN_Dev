@@ -6,7 +6,10 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import RNFetchBlob from "react-native-fetch-blob";
 import { styles } from '../../components/styles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import AsyncStorage from '@react-native-community/async-storage';
 import Firebase from '../../../config/firebase'
+// import database from '@react-native-firebase/database';
+// import storage from '@react-native-firebase/storage';
 
 import { func, string, bool, array, object } from "prop-types";
 import { connect } from "react-redux";
@@ -61,6 +64,7 @@ class AddStoreItemScreen extends Component {
   componentDidMount = async () => {
     const userId = await AsyncStorage.getItem("userUid");
     await this.setState({ userId: userId })
+    console.log(this.state.userId)
   }
 
   // chooseImage = () => {
@@ -148,14 +152,14 @@ class AddStoreItemScreen extends Component {
           .then(blob => {
             this.setState({ isImageUploading: true })
             uploadBlob = blob;
-            Firebase
-              .storage()
+            Firebase.
+              storage()
               .ref("ItemImages/" + _name)
               .put(blob)
               .then(() => {
                 uploadBlob.close();
-                return Firebase
-                  .storage()
+                return Firebase.
+                  storage()
                   .ref("ItemImages/" + _name)
                   .getDownloadURL();
               })

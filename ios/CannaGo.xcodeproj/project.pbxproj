@@ -74,6 +74,7 @@
 		4B4C0E662584989E0034548A /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Regular.ttf"; path = "../../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		4B4C0E672584989E0034548A /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-SemiBold.ttf"; path = "../../src/assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		4B4C0E712584EB6C0034548A /* NunitoSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NunitoSans-Bold.ttf"; path = "../../src/assets/fonts/NunitoSans-Bold.ttf"; sourceTree = "<group>"; };
+		4B9366AE25AF9451002A4DA8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4B9DBED925A3557000B8A56B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Users/kk/Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4F863E4F199E4EF58B11504A /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		4F8BDB9D61444837BA608156 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -234,6 +235,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				4B9366AE25AF9451002A4DA8 /* GoogleService-Info.plist */,
 				4B4C0E622584987F0034548A /* Resources */,
 				13B07FAE1A68108700A75B9A /* CannaGo */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
