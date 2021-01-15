@@ -35,26 +35,26 @@ export const styles = StyleSheet.create({
     InputImage: {
         width: 18,
         height: 13.5,
-        marginLeft: 30,
-        marginRight: 15,
+        marginLeft: 20,
+        marginRight: 10,
     },
     InputImage1: {
         width: 12.17,
         height: 17.72,
-        marginLeft: 33,
-        marginRight: 18
+        marginLeft: 23,
+        marginRight: 13
     },
     InputImage2: {
         width: 18,
         height: 18,
-        marginLeft: 32,
-        marginRight: 15
+        marginLeft: 22,
+        marginRight: 10
     },
     InputImage3: {
         width: 16,
         height: 20,
-        marginLeft: 32,
-        marginRight: 15
+        marginLeft: 22,
+        marginRight: 10
     },
     logoTxt: {
         fontSize: 13,
@@ -456,6 +456,12 @@ export const styles = StyleSheet.create({
         width: 9,
         position: 'absolute',
         right: 35
+    },
+    downarror: {
+        height: 9,
+        width: 15,
+        position: 'absolute',
+        right: 25
     },
     uncheckImage: {
         width: 16,

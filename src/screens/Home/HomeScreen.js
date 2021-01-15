@@ -18,39 +18,11 @@ class HomeScreen extends Component {
       usertype: 'consumer',
       real_data: [],
       userId: '',
-      contentList: [
-        {
-          id: 1,
-          Title: 'Cannabis Station',
-          ImageUrl: require('../../assets/iamges/storeImage1.png'),
-          price: "Store's pricing: $$",
-          time: "Store's Hours Today: 9am - 9pm",
-        },
-        {
-          id: 2,
-          Title: 'Harvest',
-          ImageUrl: require('../../assets/iamges/storeImage3.png'),
-          price: "Store's pricing: $$",
-          time: "Store's Hours Today: 10am - 15pm",
-        },
-        {
-          id: 3,
-          Title: 'Sunnyside',
-          ImageUrl: require('../../assets/iamges/storeImage2.png'),
-          price: "Store's pricing: $$",
-          time: "Store's Hours Today: 9am - 5pm",
-        },
-        {
-          id: 4,
-          Title: 'SUMMER READY',
-          ImageUrl: require('../../assets/iamges/storeImage1.png'),
-          price: "Store's pricing: $$",
-          time: "Store's Hours Today: 8am - 7pm",
-        },
-      ],
+      contentList: [],
       contentList1: [
       ],
       refreshing: false,
+      store_data: []
     };
   }
 
@@ -60,7 +32,7 @@ class HomeScreen extends Component {
     console.log("real++++++", real_data)
     const usertype = await AsyncStorage.getItem("usertype");
     const userId = await AsyncStorage.getItem("userUid");
-    await this.setState({ userId: userId})
+    await this.setState({ userId: userId })
     console.log(this.state.userId)
     await this.setState({ usertype: usertype })
     // var data = []
@@ -94,7 +66,8 @@ class HomeScreen extends Component {
     Firebase.database()
       .ref("Items/" + this.state.userId)
       .on("value", (snapshot) => {
-        data = []
+        var data = []
+        var row
         snapshot.forEach(element => {
           row = {
             Description: element.val().Description,
@@ -114,6 +87,32 @@ class HomeScreen extends Component {
         this.setState({
           real_data: data,
 
+        });
+      })
+
+    Firebase.database()
+      .ref("user")
+      .on("value", (snapshot) => {
+        console.log("++++++++===============+++++++++++++++")
+        console.log(snapshot)
+        console.log("++++++++===============+++++++++++++++")
+        var data = []
+        var row
+        snapshot.forEach(element => {
+          // console.log(element.key)
+          if (element.val().userType == "dispensary") {
+            row = {
+              id: element.key,
+              store: element.val().storeName,
+              ImageUrl: element.val().profileimage,
+            }
+            data.push(row)
+          }
+        });
+        console.log("_____________+++++++++++++_________________");
+        console.log(data)
+        this.setState({
+          store_data: data,
         });
       })
   }
@@ -138,7 +137,7 @@ class HomeScreen extends Component {
   }
 
   render() {
-    const { real_data } = this.state
+    const { real_data, store_data } = this.state
     return (
       <View style={{ flex: 1, alignItems: "center", }}>
         {this.state.usertype == "consumer" ?
@@ -148,14 +147,14 @@ class HomeScreen extends Component {
                 // showsVerticalScrollIndicator={true}
                 style={{ width: '100%' }}
                 numColumns={1}
-                data={this.state.contentList}
+                data={store_data.length == 0 ? this.state.contentList : store_data}
                 renderItem={({ item }) => (
-                  <TouchableOpacity style={styles.StoreItem} onPress={() => { this.props.navigation.navigate("ProductScreen") }}>
-                    <Text style={styles.homeTitle}> {item.Title} </Text>
-                    <Image source={item.ImageUrl} resizeMode='stretch' style={styles.storeImage} />
+                  <TouchableOpacity style={styles.StoreItem} onPress={() => { this.props.navigation.navigate("ProductScreen",{storeId: item.id}) }}>
+                    <Text style={styles.homeTitle}> {item.store} </Text>
+                    <Image source={store_data.length == 0 ? item.ImageUrl : { uri: item.ImageUrl }} resizeMode='stretch' style={styles.storeImage} />
                     <View style={styles.storeDes1}>
-                      <Text style={styles.desTxt}>{item.price}</Text>
-                      <Text style={styles.desTxt}>{item.time}</Text>
+                      <Text style={styles.desTxt}>Store's pricing: $$</Text>
+                      <Text style={styles.desTxt}>Store's Hours Today: 8am - 7pm</Text>
                     </View>
                   </TouchableOpacity>
                 )}

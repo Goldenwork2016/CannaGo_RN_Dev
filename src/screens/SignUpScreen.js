@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import * as BlinkIDReactNative from 'blinkid-react-native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import dayjs from 'dayjs';
 import { styles } from '../components/styles'
 import Spinner from 'react-native-loading-spinner-overlay';
 import RNFetchBlob from "react-native-fetch-blob";
@@ -31,28 +32,28 @@ var renderIf = function (condition, content) {
   return null;
 }
 
-function buildResult(result, key) {
-  if (result && result != -1) {
-    return key + ": " + result + "\n";
-  }
-  return ""
-}
+// function buildResult(result, key) {
+//   if (result && result != -1) {
+//     return key + ": " + result + "\n";
+//   }
+//   return ""
+// }
 
-function buildDateResult(result, key) {
-  if (result) {
-    return key + ": " +
-      result.day + "." + result.month + "." + result.year + "."
-      + "\n";
-  }
-  return ""
-}
+// function buildDateResult(result, key) {
+//   if (result) {
+//     return key + ": " +
+//       result.day + "." + result.month + "." + result.year + "."
+//       + "\n";
+//   }
+//   return ""
+// }
 
-const licenseKey = Platform.select({
-  // iOS license key for applicationID: com.microblink.sample
-  ios: 'sRwAAAEgb3JnLnJlYWN0anMubmF0aXZlLmZzdGFyLmNhbm5hZ29xkIzuDe6sAPx/esV44wkdOUcvts4ROcj6DzDOtk+pH6DxbJazROdgJ0HSrumXoDGEAzaO9bDgSTW7H4GWBS9lAwyboeJkF0qIWJ/1qdM0wZsZIT7C9Jciwz8eIwCQ5q/hiKb+/K7mYTJ0F/hxBWYC7ZWX8ZYzbuIt9H06PcCR5vvc6YZ/NNjl+KGvdvhvP/xnim3zQnXkhcTAo88NOsSb9D4EkKMXxRoXhniJDaPEh3x/ja5te1NwgkF4dmVHYyq1O+tCNqNXBfw1Vh5Le9ttKPbQExVJdmxnrcAlZBfIVWx3/ZVLVywHhxdfhTWcZsTRQRL4GuE=',
-  // android license key for applicationID: com.microblink.sample
-  android: 'sRwAAAAgb3JnLnJlYWN0anMubmF0aXZlLmZzdGFyLmNhbm5hZ2+uLqgu92xuqnYqkHR8Sr81G2E+bETfxW8gbfKXS26d78MwYaonbNaLonclr4el7d2bRO7TQM9yKotWQvQF7mPXDnBRNH564wUi7iRmkUqne8797YfL2yF53+mPqd1ecIQW9iJZ9sb3b0ZW2za0nhj/WOLs0zocgKmFZUn8R64sgAodyGfbxOCVnoUdOnr42CcovfbFH7azWMoujjyY10zZQ4kwoO7Xyeu6rhbCZhFYQ1Mn+jhAz7QFegYeag1zQt2F6FfOtyxOR29YqedothoA0fl1ig9K/YR1D7MnFOxqc3Xd60h8Rt4MXvxYir/On6sLMi5hBR0='
-})
+// const licenseKey = Platform.select({
+//   // iOS license key for applicationID: com.microblink.sample
+//   ios: 'sRwAAAEgb3JnLnJlYWN0anMubmF0aXZlLmZzdGFyLmNhbm5hZ29xkIzuDe6sAPx/esV44wkdOUcvts4ROcj6DzDOtk+pH6DxbJazROdgJ0HSrumXoDGEAzaO9bDgSTW7H4GWBS9lAwyboeJkF0qIWJ/1qdM0wZsZIT7C9Jciwz8eIwCQ5q/hiKb+/K7mYTJ0F/hxBWYC7ZWX8ZYzbuIt9H06PcCR5vvc6YZ/NNjl+KGvdvhvP/xnim3zQnXkhcTAo88NOsSb9D4EkKMXxRoXhniJDaPEh3x/ja5te1NwgkF4dmVHYyq1O+tCNqNXBfw1Vh5Le9ttKPbQExVJdmxnrcAlZBfIVWx3/ZVLVywHhxdfhTWcZsTRQRL4GuE=',
+//   // android license key for applicationID: com.microblink.sample
+//   android: 'sRwAAAAgb3JnLnJlYWN0anMubmF0aXZlLmZzdGFyLmNhbm5hZ2+uLqgu92xuqnYqkHR8Sr81G2E+bETfxW8gbfKXS26d78MwYaonbNaLonclr4el7d2bRO7TQM9yKotWQvQF7mPXDnBRNH564wUi7iRmkUqne8797YfL2yF53+mPqd1ecIQW9iJZ9sb3b0ZW2za0nhj/WOLs0zocgKmFZUn8R64sgAodyGfbxOCVnoUdOnr42CcovfbFH7azWMoujjyY10zZQ4kwoO7Xyeu6rhbCZhFYQ1Mn+jhAz7QFegYeag1zQt2F6FfOtyxOR29YqedothoA0fl1ig9K/YR1D7MnFOxqc3Xd60h8Rt4MXvxYir/On6sLMi5hBR0='
+// })
 
 export default class SignUpScreen extends Component {
   constructor(props) {
@@ -74,7 +75,11 @@ export default class SignUpScreen extends Component {
       results: '',
       licenseKeyErrorMessage: '',
       firstName: '',
+      img_url:'',
       lastName: '',
+      zipCode: '',
+      isTimeVisible: false,
+      birthday: '',
       age: '',
       email: '',
       password: '',
@@ -87,12 +92,14 @@ export default class SignUpScreen extends Component {
       isModalVisible5: false,
       isModalVisible6: false,
       isModalVisible7: false,
+      isModalVisible8: false,
       isModalVisible9: false,
       isModalVisible10: false,
       isModalVisible11: false,
       isModalVisible12: false,
       isModalVisible14: false,
       isModalVisible15: false,
+      isModalVisible16: false,
       isModalVisible17: false,
       timeFlag: false,
       isloading: false,
@@ -113,150 +120,150 @@ export default class SignUpScreen extends Component {
     this.focusListener.remove();
   }
 
-  async scan() {
-    try {
+  // async scan() {
+  //   try {
 
-      // to scan any machine readable travel document (passports, visas and IDs with
-      // machine readable zone), use MrtdRecognizer
-      // var mrtdRecognizer = new BlinkIDReactNative.MrtdRecognizer();
-      // mrtdRecognizer.returnFullDocumentImage = true;
+  //     // to scan any machine readable travel document (passports, visas and IDs with
+  //     // machine readable zone), use MrtdRecognizer
+  //     // var mrtdRecognizer = new BlinkIDReactNative.MrtdRecognizer();
+  //     // mrtdRecognizer.returnFullDocumentImage = true;
 
-      // var mrtdSuccessFrameGrabber = new BlinkIDReactNative.SuccessFrameGrabberRecognizer(mrtdRecognizer);
+  //     // var mrtdSuccessFrameGrabber = new BlinkIDReactNative.SuccessFrameGrabberRecognizer(mrtdRecognizer);
 
-      // BlinkIDCombinedRecognizer automatically classifies different document types and scans the data from
-      // the supported document
-      var blinkIdCombinedRecognizer = new BlinkIDReactNative.BlinkIdCombinedRecognizer();
-      blinkIdCombinedRecognizer.returnFullDocumentImage = true;
-      blinkIdCombinedRecognizer.returnFaceImage = true;
+  //     // BlinkIDCombinedRecognizer automatically classifies different document types and scans the data from
+  //     // the supported document
+  //     var blinkIdCombinedRecognizer = new BlinkIDReactNative.BlinkIdCombinedRecognizer();
+  //     blinkIdCombinedRecognizer.returnFullDocumentImage = true;
+  //     blinkIdCombinedRecognizer.returnFaceImage = true;
 
-      const scanningResults = await BlinkIDReactNative.BlinkID.scanWithCamera(
-        new BlinkIDReactNative.BlinkIdOverlaySettings(),
-        new BlinkIDReactNative.RecognizerCollection([blinkIdCombinedRecognizer/*, mrtdSuccessFrameGrabber*/]),
-        licenseKey
-      );
+  //     const scanningResults = await BlinkIDReactNative.BlinkID.scanWithCamera(
+  //       new BlinkIDReactNative.BlinkIdOverlaySettings(),
+  //       new BlinkIDReactNative.RecognizerCollection([blinkIdCombinedRecognizer/*, mrtdSuccessFrameGrabber*/]),
+  //       licenseKey
+  //     );
 
-      if (scanningResults) {
-        let newState = {
-          showFrontImageDocument: false,
-          resultFrontImageDocument: '',
-          showBackImageDocument: false,
-          resultBackImageDocument: '',
-          showImageFace: false,
-          resultImageFace: '',
-          results: '',
-          showSuccessFrame: false,
-          successFrame: ''
-        };
+  //     if (scanningResults) {
+  //       let newState = {
+  //         showFrontImageDocument: false,
+  //         resultFrontImageDocument: '',
+  //         showBackImageDocument: false,
+  //         resultBackImageDocument: '',
+  //         showImageFace: false,
+  //         resultImageFace: '',
+  //         results: '',
+  //         showSuccessFrame: false,
+  //         successFrame: ''
+  //       };
 
-        for (let i = 0; i < scanningResults.length; ++i) {
-          let localState = this.handleResult(scanningResults[i]);
-          newState.showFrontImageDocument = newState.showFrontImageDocument || localState.showFrontImageDocument;
-          if (localState.showFrontImageDocument) {
-            newState.resultFrontImageDocument = localState.resultFrontImageDocument;
-          }
-          newState.showBackImageDocument = newState.showBackImageDocument || localState.showBackImageDocument;
-          if (localState.showBackImageDocument) {
-            newState.resultBackImageDocument = localState.resultBackImageDocument;
-          }
-          newState.showImageFace = newState.showImageFace || localState.showImageFace;
-          if (localState.resultImageFace) {
-            newState.resultImageFace = localState.resultImageFace;
-          }
-          newState.results += localState.results;
-          newState.showSuccessFrame = newState.showSuccessFrame || localState.showSuccessFrame;
-          if (localState.successFrame) {
-            newState.successFrame = localState.successFrame;
-          }
+  //       for (let i = 0; i < scanningResults.length; ++i) {
+  //         let localState = this.handleResult(scanningResults[i]);
+  //         newState.showFrontImageDocument = newState.showFrontImageDocument || localState.showFrontImageDocument;
+  //         if (localState.showFrontImageDocument) {
+  //           newState.resultFrontImageDocument = localState.resultFrontImageDocument;
+  //         }
+  //         newState.showBackImageDocument = newState.showBackImageDocument || localState.showBackImageDocument;
+  //         if (localState.showBackImageDocument) {
+  //           newState.resultBackImageDocument = localState.resultBackImageDocument;
+  //         }
+  //         newState.showImageFace = newState.showImageFace || localState.showImageFace;
+  //         if (localState.resultImageFace) {
+  //           newState.resultImageFace = localState.resultImageFace;
+  //         }
+  //         newState.results += localState.results;
+  //         newState.showSuccessFrame = newState.showSuccessFrame || localState.showSuccessFrame;
+  //         if (localState.successFrame) {
+  //           newState.successFrame = localState.successFrame;
+  //         }
 
-        }
-        newState.results += '\n';
-        this.setState(newState);
-        console.log(this.state.results)
-      }
-    } catch (error) {
-      console.log(error);
-      this.setState({
-        showFrontImageDocument: false, resultFrontImageDocument: '', showBackImageDocument: false, resultBackImageDocument: '', showImageFace: false, resultImageFace: '', results: 'Scanning has been cancelled', showSuccessFrame: false,
-        successFrame: ''
-      });
-    }
-  }
+  //       }
+  //       newState.results += '\n';
+  //       this.setState(newState);
+  //       console.log(this.state.results)
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     this.setState({
+  //       showFrontImageDocument: false, resultFrontImageDocument: '', showBackImageDocument: false, resultBackImageDocument: '', showImageFace: false, resultImageFace: '', results: 'Scanning has been cancelled', showSuccessFrame: false,
+  //       successFrame: ''
+  //     });
+  //   }
+  // }
 
-  handleResult(result) {
-    var localState = {
-      showFrontImageDocument: false,
-      resultFrontImageDocument: '',
-      showBackImageDocument: false,
-      resultBackImageDocument: '',
-      resultImageFace: '',
-      results: '',
-      showSuccessFrame: false,
-      successFrame: ''
-    };
+  // handleResult(result) {
+  //   var localState = {
+  //     showFrontImageDocument: false,
+  //     resultFrontImageDocument: '',
+  //     showBackImageDocument: false,
+  //     resultBackImageDocument: '',
+  //     resultImageFace: '',
+  //     results: '',
+  //     showSuccessFrame: false,
+  //     successFrame: ''
+  //   };
 
-    if (result instanceof BlinkIDReactNative.BlinkIdCombinedRecognizerResult) {
-      let blinkIdResult = result;
-      console.log(blinkIdResult.firstName)
-      this.setState({ firstName: blinkIdResult.firstName, lastName: blinkIdResult.lastName, age: blinkIdResult.age })
+  //   if (result instanceof BlinkIDReactNative.BlinkIdCombinedRecognizerResult) {
+  //     let blinkIdResult = result;
+  //     console.log(blinkIdResult.firstName)
+  //     this.setState({ firstName: blinkIdResult.firstName, lastName: blinkIdResult.lastName, age: blinkIdResult.age })
 
-      let resultString =
-        buildResult(blinkIdResult.firstName, "FirstName") +
-        buildResult(blinkIdResult.lastName, "LastName") +
-        buildResult(blinkIdResult.fullName, "FullName") +
-        buildResult(blinkIdResult.localizedName, "LocalizedName") +
-        buildResult(blinkIdResult.additionalNameInformation, "AdditionalNameInfo") +
-        buildResult(blinkIdResult.address, "Address") +
-        buildResult(blinkIdResult.additionalAddressInformation, "AdditionalAddressInfo") +
-        buildResult(blinkIdResult.documentNumber, "DocumentNumber") +
-        buildResult(blinkIdResult.documentAdditionalNumber, "AdditionalDocumentNumber") +
-        buildResult(blinkIdResult.sex, "Sex") +
-        buildResult(blinkIdResult.issuingAuthority, "IssuingAuthority") +
-        buildResult(blinkIdResult.nationality, "Nationality") +
-        buildDateResult(blinkIdResult.dateOfBirth, "DateOfBirth") +
-        buildResult(blinkIdResult.age, "Age") +
-        buildDateResult(blinkIdResult.dateOfIssue, "DateOfIssue") +
-        buildDateResult(blinkIdResult.dateOfExpiry, "DateOfExpiry") +
-        buildResult(blinkIdResult.dateOfExpiryPermanent, "DateOfExpiryPermanent") +
-        buildResult(blinkIdResult.expired, "Expired") +
-        buildResult(blinkIdResult.maritalStatus, "MartialStatus") +
-        buildResult(blinkIdResult.personalIdNumber, "PersonalIdNumber") +
-        buildResult(blinkIdResult.profession, "Profession") +
-        buildResult(blinkIdResult.race, "Race") +
-        buildResult(blinkIdResult.religion, "Religion") +
-        buildResult(blinkIdResult.residentialStatus, "ResidentialStatus") +
-        buildResult(blinkIdResult.processingStatus, "ProcessingStatus") +
-        buildResult(blinkIdResult.recognitionMode, "RecognitionMode")
-        ;
+  //     let resultString =
+  //       buildResult(blinkIdResult.firstName, "FirstName") +
+  //       buildResult(blinkIdResult.lastName, "LastName") +
+  //       buildResult(blinkIdResult.fullName, "FullName") +
+  //       buildResult(blinkIdResult.localizedName, "LocalizedName") +
+  //       buildResult(blinkIdResult.additionalNameInformation, "AdditionalNameInfo") +
+  //       buildResult(blinkIdResult.address, "Address") +
+  //       buildResult(blinkIdResult.additionalAddressInformation, "AdditionalAddressInfo") +
+  //       buildResult(blinkIdResult.documentNumber, "DocumentNumber") +
+  //       buildResult(blinkIdResult.documentAdditionalNumber, "AdditionalDocumentNumber") +
+  //       buildResult(blinkIdResult.sex, "Sex") +
+  //       buildResult(blinkIdResult.issuingAuthority, "IssuingAuthority") +
+  //       buildResult(blinkIdResult.nationality, "Nationality") +
+  //       buildDateResult(blinkIdResult.dateOfBirth, "DateOfBirth") +
+  //       buildResult(blinkIdResult.age, "Age") +
+  //       buildDateResult(blinkIdResult.dateOfIssue, "DateOfIssue") +
+  //       buildDateResult(blinkIdResult.dateOfExpiry, "DateOfExpiry") +
+  //       buildResult(blinkIdResult.dateOfExpiryPermanent, "DateOfExpiryPermanent") +
+  //       buildResult(blinkIdResult.expired, "Expired") +
+  //       buildResult(blinkIdResult.maritalStatus, "MartialStatus") +
+  //       buildResult(blinkIdResult.personalIdNumber, "PersonalIdNumber") +
+  //       buildResult(blinkIdResult.profession, "Profession") +
+  //       buildResult(blinkIdResult.race, "Race") +
+  //       buildResult(blinkIdResult.religion, "Religion") +
+  //       buildResult(blinkIdResult.residentialStatus, "ResidentialStatus") +
+  //       buildResult(blinkIdResult.processingStatus, "ProcessingStatus") +
+  //       buildResult(blinkIdResult.recognitionMode, "RecognitionMode")
+  //       ;
 
-      let licenceInfo = blinkIdResult.driverLicenseDetailedInfo;
-      if (licenceInfo) {
-        resultString +=
-          buildResult(licenceInfo.restrictions, "Restrictions") +
-          buildResult(licenceInfo.endorsements, "Endorsements") +
-          buildResult(licenceInfo.vehicleClass, "Vehicle class") +
-          buildResult(licenceInfo.conditions, "Conditions");
-      }
+  //     let licenceInfo = blinkIdResult.driverLicenseDetailedInfo;
+  //     if (licenceInfo) {
+  //       resultString +=
+  //         buildResult(licenceInfo.restrictions, "Restrictions") +
+  //         buildResult(licenceInfo.endorsements, "Endorsements") +
+  //         buildResult(licenceInfo.vehicleClass, "Vehicle class") +
+  //         buildResult(licenceInfo.conditions, "Conditions");
+  //     }
 
-      // there are other fields to extract
-      localState.results += resultString;
+  //     // there are other fields to extract
+  //     localState.results += resultString;
 
-      // Document image is returned as Base64 encoded JPEG
-      if (blinkIdResult.fullDocumentFrontImage) {
-        localState.showFrontImageDocument = true;
-        localState.resultFrontImageDocument = 'data:image/jpg;base64,' + blinkIdResult.fullDocumentFrontImage;
-      }
-      if (blinkIdResult.fullDocumentBackImage) {
-        localState.showBackImageDocument = true;
-        localState.resultBackImageDocument = 'data:image/jpg;base64,' + blinkIdResult.fullDocumentBackImage;
-      }
-      // Face image is returned as Base64 encoded JPEG
-      if (blinkIdResult.faceImage) {
-        localState.showImageFace = true;
-        localState.resultImageFace = 'data:image/jpg;base64,' + blinkIdResult.faceImage;
-      }
-    }
-    return localState;
-  }
+  //     // Document image is returned as Base64 encoded JPEG
+  //     if (blinkIdResult.fullDocumentFrontImage) {
+  //       localState.showFrontImageDocument = true;
+  //       localState.resultFrontImageDocument = 'data:image/jpg;base64,' + blinkIdResult.fullDocumentFrontImage;
+  //     }
+  //     if (blinkIdResult.fullDocumentBackImage) {
+  //       localState.showBackImageDocument = true;
+  //       localState.resultBackImageDocument = 'data:image/jpg;base64,' + blinkIdResult.fullDocumentBackImage;
+  //     }
+  //     // Face image is returned as Base64 encoded JPEG
+  //     if (blinkIdResult.faceImage) {
+  //       localState.showImageFace = true;
+  //       localState.resultImageFace = 'data:image/jpg;base64,' + blinkIdResult.faceImage;
+  //     }
+  //   }
+  //   return localState;
+  // }
 
   // chooseImage = () => {
   //   ImagePicker.showImagePicker(options, async (response) => {
@@ -364,10 +371,21 @@ export default class SignUpScreen extends Component {
 
   SingUp = () => {
     console.log("++++++++++++++++_______");
-    const { firstName, lastName, phoneNum, email, password, conPassword, img_url, userType, age, ischecked } = this.state;
+    const { firstName, lastName, birthday, phoneNum, email, zipCode, password, conPassword, img_url, userType, age, ischecked } = this.state;
     console.log(img_url);
     if (img_url == "") {
       this.setState({ isModalVisible15: true })
+    }
+    else if (firstName == "") {
+      this.setState({ isModalVisible1: true })
+    } else if (lastName == "") {
+      this.setState({ isModalVisible2: true })
+    }
+    else if (birthday == "") {
+      this.setState({ isModalVisible8: true })
+    }
+    else if (zipCode == "") {
+      this.setState({ isModalVisible16: true })
     }
     else if (email == "") {
       this.setState({ isModalVisible3: true })
@@ -384,11 +402,6 @@ export default class SignUpScreen extends Component {
     }
     else if (phoneNum == "") {
       this.setState({ isModalVisible9: true })
-    }
-    else if (firstName == "") {
-      this.setState({ isModalVisible1: true })
-    } else if (lastName == "") {
-      this.setState({ isModalVisible1: true })
     }
     else if (ischecked == false) {
       this.setState({ isModalVisible14: true })
@@ -420,7 +433,8 @@ export default class SignUpScreen extends Component {
               profileimage: img_url,
               userType: userType,
               availableBal: 0,
-              age: age
+              birthday:birthday,
+              zipCode:zipCode
             });
             this.setState({ isModalVisible17: true })
             setTimeout(() => {
@@ -452,12 +466,16 @@ export default class SignUpScreen extends Component {
 
   }
 
+  handleTimePicker = async (date) => {
+    await this.setState({ birthday: dayjs(date).format('DD MM YYYY') })
+    console.log(this.state.birthday)
+    this.setState({ isTimeVisible: false })
+  }
+  hideTimePicker = () => {
+    this.setState({ isTimeVisible: false })
+  }
+
   render() {
-    let displayFrontImageDocument = this.state.resultFrontImageDocument;
-    let displayBackImageDocument = this.state.resultBackImageDocument;
-    let displayImageFace = this.state.resultImageFace;
-    let displaySuccessFrame = this.state.successFrame;
-    let displayFields = this.state.results;
     return (
       <View style={styles.container}>
         <ScrollView style={{ width: '100%' }}>
@@ -479,7 +497,7 @@ export default class SignUpScreen extends Component {
               <View style={styles.personUploadgImage}>
                 <View style={styles.personImageArea}>
                   <View style={styles.personImageArea1}>
-                    <Image source={this.state.avatarSource} resizeMode='stretch' style={styles.personImage} />
+                    <Image source={this.state.avatarSource} resizeMode='cover' style={styles.personImage} />
                   </View>
                 </View>
                 <TouchableOpacity style={styles.addBtn} onPress={() => { this.chooseImage() }}>
@@ -488,6 +506,27 @@ export default class SignUpScreen extends Component {
               </View>
             </View>
             <View style={styles.inputArea}>
+              <View style={{ flexDirection: 'row', width: '100%' }}>
+                <View style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }}>
+                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Fisrt Name" value={this.state.firstName} onChangeText={(text) => { this.setState({ firstName: text }) }}></TextInput>
+                </View>
+                <View style={{ ...styles.inputItem, width: '48.5%' }}>
+                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Last Name" value={this.state.lastName} onChangeText={(text) => { this.setState({ lastName: text }) }}></TextInput>
+                </View>
+              </View>
+              <View style={{ flexDirection: 'row', width: '100%' }}>
+                <TouchableOpacity style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }} onPress={() => { this.setState({ isTimeVisible: true, }) }}>
+                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                  <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Date of Birth</Text>
+                  <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
+                </TouchableOpacity>
+                <View style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }}>
+                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Delivery Zip" value={this.state.zipCode} onChangeText={(text) => { this.setState({ zipCode: text }) }}></TextInput>
+                </View>
+              </View>
               <View style={styles.inputItem}>
                 <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
                 <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Email Address" value={this.state.email} onChangeText={(text) => { this.setState({ email: text }) }}></TextInput>
@@ -505,11 +544,11 @@ export default class SignUpScreen extends Component {
                 <TextInput keyboardType="phone-pad" style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Mobile Number" value={this.state.phoneNum} onChangeText={(text) => { this.setState({ phoneNum: text }) }}></TextInput>
               </View>
               {/* <Text style={styles.results}>{displayFields}</Text> */}
-              <TouchableOpacity style={styles.inputItem} onPress={this.scan.bind(this)}>
+              {/* <TouchableOpacity style={styles.inputItem} onPress={this.scan.bind(this)}>
                 <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Scan Driver's License</Text>
                 <Image source={require('../assets/iamges/arrow-left.png')} resizeMode='stretch' style={styles.arrowleft} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <View style={styles.TermsArea}>
                 <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun() }}>
                   <Image source={this.state.ischecked ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
@@ -525,11 +564,17 @@ export default class SignUpScreen extends Component {
             </View>
           </View>
           <View style={{ height: 50 }}></View>
+          <DateTimePickerModal
+            isVisible={this.state.isTimeVisible}
+            mode="date"
+            onConfirm={(date) => { this.handleTimePicker(date) }}
+            onCancel={this.hideTimePicker}
+          />
         </ScrollView>
         <Modal isVisible={this.state.isModalVisible1}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please scan your driver license</Text>
+            <Text style={styles.Description}>Please input first name</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible1: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
@@ -538,7 +583,7 @@ export default class SignUpScreen extends Component {
         <Modal isVisible={this.state.isModalVisible2}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input your last name</Text>
+            <Text style={styles.Description}>Please input last name</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible2: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
@@ -603,7 +648,7 @@ export default class SignUpScreen extends Component {
         <Modal isVisible={this.state.isModalVisible8}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input name</Text>
+            <Text style={styles.Description}>Please select your birthday</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible8: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
@@ -643,29 +688,38 @@ export default class SignUpScreen extends Component {
           </View>
         </Modal>
         <Modal isVisible={this.state.isModalVisible15}>
-            <View style={styles.modalView}>
-              <Text style={styles.TitleTxt1}>OOPS!</Text>
-              <Text style={styles.Description}>Please Select Profile Image</Text>
-              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible15: false })}>
-                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-              </TouchableOpacity>
-            </View>
-          </Modal>
-          <Modal isVisible={this.state.isModalVisible14}>
-            <View style={styles.modalView}>
-              <Text style={styles.TitleTxt1}>OOPS!</Text>
-              <Text style={styles.Description}>You need to agree our Terms and Conditions</Text>
-              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible14: false })}>
-                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-              </TouchableOpacity>
-            </View>
-          </Modal>
-          <Modal isVisible={this.state.isModalVisible17}>
-            <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
-              <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome to CannaGo App!</Text>
-            </View>
-          </Modal>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>Please Select Profile Image</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible15: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible14}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>You need to agree our Terms and Conditions</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible14: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible17}>
+          <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+            <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome to CannaGo App!</Text>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible16}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>Please input zip code</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible16: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </View>
     );
   }
