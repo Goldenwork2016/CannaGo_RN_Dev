@@ -9,9 +9,9 @@ import RNFetchBlob from "react-native-fetch-blob";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-community/async-storage';
+import atl_zipCode from '../components/zipCode'
 
-
-import NonImage from '../assets/iamges/personImage.png'
+import NonImage from '../assets/iamges/emptyItem.png'
 import uncheckImage from '../assets/iamges/uncheckImage.png'
 import checkImage from '../assets/iamges/checkImage.png'
 import Firebase from 'firebase';
@@ -75,11 +75,13 @@ export default class SignUpScreen extends Component {
       results: '',
       licenseKeyErrorMessage: '',
       firstName: '',
-      img_url:'',
+      img_url: '',
       lastName: '',
       zipCode: '',
       isTimeVisible: false,
       birthday: '',
+      ageFlag: false,
+      birthdayYear: '',
       age: '',
       email: '',
       password: '',
@@ -101,6 +103,7 @@ export default class SignUpScreen extends Component {
       isModalVisible15: false,
       isModalVisible16: false,
       isModalVisible17: false,
+      isModalVisible18: false,
       timeFlag: false,
       isloading: false,
       loggedIn: false,
@@ -371,39 +374,35 @@ export default class SignUpScreen extends Component {
 
   SingUp = () => {
     console.log("++++++++++++++++_______");
-    const { firstName, lastName, birthday, phoneNum, email, zipCode, password, conPassword, img_url, userType, age, ischecked } = this.state;
+    const { firstName, lastName, birthday, ageFlag, phoneNum, email, zipCode, password, conPassword, img_url, userType, age, ischecked } = this.state;
     console.log(img_url);
     if (img_url == "") {
       this.setState({ isModalVisible15: true })
-    }
-    else if (firstName == "") {
+    } else if (firstName == "") {
       this.setState({ isModalVisible1: true })
     } else if (lastName == "") {
       this.setState({ isModalVisible2: true })
-    }
-    else if (birthday == "") {
+    } else if (birthday == "") {
       this.setState({ isModalVisible8: true })
-    }
-    else if (zipCode == "") {
+    } else if (ageFlag == false) {
+      this.setState({ isModalVisible18: true })
+    } else if (zipCode == "") {
       this.setState({ isModalVisible16: true })
-    }
-    else if (email == "") {
+    } else if (atl_zipCode.zip.indexOf(zipCode) < 0 ) {
+      this.setState({ isModalVisible19: true })
+    } else if (email == "") {
       this.setState({ isModalVisible3: true })
     } else if (reg.test(email) === false) {
       this.setState({ isModalVisible4: true })
     } else if (password == "") {
       this.setState({ isModalVisible5: true })
-    }
-    else if (reg_strong.test(password) === false) {
+    } else if (reg_strong.test(password) === false) {
       this.setState({ isModalVisible6: true })
-    }
-    else if (password != conPassword) {
+    } else if (password != conPassword) {
       this.setState({ isModalVisible7: true })
-    }
-    else if (phoneNum == "") {
+    } else if (phoneNum == "") {
       this.setState({ isModalVisible9: true })
-    }
-    else if (ischecked == false) {
+    } else if (ischecked == false) {
       this.setState({ isModalVisible14: true })
     }
     else {
@@ -433,8 +432,8 @@ export default class SignUpScreen extends Component {
               profileimage: img_url,
               userType: userType,
               availableBal: 0,
-              birthday:birthday,
-              zipCode:zipCode
+              birthday: birthday,
+              zipCode: zipCode
             });
             this.setState({ isModalVisible17: true })
             setTimeout(() => {
@@ -467,9 +466,19 @@ export default class SignUpScreen extends Component {
   }
 
   handleTimePicker = async (date) => {
-    await this.setState({ birthday: dayjs(date).format('DD MM YYYY') })
-    console.log(this.state.birthday)
+    await this.setState({ birthday: dayjs(date).format('MM/DD/YYYY') })
+    await this.setState({ birthdayYear: dayjs(date).format('YYYY') })
+    console.log(this.state.birthdayYear)
     this.setState({ isTimeVisible: false })
+    var currentDay = new Date();
+    var currentYear = currentDay.getFullYear();
+    if (currentYear - this.state.birthdayYear > 21) {
+      await this.setState({ ageFlag: true })
+      console.log(this.state.ageFlag);
+    } else {
+      await this.setState({ ageFlag: false })
+      console.log(this.state.ageFlag);
+    }
   }
   hideTimePicker = () => {
     this.setState({ isTimeVisible: false })
@@ -494,14 +503,11 @@ export default class SignUpScreen extends Component {
               <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
                 <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
               </TouchableOpacity>
-              <View style={styles.personUploadgImage}>
-                <View style={styles.personImageArea}>
-                  <View style={styles.personImageArea1}>
-                    <Image source={this.state.avatarSource} resizeMode='cover' style={styles.personImage} />
-                  </View>
-                </View>
-                <TouchableOpacity style={styles.addBtn} onPress={() => { this.chooseImage() }}>
-                  <Image source={require('../assets/iamges/addImage.png')} resizeMode='stretch' style={styles.addImage} />
+              <View style={styles.AddItemImage}>
+                {/* <Image source={{uri:this.state.img_url}} resizeMode='cover' style={styles.storeImage2} /> */}
+                <Image source={this.state.avatarSource} resizeMode='cover' style={styles.storeImage2} />
+                <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
+                  <Image source={require('../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -519,7 +525,7 @@ export default class SignUpScreen extends Component {
               <View style={{ flexDirection: 'row', width: '100%' }}>
                 <TouchableOpacity style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }} onPress={() => { this.setState({ isTimeVisible: true, }) }}>
                   <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                  <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Date of Birth</Text>
+                  <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>{this.state.birthday == "" ? "Date of Birth" : this.state.birthday}</Text>
                   <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
                 </TouchableOpacity>
                 <View style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }}>
@@ -716,6 +722,24 @@ export default class SignUpScreen extends Component {
             <Text style={styles.TitleTxt1}>OOPS!</Text>
             <Text style={styles.Description}>Please input zip code</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible16: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible18}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>You must be over 21 years old</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible18: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal isVisible={this.state.isModalVisible19}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={styles.Description}>You should input only Atlanta zip code</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible19: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
           </View>

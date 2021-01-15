@@ -151,7 +151,9 @@ class ProfileScreen extends Component {
   compareTime = () => {
     now_Mins = today_Hour * 60 + today_minute
     console.log(now_Mins)
-    this.state.storeHours.forEach(this.myFunction);
+    if (this.state.userType == "dispensary" || this.state.userType == "driver") {
+      this.state.storeHours.forEach(this.myFunction);
+    }
   }
 
   myFunction = (item, index) => {
