@@ -11,7 +11,7 @@ import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-community/async-storage';
 import atl_zipCode from '../components/zipCode'
 
-import NonImage from '../assets/iamges/emptyItem.png'
+import NonImage from '../assets/iamges/emptyPerson.png'
 import uncheckImage from '../assets/iamges/uncheckImage.png'
 import checkImage from '../assets/iamges/checkImage.png'
 import Firebase from 'firebase';
@@ -388,7 +388,7 @@ export default class SignUpScreen extends Component {
       this.setState({ isModalVisible18: true })
     } else if (zipCode == "") {
       this.setState({ isModalVisible16: true })
-    } else if (atl_zipCode.zip.indexOf(zipCode) < 0 ) {
+    } else if (atl_zipCode.zip.indexOf(zipCode) < 0) {
       this.setState({ isModalVisible19: true })
     } else if (email == "") {
       this.setState({ isModalVisible3: true })
@@ -433,7 +433,8 @@ export default class SignUpScreen extends Component {
               userType: userType,
               availableBal: 0,
               birthday: birthday,
-              zipCode: zipCode
+              zipCode: zipCode,
+              age: age
             });
             this.setState({ isModalVisible17: true })
             setTimeout(() => {
@@ -472,8 +473,10 @@ export default class SignUpScreen extends Component {
     this.setState({ isTimeVisible: false })
     var currentDay = new Date();
     var currentYear = currentDay.getFullYear();
-    if (currentYear - this.state.birthdayYear > 21) {
+    var yearDif = currentYear - this.state.birthdayYear;
+    if (yearDif > 21) {
       await this.setState({ ageFlag: true })
+      await this.setState({ age: yearDif })
       console.log(this.state.ageFlag);
     } else {
       await this.setState({ ageFlag: false })
@@ -503,11 +506,14 @@ export default class SignUpScreen extends Component {
               <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
                 <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
               </TouchableOpacity>
-              <View style={styles.AddItemImage}>
-                {/* <Image source={{uri:this.state.img_url}} resizeMode='cover' style={styles.storeImage2} /> */}
-                <Image source={this.state.avatarSource} resizeMode='cover' style={styles.storeImage2} />
-                <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
-                  <Image source={require('../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
+              <View style={styles.personUploadgImage}>
+                <View style={styles.personImageArea}>
+                  <View style={styles.personImageArea1}>
+                    <Image source={this.state.avatarSource} resizeMode='cover' style={styles.personImage} />
+                  </View>
+                </View>
+                <TouchableOpacity style={{ ...styles.addBtn, bottom: 10 }} onPress={() => { this.chooseImage() }}>
+                  <Image source={require('../assets/iamges/addImage.png')} resizeMode='stretch' style={styles.addImage} />
                 </TouchableOpacity>
               </View>
             </View>

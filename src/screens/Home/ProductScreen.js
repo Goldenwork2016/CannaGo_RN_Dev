@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, FlatList, Dimensions, Platform } from 'react-native';
+import { View, Text, Image, ScrollView, FlatList, Dimensions, Platform, RefreshControl } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Firebase from '../../../config/firebase'
 
@@ -13,6 +13,7 @@ export default class HomeScreen extends Component {
       storeId: '',
       real_data: [],
       contentList: [],
+      refreshing: false
     };
   }
 
@@ -20,6 +21,10 @@ export default class HomeScreen extends Component {
     await this.setState({ storeId: this.props.navigation.getParam('storeId') })
     console.log(this.state.storeId)
 
+    this.loadData();
+  }
+
+  loadData = async () => {
     Firebase.database()
       .ref("Items/" + this.state.storeId)
       .on("value", (snapshot) => {
@@ -47,7 +52,6 @@ export default class HomeScreen extends Component {
         });
       })
   }
-
   _rendermakelist({ item, index }) {
     return (
       <TouchableOpacity style={styles.StoreItem} >
@@ -61,6 +65,11 @@ export default class HomeScreen extends Component {
     )
   }
 
+  _onRefresh = () => {
+    this.setState({ refreshing: true })
+    this.loadData()
+    this.setState({ refreshing: false })
+  }
 
   render() {
     const { real_data } = this.state
@@ -73,6 +82,12 @@ export default class HomeScreen extends Component {
         <View style={{ paddingHorizontal: '5%', flex: 1 }}>
           <FlatList
             numColumns={2}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={() => this._onRefresh()}
+              />
+            }
             columnWrapperStyle={{ justifyContent: 'space-between' }}
             // showsVerticalScrollIndicator={true}
             data={real_data.length == 0 ? this.state.contentList : real_data}

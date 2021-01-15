@@ -52,6 +52,7 @@ class ProfileScreen extends Component {
       password: '',
       profileimage: '',
       storeName: '',
+      age: '',
       storePhoneNum: '',
       storeAddress: '',
       storeHours: '',
@@ -75,6 +76,8 @@ class ProfileScreen extends Component {
     const userId = await AsyncStorage.getItem("userUid");
     await this.setState({ userId: userId })
     await this.setState({ usertype: usertype });
+    console.log("_______________+++++++++++++++++++++++________________")
+    console.log(this.state.usertype)
     // await this.setState({
     //   firstName: user_real_info.firstName,
     //   lastName: user_real_info.lastName,
@@ -94,54 +97,88 @@ class ProfileScreen extends Component {
     // console.log("++++++++++++++")
     // console.log(this.state.profileimage)
 
-    Firebase.database()
-      .ref('user/' + this.state.userId)
-      .on("value", async (snapshot) => {
-        user_data = {
-          GA: snapshot.val().GA,
-          availableBal: snapshot.val().availableBal,
-          companyName: snapshot.val().companyName,
-          email: snapshot.val().email,
-          fein: snapshot.val().fein,
-          firstName: snapshot.val().fristName,
-          lastName: snapshot.val().lastName,
-          password: snapshot.val().password,
-          phoneNum: snapshot.val().phoneNum,
-          profileimage: snapshot.val().profileimage,
-          storeHours: snapshot.val().storeHours,
-          storeName: snapshot.val().storeName,
-          storePhoneNum: snapshot.val().storePhoneNum,
-          storeStreetAdress: snapshot.val().storeStreetAdress,
-          userType: snapshot.val().userType,
-          zipCode: snapshot.val().zipCode,
-          city: snapshot.val().city,
-          // data.push(row)
-        };
-        await this.setState({
-          firstName: user_data.firstName,
-          lastName: user_data.lastName,
-          email: user_data.email,
-          phoneNum: user_data.phoneNum,
-          password: user_data.password,
-          storeName: user_data.storeName,
-          storePhoneNum: user_data.storePhoneNum,
-          storeHours: user_data.storeHours,
-          storeAddress: user_data.storeAddress,
-          companyName: user_data.companyName,
-          fein: user_data.fein,
-          profileimage: user_data.profileimage,
-          userType: user_data.userType,
-          zipCode: user_data.zipCode,
-          storeStreetAdress: user_data.storeStreetAdress,
-          city: user_data.city,
+    if (this.state.usertype == "dispensary") {
+      Firebase.database()
+        .ref('user/' + this.state.userId)
+        .on("value", async (snapshot) => {
+          user_data = {
+            GA: snapshot.val().GA,
+            availableBal: snapshot.val().availableBal,
+            companyName: snapshot.val().companyName,
+            email: snapshot.val().email,
+            fein: snapshot.val().fein,
+            firstName: snapshot.val().fristName,
+            lastName: snapshot.val().lastName,
+            password: snapshot.val().password,
+            phoneNum: snapshot.val().phoneNum,
+            profileimage: snapshot.val().profileimage,
+            storeHours: snapshot.val().storeHours,
+            storeName: snapshot.val().storeName,
+            storePhoneNum: snapshot.val().storePhoneNum,
+            storeStreetAdress: snapshot.val().storeStreetAdress,
+            userType: snapshot.val().userType,
+            zipCode: snapshot.val().zipCode,
+            city: snapshot.val().city,
+            // data.push(row)
+          };
+          await this.setState({
+            firstName: user_data.firstName,
+            lastName: user_data.lastName,
+            email: user_data.email,
+            phoneNum: user_data.phoneNum,
+            password: user_data.password,
+            storeName: user_data.storeName,
+            storePhoneNum: user_data.storePhoneNum,
+            storeHours: user_data.storeHours,
+            storeAddress: user_data.storeAddress,
+            companyName: user_data.companyName,
+            fein: user_data.fein,
+            profileimage: user_data.profileimage,
+            userType: user_data.userType,
+            zipCode: user_data.zipCode,
+            storeStreetAdress: user_data.storeStreetAdress,
+            city: user_data.city,
+          })
         })
-      })
-    console.log(this.state.storeHours);
-    const { navigation } = this.props;
-    this.focusListener = navigation.addListener('didFocus', () => {
+      console.log(this.state.storeHours);
+      const { navigation } = this.props;
+      this.focusListener = navigation.addListener('didFocus', () => {
+        this.compareTime();
+      });
       this.compareTime();
-    });
-    this.compareTime();
+    } else if (this.state.usertype == "consumer") {
+      console.log("================================");
+      Firebase.database()
+        .ref('user/' + this.state.userId)
+        .on("value", async (snapshot) => {
+          user_data = {
+            email: snapshot.val().email,
+            firstName: snapshot.val().fristName,
+            lastName: snapshot.val().lastName,
+            password: snapshot.val().password,
+            phoneNum: snapshot.val().phoneNum,
+            profileimage: snapshot.val().profileimage,
+            userType: snapshot.val().userType,
+            zipCode: snapshot.val().zipCode,
+            age: snapshot.val().age,
+            // data.push(row)
+          };
+          console.log("================================");
+          console.log(user_data);
+          await this.setState({
+            firstName: user_data.firstName,
+            lastName: user_data.lastName,
+            email: user_data.email,
+            phoneNum: user_data.phoneNum,
+            password: user_data.password,
+            profileimage: user_data.profileimage,
+            userType: user_data.userType,
+            zipCode: user_data.zipCode,
+            age: user_data.age,
+          })
+        })
+    }
+
   }
 
   componentWillUnmount() {
@@ -333,7 +370,7 @@ class ProfileScreen extends Component {
   }
 
   render() {
-    const { profileimage, availableBal } = this.state
+    const { profileimage, firstName, lastName, age, availableBal } = this.state
     return (
       <View style={styles.container}>
         <Spinner
@@ -345,19 +382,20 @@ class ProfileScreen extends Component {
           <ScrollView style={{ width: '100%' }}>
             <View style={styles.container}>
               <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 40 : 20 }}>
+                {/* <Image source={{uri:this.state.img_url}} resizeMode='cover' style={styles.storeImage2} /> */}
                 <View style={styles.personUploadgImage}>
                   <View style={styles.personImageArea}>
                     <View style={styles.personImageArea1}>
-                      <Image source={this.state.avatarSource} resizeMode='cover' style={styles.personImage} />
+                      <Image source={{ uri: profileimage }} resizeMode='cover' style={styles.personImage} />
                     </View>
                   </View>
                   <TouchableOpacity style={{ ...styles.addBtn, bottom: 50 }} onPress={() => { this.chooseImage() }}>
                     <Image source={require('../../assets/iamges/addImage.png')} resizeMode='stretch' style={styles.addImage} />
                   </TouchableOpacity>
-                  <Text style={{ ...styles.inputTxt, color: '#121214', alignSelf: 'center', marginTop: 20 }}>John H, 25</Text>
+                  <Text style={{ ...styles.inputTxt, alignSelf: 'center', textAlign: "center", marginTop: 20 }}>{firstName} {lastName}, {age}</Text>
                 </View>
               </View>
-              <View style={styles.inputArea}>
+              <View style={{ ...styles.inputArea, marginTop: 2 }}>
                 <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("ProfileInfoScreen") }}>
                   <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                   <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Profile Information</Text>

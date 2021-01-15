@@ -63,6 +63,10 @@ class HomeScreen extends Component {
     //     });
 
 
+    this.loadData()
+  }
+
+  loadData = async () => {
     Firebase.database()
       .ref("Items/" + this.state.userId)
       .on("value", (snapshot) => {
@@ -119,7 +123,7 @@ class HomeScreen extends Component {
 
   _onRefresh = () => {
     this.setState({ refreshing: true })
-    const { real_data } = this.props
+    this.loadData()
     this.setState({ refreshing: false })
   }
 
@@ -139,17 +143,23 @@ class HomeScreen extends Component {
   render() {
     const { real_data, store_data } = this.state
     return (
-      <View style={{ flex: 1, alignItems: "center", }}>
+      <View style={{ flex: 1, alignItems: "center", backgroundColor: 'white' }}>
         {this.state.usertype == "consumer" ?
-          <ScrollView style={{ width: '100%', borderColor: 'white' }}>
+          <View style={{ width: '100%', borderColor: 'white', flex: 1, }}>
             <View style={{ ...styles.container, paddingTop: 30 }}>
               <FlatList
                 // showsVerticalScrollIndicator={true}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => this._onRefresh()}
+                  />
+                }
                 style={{ width: '100%' }}
                 numColumns={1}
                 data={store_data.length == 0 ? this.state.contentList : store_data}
                 renderItem={({ item }) => (
-                  <TouchableOpacity style={styles.StoreItem} onPress={() => { this.props.navigation.navigate("ProductScreen",{storeId: item.id}) }}>
+                  <TouchableOpacity style={styles.StoreItem} onPress={() => { this.props.navigation.navigate("ProductScreen", { storeId: item.id }) }}>
                     <Text style={styles.homeTitle}> {item.store} </Text>
                     <Image source={store_data.length == 0 ? item.ImageUrl : { uri: item.ImageUrl }} resizeMode='stretch' style={styles.storeImage} />
                     <View style={styles.storeDes1}>
@@ -162,7 +172,7 @@ class HomeScreen extends Component {
               />
             </View>
             <View style={{ height: 150, backgroundColor: 'white' }}></View>
-          </ScrollView> :
+          </View> :
           <View style={{ paddingTop: Platform.OS === 'ios' ? 70 : 30, backgroundColor: 'white', flex: 1, width: '100%' }}>
             <Text style={{ ...styles.CartTitle, marginTop: Platform.OS == 'ios' ? 7 : -10 }}>Your Store Front</Text>
             <TouchableOpacity style={styles.addItemBtn} onPress={() => { this.props.navigation.navigate("AddStoreItemScreen") }}>
