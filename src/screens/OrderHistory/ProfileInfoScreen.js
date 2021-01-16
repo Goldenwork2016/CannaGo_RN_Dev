@@ -101,6 +101,9 @@ export default class ProfileInfoScreen extends Component {
                 <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Deactivate Account</Text>
               </TouchableOpacity>
+              <TouchableOpacity style={{ ...styles.signinBtn, backgroundColor: '#3EA3E1', width: 128, alignSelf: 'center' }} onPress={() => { this.update() }}>
+                  <Text style={styles.signinTxt1}>Update</Text>
+                </TouchableOpacity>
             </View>
           </View>
           <View style={{ height: 150 }}></View>

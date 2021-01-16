@@ -388,7 +388,7 @@ export default class SignUpScreen extends Component {
       this.setState({ isModalVisible18: true })
     } else if (zipCode == "") {
       this.setState({ isModalVisible16: true })
-    } else if (atl_zipCode.zip.indexOf(zipCode) < 0) {
+    } else if (zipCode.length != 5 || atl_zipCode.zip.indexOf(zipCode) < 0) {
       this.setState({ isModalVisible19: true })
     } else if (email == "") {
       this.setState({ isModalVisible3: true })
@@ -735,7 +735,7 @@ export default class SignUpScreen extends Component {
         <Modal isVisible={this.state.isModalVisible18}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>You must be over 21 years old</Text>
+            <Text style={{ ...styles.Description, textAlign: 'center' }}>Sorry, you have to be 21 years or older to use our service.</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible18: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
@@ -744,7 +744,8 @@ export default class SignUpScreen extends Component {
         <Modal isVisible={this.state.isModalVisible19}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>You should input only Atlanta zip code</Text>
+            <Text style={{ ...styles.Description, textAlign: 'center' }}>Sorry, we're only serving the Atlanta, GA Metro Area.</Text>
+            <Text style={{ ...styles.Description, textAlign: 'center', marginTop: -20 }}>Please stay tuned for more locations.</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible19: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
