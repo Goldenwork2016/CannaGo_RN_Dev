@@ -35,35 +35,19 @@ class HomeScreen extends Component {
     await this.setState({ userId: userId })
     console.log(this.state.userId)
     await this.setState({ usertype: usertype })
-    // var data = []
-    // var row
     // Firebase.database()
-    //     .ref('Items')
-    //     .once("value")
-    //     .then(snapshot => {
-    //       snapshot.forEach(element => {
-    //         row = {
-    //           Description: element.val().Description,
-    //           GpriceValue: element.val().GpriceValue,
-    //           Tag: element.val().Tag,
-    //           feeValue: element.val().feeValue,
-    //           id: element.val().id,
-    //           itemImage: element.val().itemImage,
-    //           itemNum1: element.val().itemNum1,
-    //           priceValue: element.val().priceValue,
-    //           productName: element.val().productName
-    //         } 
-    //         data.push(row)  
-    //       });  
-    //       console.log(data)
-    //       this.setState({
-    //         real_data: data,
-
-    //       });
-    //     });
-
-
-    this.loadData()
+    //   .ref('user/' + this.state.userId)
+    //   .on("value", async (snapshot) => {
+    //     user_data = {
+    //       userType: snapshot.val().userType,
+    //       // data.push(row)
+    //     };
+    //     await this.setState({
+    //       usertype: user_data.userType,
+    //     })
+    //     console.log(this.state.usertype);
+    //   })
+    // await AsyncStorage.setItem('usertype', this.state.usertype);
   }
 
   loadData = async () => {
@@ -96,7 +80,7 @@ class HomeScreen extends Component {
 
     Firebase.database()
       .ref("user")
-      .on("value", (snapshot) => {
+      .on("value", async (snapshot) => {
         console.log("++++++++===============+++++++++++++++")
         console.log(snapshot)
         console.log("++++++++===============+++++++++++++++")
@@ -109,6 +93,7 @@ class HomeScreen extends Component {
               id: element.key,
               store: element.val().storeName,
               ImageUrl: element.val().profileimage,
+              usertype: element.val().userType,
             }
             data.push(row)
           }

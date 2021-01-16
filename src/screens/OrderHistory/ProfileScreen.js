@@ -78,24 +78,19 @@ class ProfileScreen extends Component {
     await this.setState({ usertype: usertype });
     console.log("_______________+++++++++++++++++++++++________________")
     console.log(this.state.usertype)
-    // await this.setState({
-    //   firstName: user_real_info.firstName,
-    //   lastName: user_real_info.lastName,
-    //   email: user_real_info.email,
-    //   phoneNum: user_real_info.phoneNum,
-    //   password: user_real_info.password,
-    //   storeName: user_real_info.storeName,
-    //   storePhoneNum: user_real_info.storePhoneNum,
-    //   storeHours: user_real_info.storeHours,
-    //   storeAddress: user_real_info.storeAddress,
-    //   companyName: user_real_info.companyName,
-    //   fein: user_real_info.fein,
-    //   profileimage: user_real_info.profileimage,
-    //   userType: user_real_info.userType,
-    //   availableBal: user_real_info.availableBal,
-    // })
-    // console.log("++++++++++++++")
-    // console.log(this.state.profileimage)
+    // Firebase.database()
+    //   .ref('user/' + this.state.userId)
+    //   .on("value", async (snapshot) => {
+    //     user_data = {
+    //       userType: snapshot.val().userType,
+    //       // data.push(row)
+    //     };
+    //     await this.setState({
+    //       usertype: user_data.userType,
+    //     })
+    //     console.log(this.state.usertype);
+    //   })
+    // await AsyncStorage.setItem('usertype', this.state.usertype);
 
     if (this.state.usertype == "dispensary") {
       Firebase.database()

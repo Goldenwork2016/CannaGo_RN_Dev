@@ -28,6 +28,7 @@ class DispensaryUpdateScreen extends Component {
     this.state = {
       avatarSource: NonImage,
       ischecked: false,
+      ischecked1: false,
       checkImage: checkImage,
       uncheckImage: uncheckImage,
       timeFlag: false,
@@ -56,7 +57,9 @@ class DispensaryUpdateScreen extends Component {
   componentDidMount = () => {
     const { navigation } = this.props;
     this.focusListener = navigation.addListener('didFocus', async () => {
-      await this.setState({ storeHours: this.props.navigation.getParam("storeHour") })
+      if (this.props.navigation.getParam("storeHour") != undefined) {
+        await this.setState({ storeHours: this.props.navigation.getParam("storeHour") })
+      }
       console.log(this.state.storeHours);
     });
     Firebase.database()
@@ -157,27 +160,27 @@ class DispensaryUpdateScreen extends Component {
 
   async update() {
     const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, storePhoneNum, storeStreetAdress, city, GA, zipCode, storeHours, companyName, fein } = this.state
-    console.log(firstName);
+    console.log(storeHours);
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
     try {
-      await Firebase.database().ref('user/' + this.state.userId).update({
-        fristName: firstName,
-        lastName: lastName,
-        email: email,
-        phoneNum: phoneNum,
-        password: password,
-        storeName: storeName,
-        storePhoneNum: storePhoneNum,
-        storeStreetAdress: storeStreetAdress,
-        // city: city,
-        GA: GA,
-        zipCode: zipCode,
-        storeHours: storeHours,
-        companyName: companyName,
-        fein: fein,
-        userType: userType,
-        profileimage: profileimage
-      });
+      await Firebase.database()
+        .ref('user/' + this.state.userId)
+        .update({
+          fristName: firstName,
+          lastName: lastName,
+          phoneNum: phoneNum,
+          storeName: storeName,
+          storePhoneNum: storePhoneNum,
+          storeStreetAdress: storeStreetAdress,
+          // city: city,
+          GA: GA,
+          zipCode: zipCode,
+          storeHours: storeHours,
+          companyName: companyName,
+          fein: fein,
+          userType: userType,
+          profileimage: profileimage
+        });
       // const { updateUserInfo } = this.props
       // var updateUserInfo_row
       // await Firebase.database()
@@ -222,6 +225,9 @@ class DispensaryUpdateScreen extends Component {
   checkfun = async () => {
     await this.setState({ ischecked: !this.state.ischecked });
   }
+  checkfun1 = async () => {
+    await this.setState({ ischecked1: !this.state.ischecked1 });
+  }
 
   render() {
     const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, storePhoneNum, storeStreetAdress, city, GA, zipCode, storeHours, companyName, fein, } = this.state
@@ -248,15 +254,15 @@ class DispensaryUpdateScreen extends Component {
                   <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                   <TextInput onChangeText={value => this.setState({ lastName: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" value={lastName} placeholder="Nwadike"></TextInput>
                 </View>
-                <View style={styles.inputItem}>
+                <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("ChangeEmailScreen", { email: email, password: password }) }}>
                   <Image source={require('../../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
-                  <TextInput onChangeText={value => this.setState({ email: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" value={email} placeholder="vnwakike69@gmail.com"></TextInput>
-                </View>
+                  <Text style={styles.inputTxt} >{email}</Text>
+                </TouchableOpacity>
                 <View style={styles.inputItem}>
                   <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                   <TextInput onChangeText={value => this.setState({ phoneNum: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" value={phoneNum} placeholder="(786)-212-2578"></TextInput>
                 </View>
-                <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("ChangePasswordScreen", { passowrd: password }) }}>
+                <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("ChangePasswordScreen", { passoword: password }) }}>
                   <Image source={require('../../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
                   <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Change Password</Text>
                 </TouchableOpacity>
@@ -318,8 +324,8 @@ class DispensaryUpdateScreen extends Component {
                   <TextInput onChangeText={value => this.setState({ fein: value })} style={{ ...styles.inputTxt, fontSize: 11 }} placeholderTextColor="#7a7a7b" value={fein} placeholder="21267236637"></TextInput>
                 </View>
                 <View style={styles.TermsArea}>
-                  <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun() }}>
-                    <Image source={this.state.ischecked ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
+                  <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun1() }}>
+                    <Image source={this.state.ischecked1 ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
                   </TouchableOpacity>
                   <Text style={styles.termsTxt}>By checking this I agree to CannaGo's  </Text>
                   <TouchableOpacity style={styles.forgotBtn1}>
