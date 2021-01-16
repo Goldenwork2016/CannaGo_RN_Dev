@@ -744,8 +744,7 @@ export default class SignUpScreen extends Component {
         <Modal isVisible={this.state.isModalVisible19}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={{ ...styles.Description, textAlign: 'center' }}>Sorry, we're only serving the Atlanta, GA Metro Area.</Text>
-            <Text style={{ ...styles.Description, textAlign: 'center', marginTop: -20 }}>Please stay tuned for more locations.</Text>
+            <Text style={{ ...styles.Description, textAlign: 'center' }}>Sorry, we're only serving the Atlanta, GA Metro Area. Please stay tuned for more locations.</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible19: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
