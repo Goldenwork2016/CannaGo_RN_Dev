@@ -76,6 +76,7 @@ class HomeScreen extends Component {
           real_data: data,
 
         });
+        this.setState({ refreshing: false })
       })
 
     Firebase.database()
@@ -103,13 +104,13 @@ class HomeScreen extends Component {
         this.setState({
           store_data: data,
         });
+        this.setState({ refreshing: false })
       })
   }
 
   _onRefresh = () => {
     this.setState({ refreshing: true })
     this.loadData()
-    this.setState({ refreshing: false })
   }
 
   _rendermakelist({ item, index }) {

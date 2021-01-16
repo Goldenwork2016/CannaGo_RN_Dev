@@ -3,6 +3,10 @@ import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform } 
 import AsyncStorage from '@react-native-community/async-storage';
 import Firebase from '../../../config/firebase'
 import ImagePicker from 'react-native-image-picker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import Spinner from 'react-native-loading-spinner-overlay';
+import Modal from 'react-native-modal';
+import dayjs from 'dayjs';
 
 
 import { styles } from '../../components/styles'
@@ -21,11 +25,14 @@ export default class ProfileInfoScreen extends Component {
       password: '',
       profileimage: '',
       age: '',
+      ageFlag:false,
       fein: '',
       userId: "",
-      isModalVisible1: false,
-      timeFlag: false,
       isloading: false,
+      isModalVisible1: false,
+      isModalVisible2: false,
+      timeFlag: false,
+      birthday: ''
     };
   }
 
@@ -47,6 +54,7 @@ export default class ProfileInfoScreen extends Component {
           userType: snapshot.val().userType,
           zipCode: snapshot.val().zipCode,
           age: snapshot.val().age,
+          birthday: snapshot.val().birthday,
           // data.push(row)
         };
         console.log("================================");
@@ -61,16 +69,73 @@ export default class ProfileInfoScreen extends Component {
           userType: user_data.userType,
           zipCode: user_data.zipCode,
           age: user_data.age,
+          birthday: user_data.birthday,
         })
       })
   }
 
+  handleTimePicker = async (date) => {
+    await this.setState({ birthday: dayjs(date).format('MM/DD/YYYY') })
+    await this.setState({ birthdayYear: dayjs(date).format('YYYY') })
+    console.log(this.state.birthdayYear)
+    this.setState({ isTimeVisible: false })
+    var currentDay = new Date();
+    var currentYear = currentDay.getFullYear();
+    var yearDif = currentYear - this.state.birthdayYear;
+    if (yearDif > 21) {
+      await this.setState({ ageFlag: true })
+      await this.setState({ age: yearDif })
+      console.log(this.state.ageFlag);
+    } else {
+      await this.setState({ ageFlag: false })
+      console.log(this.state.ageFlag);
+    }
+  }
+  hideTimePicker = () => {
+    this.setState({ isTimeVisible: false })
+  }
+
+  async update() {
+    const { firstName, lastName, email, phoneNum, userType, birthday, age, ageFlag } = this.state
+    if (ageFlag == false) {
+      this.setState({ isModalVisible2: true })
+    } else {
+      this.setState({ isLoading: true })
+      try {
+        await Firebase.database()
+          .ref('user/' + this.state.userId)
+          .update({
+            fristName: firstName,
+            lastName: lastName,
+            phoneNum: phoneNum,
+            userType: userType,
+            age: age,
+            birthday: birthday,
+          });
+        this.setState({ isLoading: false })
+        this.setState({ isModalVisible1: true })
+        setTimeout(() => {
+          this.setState({ isModalVisible1: false })
+          this.props.navigation.navigate("ProfileScreen")
+        }, 3000)
+      } catch (error) {
+        console.log(error)
+        this.setState({ isLoading: true })
+      }
+    }
+  }
+
   render() {
-    const { profileimage, firstName, lastName, age, phoneNum, email, availableBal } = this.state
+    const { profileimage, firstName, password, lastName, age, phoneNum, email, availableBal, birthday,  ageFlag } = this.state
     return (
       <View style={styles.container}>
         <ScrollView style={{ width: '100%' }}>
           <View style={styles.container}>
+            <Spinner
+              visible={this.state.isloading}
+              textContent={'Updating profile infomation...'}
+              textStyle={{ color: 'white' }}
+            />
             <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 40 : 20 }}>
               <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
                 <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
@@ -81,32 +146,64 @@ export default class ProfileInfoScreen extends Component {
               </View>
             </View>
             <View style={styles.inputArea}>
-              <TouchableOpacity style={styles.inputItem}>
+              <View style={{ flexDirection: 'row', width: '100%' }}>
+                <View style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }}>
+                  <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Fisrt Name" value={this.state.firstName} onChangeText={(text) => { this.setState({ firstName: text }) }}></TextInput>
+                </View>
+                <View style={{ ...styles.inputItem, width: '48.5%' }}>
+                  <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Last Name" value={this.state.lastName} onChangeText={(text) => { this.setState({ lastName: text }) }}></TextInput>
+                </View>
+              </View>
+              <View style={{ ...styles.inputItem }}>
+                <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
+                <TextInput keyboardType="phone-pad" style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Phone Number" value={this.state.phoneNum} onChangeText={(text) => { this.setState({ phoneNum: text }) }}></TextInput>
+              </View>
+              <TouchableOpacity style={{ ...styles.inputItem }} onPress={() => { this.setState({ isTimeVisible: true, }) }}>
                 <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Phone Number: {phoneNum}</Text>
+                <Text style={{ ...styles.inputTxt }}>{birthday}</Text>
+                <Image source={require('../../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("ChangeEmailScreen", { email: email, password: password }) }}>
+                <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                <Text style={{ ...styles.inputTxt }}>{email}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("ChangePasswordScreen", { passoword: password }) }}>
+                <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                <Text style={{ ...styles.inputTxt }}>Change Password</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.inputItem}>
                 <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Email: {email}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.inputItem}>
-                <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Change Password</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.inputItem}>
-                <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Update ID</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.inputItem}>
-                <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Deactivate Account</Text>
+                <Text style={{ ...styles.inputTxt }}>Deactivate Account</Text>
               </TouchableOpacity>
               <TouchableOpacity style={{ ...styles.signinBtn, backgroundColor: '#3EA3E1', width: 128, alignSelf: 'center' }} onPress={() => { this.update() }}>
-                  <Text style={styles.signinTxt1}>Update</Text>
-                </TouchableOpacity>
+                <Text style={styles.signinTxt1}>Update</Text>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={{ height: 150 }}></View>
+          <DateTimePickerModal
+            isVisible={this.state.isTimeVisible}
+            mode="date"
+            onConfirm={(date) => { this.handleTimePicker(date) }}
+            onCancel={this.hideTimePicker}
+          />
+          <Modal isVisible={this.state.isModalVisible1}>
+            <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+              <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Profile informations are updated.</Text>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible2}>
+          <View style={styles.modalView}>
+            <Text style={styles.TitleTxt1}>OOPS!</Text>
+            <Text style={{ ...styles.Description, textAlign: 'center', width:'90%' }}>Sorry, you have to be 21 years or older to use our service.</Text>
+            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible2: false })}>
+              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
         </ScrollView>
       </View>
     );
