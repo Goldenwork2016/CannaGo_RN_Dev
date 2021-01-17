@@ -361,7 +361,8 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 30,
-        width: '90%'
+        width: '90%',
+        marginLeft:'5%'
     },
     cartImage: {
         borderRadius: 5,

@@ -50,6 +50,7 @@ export default class HomeScreen extends Component {
         this.setState({
           real_data: data,
         });
+        this.setState({ refreshing: false })
       })
   }
   _rendermakelist({ item, index }) {
@@ -68,7 +69,6 @@ export default class HomeScreen extends Component {
   _onRefresh = () => {
     this.setState({ refreshing: true })
     this.loadData()
-    this.setState({ refreshing: false })
   }
 
   render() {

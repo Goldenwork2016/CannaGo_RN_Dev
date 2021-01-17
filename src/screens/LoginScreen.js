@@ -84,7 +84,7 @@ class LoginScreen extends Component {
       case 2:
         await this.setState({ isDispensaries: true, isDriver: false, isConsumers: false })
         this.ChangeState();
-        await AsyncStorage.setItem('usertype', "dispensaries");
+        await AsyncStorage.setItem('usertype', "dispensary");
         break;
       case 3:
         await this.setState({ isDispensaries: false, isDriver: true, isConsumers: false })

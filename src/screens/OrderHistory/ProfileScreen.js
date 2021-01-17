@@ -58,7 +58,7 @@ class ProfileScreen extends Component {
       storeHours: '',
       companyName: '',
       fein: '',
-      userId: "",
+      userId: Firebase.auth().currentUser.uid,
       availableBal: 0,
       isModalVisible1: false,
       timeFlag: false,
@@ -74,7 +74,7 @@ class ProfileScreen extends Component {
     const { real_data, user_real_info } = this.props
     const usertype = await AsyncStorage.getItem("usertype");
     const userId = await AsyncStorage.getItem("userUid");
-    await this.setState({ userId: userId })
+    // await this.setState({ userId: userId })
     await this.setState({ usertype: usertype });
     console.log("_______________+++++++++++++++++++++++________________")
     console.log(this.state.usertype)
@@ -114,8 +114,8 @@ class ProfileScreen extends Component {
             userType: snapshot.val().userType,
             zipCode: snapshot.val().zipCode,
             city: snapshot.val().city,
-            // data.push(row)
           };
+          console.log(user_data);
           await this.setState({
             firstName: user_data.firstName,
             lastName: user_data.lastName,
@@ -135,7 +135,7 @@ class ProfileScreen extends Component {
             city: user_data.city,
           })
         })
-      console.log(this.state.storeHours);
+      console.log(this.state.profileimage);
       const { navigation } = this.props;
       this.focusListener = navigation.addListener('didFocus', () => {
         this.compareTime();
@@ -411,7 +411,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={{ height: 150 }}></View>
           </ScrollView> :
-          this.state.usertype == "dispensaries" ?
+          this.state.usertype == "dispensary" ?
             <ScrollView style={{ width: '100%' }}>
               <View style={styles.container}>
                 <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 40 : 20 }}>

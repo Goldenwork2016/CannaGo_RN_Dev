@@ -489,268 +489,270 @@ export default class SignUpScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView style={{ width: '100%' }}>
-          <View style={styles.container}>
-            <Spinner
-              visible={this.state.isLoading}
-              textContent={'Creating your account...'}
-              textStyle={{ color: 'white' }}
-            />
-            <Spinner
-              visible={this.state.isImageUploading}
-              textContent={'Uploading profile image...'}
-              textStyle={{ color: 'white' }}
-            />
-            <View style={{ width: '100%', alignItems: 'center', marginTop: 40 }}>
-              <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
-                <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
-              </TouchableOpacity>
-              <View style={styles.personUploadgImage}>
-                <View style={styles.personImageArea}>
-                  <View style={styles.personImageArea1}>
-                    <Image source={this.state.avatarSource} resizeMode='cover' style={styles.personImage} />
+      <KeyboardAwareScrollView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <ScrollView style={{ width: '100%' }}>
+            <View style={styles.container}>
+              <Spinner
+                visible={this.state.isLoading}
+                textContent={'Creating your account...'}
+                textStyle={{ color: 'white' }}
+              />
+              <Spinner
+                visible={this.state.isImageUploading}
+                textContent={'Uploading profile image...'}
+                textStyle={{ color: 'white' }}
+              />
+              <View style={{ width: '100%', alignItems: 'center', marginTop: 40 }}>
+                <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
+                  <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
+                </TouchableOpacity>
+                <View style={styles.personUploadgImage}>
+                  <View style={styles.personImageArea}>
+                    <View style={styles.personImageArea1}>
+                      <Image source={this.state.avatarSource} resizeMode='cover' style={styles.personImage} />
+                    </View>
+                  </View>
+                  <TouchableOpacity style={{ ...styles.addBtn, bottom: 10 }} onPress={() => { this.chooseImage() }}>
+                    <Image source={require('../assets/iamges/addImage.png')} resizeMode='stretch' style={styles.addImage} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.inputArea}>
+                <View style={{ flexDirection: 'row', width: '100%' }}>
+                  <View style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }}>
+                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Fisrt Name" value={this.state.firstName} onChangeText={(text) => { this.setState({ firstName: text }) }}></TextInput>
+                  </View>
+                  <View style={{ ...styles.inputItem, width: '48.5%' }}>
+                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Last Name" value={this.state.lastName} onChangeText={(text) => { this.setState({ lastName: text }) }}></TextInput>
                   </View>
                 </View>
-                <TouchableOpacity style={{ ...styles.addBtn, bottom: 10 }} onPress={() => { this.chooseImage() }}>
-                  <Image source={require('../assets/iamges/addImage.png')} resizeMode='stretch' style={styles.addImage} />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={styles.inputArea}>
-              <View style={{ flexDirection: 'row', width: '100%' }}>
-                <View style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }}>
-                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
-                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Fisrt Name" value={this.state.firstName} onChangeText={(text) => { this.setState({ firstName: text }) }}></TextInput>
+                <View style={{ flexDirection: 'row', width: '100%' }}>
+                  <TouchableOpacity style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }} onPress={() => { this.setState({ isTimeVisible: true, }) }}>
+                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                    <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>{this.state.birthday == "" ? "Date of Birth" : this.state.birthday}</Text>
+                    <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
+                  </TouchableOpacity>
+                  <View style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }}>
+                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
+                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Delivery Zip" value={this.state.zipCode} onChangeText={(text) => { this.setState({ zipCode: text }) }}></TextInput>
+                  </View>
                 </View>
-                <View style={{ ...styles.inputItem, width: '48.5%' }}>
-                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
-                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Last Name" value={this.state.lastName} onChangeText={(text) => { this.setState({ lastName: text }) }}></TextInput>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
+                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Email Address" value={this.state.email} onChangeText={(text) => { this.setState({ email: text }) }}></TextInput>
                 </View>
-              </View>
-              <View style={{ flexDirection: 'row', width: '100%' }}>
-                <TouchableOpacity style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }} onPress={() => { this.setState({ isTimeVisible: true, }) }}>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
+                  <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Password" value={this.state.password} onChangeText={(text) => { this.setState({ password: text }) }}></TextInput>
+                </View>
+                <View style={styles.inputItem}>
+                  <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
+                  <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Retype password" value={this.state.conPassword} onChangeText={(text) => { this.setState({ conPassword: text }) }}></TextInput>
+                </View>
+                <View style={styles.inputItem}>
                   <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                  <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>{this.state.birthday == "" ? "Date of Birth" : this.state.birthday}</Text>
-                  <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
-                </TouchableOpacity>
-                <View style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }}>
-                  <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
-                  <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Delivery Zip" value={this.state.zipCode} onChangeText={(text) => { this.setState({ zipCode: text }) }}></TextInput>
+                  <TextInput keyboardType="phone-pad" style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Mobile Number" value={this.state.phoneNum} onChangeText={(text) => { this.setState({ phoneNum: text }) }}></TextInput>
                 </View>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
-                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Email Address" value={this.state.email} onChangeText={(text) => { this.setState({ email: text }) }}></TextInput>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
-                <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Password" value={this.state.password} onChangeText={(text) => { this.setState({ password: text }) }}></TextInput>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
-                <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Retype password" value={this.state.conPassword} onChangeText={(text) => { this.setState({ conPassword: text }) }}></TextInput>
-              </View>
-              <View style={styles.inputItem}>
-                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                <TextInput keyboardType="phone-pad" style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Mobile Number" value={this.state.phoneNum} onChangeText={(text) => { this.setState({ phoneNum: text }) }}></TextInput>
-              </View>
-              {/* <Text style={styles.results}>{displayFields}</Text> */}
-              {/* <TouchableOpacity style={styles.inputItem} onPress={this.scan.bind(this)}>
+                {/* <Text style={styles.results}>{displayFields}</Text> */}
+                {/* <TouchableOpacity style={styles.inputItem} onPress={this.scan.bind(this)}>
                 <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Scan Driver's License</Text>
                 <Image source={require('../assets/iamges/arrow-left.png')} resizeMode='stretch' style={styles.arrowleft} />
               </TouchableOpacity> */}
-              <View style={styles.TermsArea}>
-                <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun() }}>
-                  <Image source={this.state.ischecked ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
-                </TouchableOpacity>
-                <Text style={styles.termsTxt}>By checking this I agree to CannaGo's  </Text>
-                <TouchableOpacity style={styles.forgotBtn1}>
-                  <Text style={{ color: '#61D273', fontSize: 10, fontFamily: 'Poppins-Regular' }}>Terms & Conditions</Text>
+                <View style={styles.TermsArea}>
+                  <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun() }}>
+                    <Image source={this.state.ischecked ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
+                  </TouchableOpacity>
+                  <Text style={styles.termsTxt}>By checking this I agree to CannaGo's  </Text>
+                  <TouchableOpacity style={styles.forgotBtn1}>
+                    <Text style={{ color: '#61D273', fontSize: 10, fontFamily: 'Poppins-Regular' }}>Terms & Conditions</Text>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity style={styles.signinBtn} onPress={() => this.SingUp()}>
+                  <Text style={styles.signinTxt1}>Create Account</Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={styles.signinBtn} onPress={() => this.SingUp()}>
-                <Text style={styles.signinTxt1}>Create Account</Text>
+            </View>
+            <View style={{ height: 50 }}></View>
+            <DateTimePickerModal
+              isVisible={this.state.isTimeVisible}
+              mode="date"
+              onConfirm={(date) => { this.handleTimePicker(date) }}
+              onCancel={this.hideTimePicker}
+            />
+          </ScrollView>
+          <Modal isVisible={this.state.isModalVisible1}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input first name</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible1: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
               </TouchableOpacity>
             </View>
-          </View>
-          <View style={{ height: 50 }}></View>
-          <DateTimePickerModal
-            isVisible={this.state.isTimeVisible}
-            mode="date"
-            onConfirm={(date) => { this.handleTimePicker(date) }}
-            onCancel={this.hideTimePicker}
-          />
-        </ScrollView>
-        <Modal isVisible={this.state.isModalVisible1}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input first name</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible1: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible2}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input last name</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible2: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible3}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input email address</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible3: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible4}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Email type error, Please type again</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible4: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible5}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input your password</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible5: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible6}>
-          <View style={styles.modalView1}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <View style={{ width: "95%", alignSelf: 'center' }}>
-              <Text style={{ ...styles.Description, textAlign: 'center' }}>
-                Password must contain following:
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible2}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input last name</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible2: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible3}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input email address</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible3: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible4}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Email type error, Please type again</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible4: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible5}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input your password</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible5: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible6}>
+            <View style={styles.modalView1}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <View style={{ width: "95%", alignSelf: 'center' }}>
+                <Text style={{ ...styles.Description, textAlign: 'center' }}>
+                  Password must contain following:
                     </Text>
-              <Text style={styles.Description1}>
-                A lowercase letter{'\n'}
+                <Text style={styles.Description1}>
+                  A lowercase letter{'\n'}
                         A capital letter{'\n'}
                         A number{'\n'}
                         A special character{'\n'}
                         Minimum 8 characters
                     </Text>
+              </View>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible6: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible6: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible7}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Password doesn't match</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible7: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible8}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please select your birthday</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible8: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible9}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input phone number</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible9: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible11}>
-          <View style={{ ...styles.modalView, alignItems: 'center' }}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={{ ...styles.Description, textAlign: 'center' }}>The email address is already in use by another account.</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible11: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible10}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Your internet Connection is failed</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible10: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible12}>
-          <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
-            <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Profile image is uploaded</Text>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible15}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please Select Profile Image</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible15: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible14}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>You need to agree our Terms and Conditions</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible14: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible17}>
-          <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
-            <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome to CannaGo App!</Text>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible16}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input zip code</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible16: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible18}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={{ ...styles.Description, textAlign: 'center' }}>Sorry, you have to be 21 years or older to use our service.</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible18: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <Modal isVisible={this.state.isModalVisible19}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={{ ...styles.Description, textAlign: 'center' }}>Sorry, we're only serving the Atlanta, GA Metro Area. Please stay tuned for more locations.</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible19: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-      </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible7}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Password doesn't match</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible7: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible8}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please select your birthday</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible8: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible9}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input phone number</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible9: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible11}>
+            <View style={{ ...styles.modalView, alignItems: 'center' }}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={{ ...styles.Description, textAlign: 'center' }}>The email address is already in use by another account.</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible11: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible10}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Your internet Connection is failed</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible10: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible12}>
+            <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+              <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Profile image is uploaded</Text>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible15}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please Select Profile Image</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible15: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible14}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>You need to agree our Terms and Conditions</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible14: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible17}>
+            <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+              <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome to CannaGo App!</Text>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible16}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please input zip code</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible16: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible18}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={{ ...styles.Description, textAlign: 'center' }}>Sorry, you have to be 21 years or older to use our service.</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible18: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible19}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={{ ...styles.Description, textAlign: 'center' }}>Sorry, we're only serving the Atlanta, GA Metro Area. Please stay tuned for more locations.</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible19: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </View>
+      </KeyboardAwareScrollView>
     );
   }
 }

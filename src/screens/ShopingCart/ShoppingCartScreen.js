@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, ImageBackground, TextInput, Dimensions, Platform } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, ImageBackground, TextInput, FlatList, Dimensions, Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modalbox';
+import AlertModal from '../../components/AlertModal'
+import Spinner from 'react-native-loading-spinner-overlay';
+import NonImage from '../../assets/iamges/productDetail1.png'
+import Firebase from '../../../config/firebase'
 
 import { styles } from '../../components/styles'
 
@@ -17,11 +21,51 @@ export default class ShoppingCartScreen extends Component {
       itemNum1: 2,
       itemNum2: 1,
       usertype: 'consumer',
+      real_data: [],
+      userId: Firebase.auth().currentUser.uid,
+      isLoading: false,
+      isModalVisible: false,
+      alertContent: '',
+      isModalVisible1: false,
+      auto_num: 0
     };
   }
   componentDidMount = async () => {
     const usertype = await AsyncStorage.getItem("usertype");
+    const userId = await AsyncStorage.getItem("userUid");
     await this.setState({ usertype: usertype })
+    this.loadData();
+  }
+
+  loadData = async () => {
+    Firebase.database()
+      .ref("Carts/" + this.state.userId)
+      .on("value", async (snapshot) => {
+        var data = []
+        var row
+        snapshot.forEach(element => {
+          row = {
+            "Description": element.val().Description,
+            "GpriceValue": element.val().GpriceValue,
+            "Tag": element.val().Tag,
+            "feeValue": element.val().feeValue,
+            "id": element.val().id,
+            "itemImage": element.val().itemImage,
+            "itemNum1": element.val().itemNum1,
+            "priceValue": element.val().priceValue,
+            "productName": element.val().productName,
+            "num": element.val().num,
+          }
+          data.push(row)
+        });
+        console.log("_____________+++++++++++++_________________");
+        console.log(data)
+        await this.setState({
+          real_data: data,
+        });
+        console.log("================+++++++++++++_________________");
+        console.log(this.state.real_data)
+      })
   }
 
   closeModal = () => {
@@ -33,26 +77,17 @@ export default class ShoppingCartScreen extends Component {
     this.props.navigation.navigate("ProductDetailScreen")
   }
 
-  Addcart = () => {
-    this.setState({ itemNum1: this.state.itemNum1 + 1 })
+  Addcart = (index) => {
+    this.state.real_data[index].num += 1
+    this.setState({ auto_num: this.state.auto_num + 1 })
   }
 
-  Minuscart = async () => {
-    await this.setState({ itemNum1: this.state.itemNum1 - 1 })
-    if (this.state.itemNum1 <= 0) {
-      this.setState({ itemNum1: 0 })
+  Minuscart = async (index) => {
+    this.state.real_data[index].num -= 1
+    if (this.state.real_data[index].num <= 1) {
+      this.state.real_data[index].num = 1
     }
-  }
-
-  Addcart1 = () => {
-    this.setState({ itemNum2: this.state.itemNum2 + 1 })
-  }
-
-  Minuscart1 = async () => {
-    await this.setState({ itemNum2: this.state.itemNum2 - 1 })
-    if (this.state.itemNum2 <= 0) {
-      this.setState({ itemNum2: 0 })
-    }
+    this.setState({ auto_num: this.state.auto_num + 1 })
   }
 
   chageState = async () => {
@@ -60,13 +95,14 @@ export default class ShoppingCartScreen extends Component {
   }
 
   render() {
+    const { real_data } = this.state
     return (
       <View style={{ ...styles.container, justifyContent: 'center' }}>
         {this.state.usertype == "consumer" ?
-          this.state.isEmpty ?
+          real_data.length == 0 ?
             <View style={{ alignItems: 'center', height: '100%', justifyContent: 'center' }}>
               <Text style={{ ...styles.CartTitle, marginTop: Platform.OS == 'ios' ? 7 : -10 }}>Cart</Text>
-              <TouchableOpacity onPress={() => { this.chageState() }}>
+              <TouchableOpacity onPress={() => { this.props.navigation.navigate("HomeScreen") }}>
                 <Image source={require('../../assets/iamges/plusImage.png')} resizeMode='stretch' style={styles.plusImage} />
               </TouchableOpacity>
               <Text style={{ ...styles.AddShopiingTxt, color: '#414041' }}>Shopping Cart Empty</Text>
@@ -80,46 +116,37 @@ export default class ShoppingCartScreen extends Component {
                       <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                     </TouchableOpacity>
                     <Text style={{ ...styles.DetailTitle, marginTop: 7 }}>Cart</Text>
-                    <View style={styles.cartItemArea}>
-                      <View style={styles.cartImage}>
-                        <Image source={require('../../assets/iamges/product3.png')} resizeMode='stretch' style={styles.productCartImage} />
-                      </View>
-                      <View>
-                        <Text style={styles.productDescription}>Just CBD Gummies</Text>
-                        <Text style={{ ...styles.productDescription, color: "#61D273" }}>$ 24.99</Text>
-                        <View style={styles.countItem}>
-                          <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Minuscart() }}>
-                            <Text style={styles.cartAddBtn}>-</Text>
-                          </TouchableOpacity>
-                          <View style={styles.cartAccountArea}>
-                            <Text style={styles.cartAddBtn}>{this.state.itemNum1}</Text>
+
+                    <FlatList
+                      // showsVerticalScrollIndicator={true}
+                      style={{ width: '100%' }}
+                      numColumns={1}
+                      data={real_data}
+                      keyExtractor={(item, index) => index.toString()}
+                      renderItem={({ item, index }) => (
+                        <View style={styles.cartItemArea}>
+                          <View style={styles.cartImage}>
+                            <Image source={{ uri: item.itemImage }} resizeMode='stretch' style={styles.productCartImage} />
                           </View>
-                          <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Addcart() }}>
-                            <Text style={styles.cartAddBtn}>+</Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    </View>
-                    <View style={styles.cartItemArea}>
-                      <View style={styles.cartImage}>
-                        <Image source={require('../../assets/iamges/product1.png')} resizeMode='stretch' style={styles.productCartImage} />
-                      </View>
-                      <View>
-                        <Text style={styles.productDescription}>CBD Wax 10 ML</Text>
-                        <Text style={{ ...styles.productDescription, color: "#61D273" }}>$ 15.00</Text>
-                        <View style={styles.countItem}>
-                          <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Minuscart1() }}>
-                            <Text style={styles.cartAddBtn}>-</Text>
-                          </TouchableOpacity>
-                          <View style={styles.cartAccountArea}>
-                            <Text style={styles.cartAddBtn}>{this.state.itemNum2}</Text>
+                          <View>
+                            <Text style={styles.productDescription}>{item.productName}</Text>
+                            <Text style={{ ...styles.productDescription, color: "#61D273" }}>$ {item.priceValue}</Text>
+                            <View style={styles.countItem}>
+                              <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Minuscart(index) }}>
+                                <Text style={styles.cartAddBtn}>-</Text>
+                              </TouchableOpacity>
+                              <View style={styles.cartAccountArea}>
+                                <Text style={styles.cartAddBtn}>{item.num}</Text>
+                              </View>
+                              <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Addcart(index) }}>
+                                <Text style={styles.cartAddBtn}>+</Text>
+                              </TouchableOpacity>
+                            </View>
                           </View>
-                          <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Addcart1() }}>
-                            <Text style={styles.cartAddBtn}>+</Text>
-                          </TouchableOpacity>
                         </View>
-                      </View>
-                    </View>
+                      )}
+                      keyExtractor={item => `${item.id}`}
+                    />
                   </View>
                 </View>
                 <View style={{ height: 150 }}></View>
@@ -128,7 +155,7 @@ export default class ShoppingCartScreen extends Component {
                 <Text style={styles.signinTxt1}>Next</Text>
               </TouchableOpacity>
             </View> :
-          this.state.usertype == "dispensaries" ?
+          this.state.usertype == "dispensary" ?
             <View style={{ backgroundColor: '#61D273', height: '100%', width: '100%' }}>
               <View style={{ ...styles.container, backgroundColor: '#61D273', position: 'absolute' }}>
                 <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 60 : 40 }}>
@@ -236,7 +263,7 @@ export default class ShoppingCartScreen extends Component {
                         <Text style={{ ...styles.ItemHeader, color: '#61D273' }}>$25</Text>
                       </View>
                     </View> */}
-                    <Text style={{ ...styles.ItemHeader, textAlign: 'center',  }}>Order Completed 11/22/20, 10:32 AM</Text>
+                    <Text style={{ ...styles.ItemHeader, textAlign: 'center', }}>Order Completed 11/22/20, 10:32 AM</Text>
                     {/* <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>Total Amount: <Text style={{ color: '#61D273' }}>$50</Text></Text> */}
                     <TouchableOpacity onPress={() => this.refs.modal6.open()}>
                       <Text style={styles.ReportTxt}>Report an Issue</Text>

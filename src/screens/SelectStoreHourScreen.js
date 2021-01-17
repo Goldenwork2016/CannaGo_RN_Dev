@@ -26,7 +26,7 @@ export default class SelectStoreHourScreen extends Component {
                 { id: 6, day: 'Fri.', startTime: '', endTime: '', openStatus: "" },
                 { id: 7, day: 'Sat.', startTime: '', endTime: '', openStatus: "" },
             ],
-            renderValue:0,
+            renderValue: 0,
         };
     }
 
@@ -52,9 +52,13 @@ export default class SelectStoreHourScreen extends Component {
             this.state.dayData[index].startTime = ""
             this.state.dayData[index].endTime = ""
         }
-        this.setState({renderValue:this.state.renderValue+1})
+        this.setState({ renderValue: this.state.renderValue + 1 })
         console.log(this.state.dayData)
     };
+
+    SaveHours = () => {
+        this.props.navigation.navigate("DispensariesSignupScreen", { storeHour: this.state.dayData })
+    }
 
     render() {
         return (
@@ -123,7 +127,7 @@ export default class SelectStoreHourScreen extends Component {
                                 onConfirm={(time) => this.handleTimePicker(time, this.state.index, this.state.ii)}
                                 onCancel={this.hideTimePicker}
                             />
-                            <TouchableOpacity style={{ ...styles.signinBtn, marginTop: 100 }} onPress={() => { this.props.navigation.navigate("DispensariesSignupScreen", { storeHour: this.state.dayData }) }}>
+                            <TouchableOpacity style={{ ...styles.signinBtn, marginTop: 100 }} onPress={() => { this.SaveHours() }}>
                                 <Text style={styles.signinTxt1}>Save Dispensary Hours</Text>
                             </TouchableOpacity>
                         </View>

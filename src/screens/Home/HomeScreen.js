@@ -48,6 +48,7 @@ class HomeScreen extends Component {
     //     console.log(this.state.usertype);
     //   })
     // await AsyncStorage.setItem('usertype', this.state.usertype);
+    this.loadData();
   }
 
   loadData = async () => {
@@ -147,7 +148,7 @@ class HomeScreen extends Component {
                 renderItem={({ item }) => (
                   <TouchableOpacity style={styles.StoreItem} onPress={() => { this.props.navigation.navigate("ProductScreen", { storeId: item.id }) }}>
                     <Text style={styles.homeTitle}> {item.store} </Text>
-                    <Image source={store_data.length == 0 ? item.ImageUrl : { uri: item.ImageUrl }} resizeMode='stretch' style={styles.storeImage} />
+                    <Image source={store_data.length == 0 ? item.ImageUrl : { uri: item.ImageUrl }} resizeMode='cover' style={styles.storeImage} />
                     <View style={styles.storeDes1}>
                       <Text style={styles.desTxt}>Store's pricing: $$</Text>
                       <Text style={styles.desTxt}>Store's Hours Today: 8am - 7pm</Text>
