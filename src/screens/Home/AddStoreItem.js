@@ -46,6 +46,8 @@ class AddStoreItemScreen extends Component {
       img_url: '',
       timeFlag: false,
       isloading: false,
+      chooseCoaImage: '',
+      coaImage: '',
       isModalVisible1: false,
       isModalVisible2: false,
       isModalVisible3: false,
@@ -53,11 +55,13 @@ class AddStoreItemScreen extends Component {
       isModalVisible5: false,
       isModalVisible6: false,
       isModalVisible7: false,
-      isModalVisible9: false,
       isModalVisible8: false,
       isModalVisible9: false,
+      isModalVisible10: false,
+      isModalVisible11: false,
       userId: "",
       isImageUploading: false,
+      isCoaImageUploading: false,
     };
   }
 
@@ -186,8 +190,81 @@ class AddStoreItemScreen extends Component {
     });
   };
 
+  chooseCoaImage = () => {
+    console.log("+++++00000");
+    ImagePicker.launchImageLibrary(options, response => {
+      console.log("Response = ", response);
+
+      if (response.didCancel) {
+        console.log("User cancelled image picker");
+      } else if (response.error) {
+        console.log("ImagePicker Error: ", response.error);
+      } else {
+        const source = { uri: response.uri };
+        const Blob = RNFetchBlob.polyfill.Blob;    //firebase image upload
+        const fs = RNFetchBlob.fs;
+        window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+        window.Blob = Blob;
+
+        const Fetch = RNFetchBlob.polyfill.Fetch
+        window.fetch = new Fetch({
+          auto: true,
+          binaryContentTypes: [
+            'image/',
+            'video/',
+            'audio/',
+            'foo/',
+          ]
+        }).build()
+
+        let uploadBlob = null;
+
+        var path = Platform.OS === "ios" ? response.uri.replace("file://", "") : response.uri
+
+        var d = new Date();
+        var _name = d.getHours() + d.getMinutes() + d.getSeconds() + 'img.jpg';
+
+        fs.readFile(path, "base64")
+          .then(data => {
+            //console.log(data);
+            let mime = "image/jpg";
+            return Blob.build(data, { type: `${mime};BASE64` });
+          })
+          .then(blob => {
+            this.setState({ isCoaImageUploading: true })
+            uploadBlob = blob;
+            Firebase
+              .storage()
+              .ref("ItemImages/" + _name)
+              .put(blob)
+              .then(() => {
+                uploadBlob.close();
+                return Firebase
+                  .storage()
+                  .ref("ItemImages/" + _name)
+                  .getDownloadURL();
+              })
+              .then(async uploadedFile => {
+                console.log("++++++++++++");
+                console.log({ uploadedFile });
+                await this.setState({ coaImage: uploadedFile })
+                console.log(this.state.img_url);
+                this.setState({ isCoaImageUploading: false })
+                this.setState({ isModalVisible11: true })
+                setTimeout(() => {
+                  this.setState({ isModalVisible11: false })
+                }, 2000)
+              })
+              .catch(error => {
+                console.log({ error });
+              });
+          });
+      }
+    });
+  };
+
   AddStore = async () => {
-    const { img_url, itemNum1, feeValue, priceValue, GpriceValue, productName, Tag, Description } = this.state
+    const { img_url, itemNum1, feeValue, priceValue, GpriceValue, productName, Tag, Description, coaImage } = this.state
     const { load } = this.props
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
     this.setState({ isLoading: true })
@@ -208,6 +285,8 @@ class AddStoreItemScreen extends Component {
         this.setState({ isModalVisible6: true })
       } else if (Description == "") {
         this.setState({ isModalVisible7: true })
+      } else if (coaImage == "") {
+        this.setState({ isModalVisible10: true })
       } else {
         var newItemKey = Firebase.database().ref().child('Items').push().key;
         await Firebase.database().ref('Items/' + this.state.userId + '/' + newItemKey).update({
@@ -220,6 +299,7 @@ class AddStoreItemScreen extends Component {
           Tag: Tag,
           Description: Description,
           itemImage: img_url,
+          coaImage: coaImage
         });
         console.log("true");
         // var data = []
@@ -277,6 +357,11 @@ class AddStoreItemScreen extends Component {
           />
           <Spinner
             visible={this.state.isImageUploading}
+            textContent={'Uploading item image...'}
+            textStyle={{ color: 'white' }}
+          />
+          <Spinner
+            visible={this.state.isCoaImageUploading}
             textContent={'Uploading item image...'}
             textStyle={{ color: 'white' }}
           />
@@ -348,6 +433,9 @@ class AddStoreItemScreen extends Component {
                 <View style={styles.ContentItem}>
                   <TextInput style={styles.specialInput} multiline={true} placeholderTextColor="#5E5E5E" placeholder="Enter Items Description..." onChangeText={(text) => { this.setState({ Description: text }) }} />
                 </View>
+                <TouchableOpacity style={styles.uploadCod} onPress={() => { this.chooseCoaImage() }}>
+                  <Text style={{ ...styles.signinTxt1, fontSize: 16 }}>Upload COA</Text>
+                </TouchableOpacity>
                 <TouchableOpacity style={{ ...styles.signinBtn, width: 170, alignSelf: 'center' }} onPress={() => { this.AddStore() }}>
                   <Text style={styles.signinTxt1}>Add to Store</Text>
                 </TouchableOpacity>
@@ -424,10 +512,25 @@ class AddStoreItemScreen extends Component {
               <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>New item is added</Text>
             </View>
           </Modal>
-          <Modal isVisible={this.state.isModalVisible9}>
+          <Modal isVisible={this.state.isModalVisible11}>
+            <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+              <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>COA image is uploaded</Text>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible11}>
             <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
               <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
               <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Item image is uploaded</Text>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible10}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={styles.Description}>Please select COA image</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible10: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
             </View>
           </Modal>
         </View>

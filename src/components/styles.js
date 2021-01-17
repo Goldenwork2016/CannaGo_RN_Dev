@@ -194,11 +194,30 @@ export const styles = StyleSheet.create({
         marginTop: 35,
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%'
+        width: '100%',
+    },
+    uploadCod: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 45,
+        borderRadius: 26,
+        backgroundColor: '#7f6da2',
+        marginTop: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        width: 140,
+        alignSelf: 'center',
+        marginBottom:-20
     },
     signinTxt1: {
         fontSize: 18,
         color: 'white',
+        fontFamily: 'Poppins-Regular'
+    },
+    previewTxt: {
+        fontSize: 15,
+        color: '#61D273',
         fontFamily: 'Poppins-Regular'
     },
     signinTxt2: {
@@ -286,6 +305,18 @@ export const styles = StyleSheet.create({
         width: 246,
         alignSelf: 'center',
     },
+    PreviewtBtn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 39,
+        borderRadius: 26,
+        backgroundColor: 'white',
+        marginTop: 25,
+        marginBottom: -40,
+        justifyContent: 'center',
+        width: 246,
+        alignSelf: 'center',
+    },
     AddCartBtn1: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -362,7 +393,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 30,
         width: '90%',
-        marginLeft:'5%'
+        marginLeft: '5%'
     },
     cartImage: {
         borderRadius: 5,

@@ -41,6 +41,7 @@ class UpdateItemScreen extends Component {
       feeValue: '',
       id: '',
       itemImage: '',
+      coaImage: '',
       priceValue: '',
       productName: '',
       userId: Firebase.auth().currentUser.uid,
@@ -49,6 +50,7 @@ class UpdateItemScreen extends Component {
       timeFlag: false,
       isloading: false,
       isImageUploading: false,
+      isCoaImageUploading: false,
     };
   }
 
@@ -185,8 +187,81 @@ class UpdateItemScreen extends Component {
     });
   };
 
+  chooseCoaImage = () => {
+    console.log("+++++00000");
+    ImagePicker.launchImageLibrary(options, response => {
+      console.log("Response = ", response);
+
+      if (response.didCancel) {
+        console.log("User cancelled image picker");
+      } else if (response.error) {
+        console.log("ImagePicker Error: ", response.error);
+      } else {
+        const source = { uri: response.uri };
+        const Blob = RNFetchBlob.polyfill.Blob;    //firebase image upload
+        const fs = RNFetchBlob.fs;
+        window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+        window.Blob = Blob;
+
+        const Fetch = RNFetchBlob.polyfill.Fetch
+        window.fetch = new Fetch({
+          auto: true,
+          binaryContentTypes: [
+            'image/',
+            'video/',
+            'audio/',
+            'foo/',
+          ]
+        }).build()
+
+        let uploadBlob = null;
+
+        var path = Platform.OS === "ios" ? response.uri.replace("file://", "") : response.uri
+
+        var d = new Date();
+        var _name = d.getHours() + d.getMinutes() + d.getSeconds() + 'img.jpg';
+
+        fs.readFile(path, "base64")
+          .then(data => {
+            //console.log(data);
+            let mime = "image/jpg";
+            return Blob.build(data, { type: `${mime};BASE64` });
+          })
+          .then(blob => {
+            this.setState({ isCoaImageUploading: true })
+            uploadBlob = blob;
+            Firebase
+              .storage()
+              .ref("ItemImages/" + _name)
+              .put(blob)
+              .then(() => {
+                uploadBlob.close();
+                return Firebase
+                  .storage()
+                  .ref("ItemImages/" + _name)
+                  .getDownloadURL();
+              })
+              .then(async uploadedFile => {
+                console.log("++++++++++++");
+                console.log({ uploadedFile });
+                await this.setState({ coaImage: uploadedFile })
+                console.log(this.state.img_url);
+                this.setState({ isCoaImageUploading: false })
+                this.setState({ isModalVisible3: true })
+                setTimeout(() => {
+                  this.setState({ isModalVisible3: false })
+                }, 2000)
+              })
+              .catch(error => {
+                console.log({ error });
+              });
+          });
+      }
+    });
+  };
+
   async update() {
-    const { Description, GpriceValue, Tag, feeValue, id, itemImage, itemNum1, priceValue, productName } = this.state
+    const { Description, GpriceValue, Tag, feeValue, id, itemImage, itemNum1, priceValue, productName, coaImage } = this.state
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
     await Firebase.database().ref('Items/' + this.state.userId + '/' + id).update({
       id: id,
@@ -198,6 +273,7 @@ class UpdateItemScreen extends Component {
       Tag: Tag,
       Description: Description,
       itemImage: itemImage,
+      coaImage:coaImage
     });
     const { load } = this.props
     var data = []
@@ -288,6 +364,11 @@ class UpdateItemScreen extends Component {
             textContent={'Uploading item image...'}
             textStyle={{ color: 'white' }}
           />
+          <Spinner
+            visible={this.state.isCoaImageUploading}
+            textContent={'Uploading COA image...'}
+            textStyle={{ color: 'white' }}
+          />
           <ScrollView style={{ width: '100%' }}>
             <View style={styles.container}>
               <Text style={{ ...styles.CartTitle, marginTop: Platform.OS == 'ios' ? 7 : -10 }}>Edit Item in Your Store</Text>
@@ -354,6 +435,9 @@ class UpdateItemScreen extends Component {
                 <View style={styles.ContentItem}>
                   <TextInput value={Description} onChangeText={value => this.setState({ Description: value })} style={styles.specialInput} multiline={true} placeholderTextColor="#000000" placeholder="Lorem ipsum, or lipsum as it is sometimes known, Lorem ipsum, or lipsum as it is sometimes known, " />
                 </View>
+                <TouchableOpacity style={{ ...styles.uploadCod, marginBottom: 30 }} onPress={() => { this.chooseCoaImage() }}>
+                  <Text style={{ ...styles.signinTxt1, fontSize: 16 }}>Upload COA</Text>
+                </TouchableOpacity>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: -20 }}>
                   <TouchableOpacity style={{ ...styles.signinBtn, backgroundColor: "white", width: 128 }} onPress={() => this.del()}>
                     <Text style={{ ...styles.signinTxt1, color: "#CD5D5D" }}>Delete</Text>
@@ -376,6 +460,12 @@ class UpdateItemScreen extends Component {
             <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
               <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
               <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Item image is updated</Text>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible3}>
+            <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+              <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>COA image is updated</Text>
             </View>
           </Modal>
         </View>

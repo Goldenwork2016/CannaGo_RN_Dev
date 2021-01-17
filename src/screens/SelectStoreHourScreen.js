@@ -84,7 +84,7 @@ export default class SelectStoreHourScreen extends Component {
 
     gotoNext = () => {
         if (this.state.timeflag == false) {
-            this.setState({ alertContent: 'Sorry, but fill out all daily store hours.', isModalVisible: true })
+            this.setState({ alertContent: "Please put in your dispensary's daily hours.", isModalVisible: true })
         } else {
             this.props.navigation.navigate("DispensariesSignupScreen", { storeHour: this.state.dayData })
         }

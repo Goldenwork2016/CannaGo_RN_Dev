@@ -45,7 +45,8 @@ export default class ProductDetailScreen extends Component {
                     'itemImage': snapshot.val().itemImage,
                     'itemNum1': snapshot.val().itemNum1,
                     'priceValue': snapshot.val().priceValue,
-                    'productName': snapshot.val().productName
+                    'productName': snapshot.val().productName,
+                    'coaImage': snapshot.val().coaImage,
                 }
                 console.log("_____________+++++++++++++_________________");
                 console.log(row)
@@ -73,7 +74,8 @@ export default class ProductDetailScreen extends Component {
                     itemNum1: real_data.itemNum1,
                     priceValue: real_data.priceValue,
                     productName: real_data.productName,
-                    num:1
+                    coaImage: real_data.coaImage,
+                    num: 1
                 });
             this.setState({ isModalVisible1: true })
             setTimeout(() => {
@@ -110,6 +112,9 @@ export default class ProductDetailScreen extends Component {
                                 <Text style={{ ...styles.productDescription, marginBottom: 10 }}>Name: {this.state.real_data.productName}</Text>
                                 <Text style={styles.productDescription}>Price: $ {this.state.real_data.priceValue}</Text>
                             </View>
+                            <TouchableOpacity style={styles.PreviewtBtn} onPress={() => {this.props.navigation.navigate("CoaImageScreen", {coaImage:this.state.real_data.coaImage})}}>
+                                <Text style={styles.previewTxt}>Preview COA</Text>
+                            </TouchableOpacity>
                             <View style={{ width: '90%', marginLeft: '5%', marginTop: 50 }}>
                                 <Text style={{ ...styles.productDescription, fontSize: 16 }}>Description</Text>
                                 <Text style={{ ...styles.productDescription, fontSize: 12, marginTop: 10, color: '#707070' }}>{this.state.real_data.Description}</Text>

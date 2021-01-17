@@ -10,6 +10,7 @@ import ProductScreen from '../screens/Home/ProductScreen'
 import ProductDetailScreen from '../screens/Home/ProductDetailScreen'
 import AddStoreItemScreen from '../screens/Home/AddStoreItem'
 import UpdateItemScreen from '../screens/Home/UpdateItemScreen'
+import CoaImageScreen from '../screens/Home/CoaImageScreen'
 import ShoppingCartScreen from '../screens/ShopingCart/ShoppingCartScreen'
 import CheckOutScreen from '../screens/ShopingCart/CheckOutScreen'
 import OrderStatusScreen from '../screens/ShopingCart/OrderStatusScreen'
@@ -70,6 +71,12 @@ const Home = createStackNavigator(
         },
         UpdateItemScreen: {
             screen: UpdateItemScreen,
+            navigationOptions: {
+                headerShown: false,
+            }
+        },
+        CoaImageScreen: {
+            screen: CoaImageScreen,
             navigationOptions: {
                 headerShown: false,
             }
