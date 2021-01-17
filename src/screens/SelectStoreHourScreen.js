@@ -4,6 +4,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { styles } from '../components/styles';
 import dayjs from 'dayjs';
 import RNPickerSelect from "react-native-picker-select";
+import AlertModal from '../components/AlertModal'
+import Modal from 'react-native-modal';
 
 import NonImage from '../assets/iamges/productDetail1.png'
 export default class SelectStoreHourScreen extends Component {
@@ -17,6 +19,9 @@ export default class SelectStoreHourScreen extends Component {
             ii: '',
             isTimeVisible2: false,
             SunStartTime: '',
+            isModalVisible:false,
+            alertContent:'',
+            timeflag: false,
             dayData: [
                 { id: 1, day: 'Sun.', startTime: '', endTime: '', openStatus: "" },
                 { id: 2, day: 'Mon.', startTime: '', endTime: '', openStatus: "" },
@@ -31,6 +36,7 @@ export default class SelectStoreHourScreen extends Component {
     }
 
     handleTimePicker = (time, index, i) => {
+        console.log(time)
         console.log(index)
         if (i == 1) {
             this.state.dayData[index].startTime = dayjs(time).format('hh:mm A')
@@ -56,13 +62,41 @@ export default class SelectStoreHourScreen extends Component {
         console.log(this.state.dayData)
     };
 
-    SaveHours = () => {
-        this.props.navigation.navigate("DispensariesSignupScreen", { storeHour: this.state.dayData })
+    SaveHours = async () => {
+        const { dayData } = this.state
+        var i
+        for (i in dayData) {
+            console.log(i)
+            if (dayData[i].openStatus == "") {
+                await this.setState({ timeflag: false })
+                break
+            } else if (dayData[i].openStatus == "Open") {
+                if (dayData[i].startTime == "" || dayData[i].endTime == "") {
+                    await this.setState({ timeflag: false })
+                    break
+                } else { await this.setState({ timeflag: true }) }
+            } else {
+                await this.setState({ timeflag: true })
+            }
+        }
+        this.gotoNext()
+    }
+
+    gotoNext = () => {
+        if (this.state.timeflag == false) {
+            this.setState({ alertContent: 'Sorry, but fill out all daily store hours.', isModalVisible: true })
+        } else {
+            this.props.navigation.navigate("DispensariesSignupScreen", { storeHour: this.state.dayData })
+        }
     }
 
     render() {
+        const { isModalVisible } = this.state
         return (
             <View style={styles.container}>
+                <Modal isVisible={this.state.isModalVisible}>
+                    <AlertModal alertContent={this.state.alertContent} onPress={() => this.setState({ isModalVisible: false })} />
+                </Modal>
                 <ScrollView style={{ width: '100%' }}>
                     <View style={styles.container}>
                         <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 55 : 25 }}>
@@ -123,7 +157,9 @@ export default class SelectStoreHourScreen extends Component {
                             />
                             <DateTimePickerModal
                                 isVisible={this.state.isTimeVisible}
+                                headerTextIOS="Pick a time"
                                 mode="time"
+                                date="2021-01-17T01:00:00.000Z"
                                 onConfirm={(time) => this.handleTimePicker(time, this.state.index, this.state.ii)}
                                 onCancel={this.hideTimePicker}
                             />
