@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform, Dimensions } from 'react-native';
 import Firebase from '../../../config/firebase'
 import { styles } from '../../components/styles'
 import Modal from 'react-native-modal';
@@ -8,11 +8,13 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
 import NonImage from '../../assets/iamges/productDetail1.png'
 
+const {width, height} = Dimensions.get('window')
+
 export default class CoaImageScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            coaImage:''
+            coaImage: ''
         };
     }
 
@@ -31,10 +33,12 @@ export default class CoaImageScreen extends Component {
                             <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
                                 <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                             </TouchableOpacity>
-                            <View style={{...styles.personUploadgImage, flex: 1, justifyContent:'center'}}>
+                            <View style={{ ...styles.personUploadgImage }}>
                                 <Text style={styles.DetailTitle}>COA</Text>
-                                <Image source={{ uri: this.state.coaImage }} resizeMode='stretch' style={styles.productDetailImage} />
                             </View>
+                        </View>
+                        <View style={{ height: height-230, width: width*0.9}}>
+                            <Image source={{ uri: this.state.coaImage }} resizeMode='contain' style={{ width: '100%', height: '100%' }} />
                         </View>
                     </View>
                 </ScrollView>
