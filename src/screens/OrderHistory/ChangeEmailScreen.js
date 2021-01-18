@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ImagePicker from 'react-native-image-picker';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { styles } from '../../components/styles'
 
 import { func, string, bool, object, array } from "prop-types";
@@ -25,7 +25,7 @@ class ChangeEmailScreen extends Component {
             current_Email: '',
             new_Email: '',
             confirm_Email: '',
-            password:'',
+            password: '',
             usertype: '',
             userId: firebase.auth().currentUser.uid,
             isModalVisible: false,
@@ -85,7 +85,7 @@ class ChangeEmailScreen extends Component {
                 }).catch((error) => {
                     console.log(error);
                     this.setState({ isLoading: false })
-                    if (error.message == "The email address is already in use by another account."){
+                    if (error.message == "The email address is already in use by another account.") {
                         this.setState({ alertContent: 'The email address is already in use by another account.', isModalVisible: true })
                     }
                 });
@@ -114,51 +114,53 @@ class ChangeEmailScreen extends Component {
     render() {
         const { Email } = this.state
         return (
-            <View style={styles.container}>
-                <Modal isVisible={this.state.isModalVisible}>
-                    <AlertModal alertContent={this.state.alertContent} onPress={() => this.setState({ isModalVisible: false })} />
-                </Modal>
-                <Modal isVisible={this.state.isModalVisible1}>
-                    <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
-                        <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-                        <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular', width: '90%' }}>Email was changed successfully.</Text>
-                    </View>
-                </Modal>
-                <ScrollView style={{ width: '100%' }}>
-                    <View style={styles.container}>
-                        <Spinner
-                            visible={this.state.isLoading}
-                            textContent={'Updating Email...'}
-                            textStyle={{ color: 'white' }}
-                        />
-                        <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 40 : 20 }}>
-                            <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
-                                <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
-                            </TouchableOpacity>
+            <KeyboardAwareScrollView style={{ flex: 1 }}>
+                <View style={styles.container}>
+                    <Modal isVisible={this.state.isModalVisible}>
+                        <AlertModal alertContent={this.state.alertContent} onPress={() => this.setState({ isModalVisible: false })} />
+                    </Modal>
+                    <Modal isVisible={this.state.isModalVisible1}>
+                        <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+                            <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+                            <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular', width: '90%' }}>Email was changed successfully.</Text>
                         </View>
-                        <Image source={require('../../assets/iamges/forgpwdImage.png')} resizeMode='stretch' style={{ ...styles.logoImage, marginTop: 150 }} />
-                        <Text style={styles.forgpwdTxt}>You are changing your account Email</Text>
-                        <View style={styles.inputArea}>
-                            <View style={styles.inputItem}>
-                                <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                <TextInput onChangeText={value => this.setState({ old_Email: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Enter Old Email"></TextInput>
+                    </Modal>
+                    <ScrollView style={{ width: '100%' }}>
+                        <View style={styles.container}>
+                            <Spinner
+                                visible={this.state.isLoading}
+                                textContent={'Updating Email...'}
+                                textStyle={{ color: 'white' }}
+                            />
+                            <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 40 : 20 }}>
+                                <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
+                                    <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
+                                </TouchableOpacity>
                             </View>
-                            <View style={styles.inputItem}>
-                                <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                <TextInput onChangeText={value => this.setState({ new_Email: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Enter New Email"></TextInput>
+                            <Image source={require('../../assets/iamges/forgpwdImage.png')} resizeMode='stretch' style={{ ...styles.logoImage, marginTop: 150 }} />
+                            <Text style={styles.forgpwdTxt}>You are changing your account Email</Text>
+                            <View style={styles.inputArea}>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <TextInput onChangeText={value => this.setState({ old_Email: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Enter Old Email"></TextInput>
+                                </View>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <TextInput onChangeText={value => this.setState({ new_Email: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Enter New Email"></TextInput>
+                                </View>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
+                                    <TextInput onChangeText={value => this.setState({ confirm_Email: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Re-Type New Email"></TextInput>
+                                </View>
+                                <TouchableOpacity style={{ ...styles.signinBtn, backgroundColor: '#3EA3E1', width: 128, alignSelf: 'center' }} onPress={() => { this.update() }}>
+                                    <Text style={styles.signinTxt1}>Update</Text>
+                                </TouchableOpacity>
                             </View>
-                            <View style={styles.inputItem}>
-                                <Image source={require('../../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
-                                <TextInput onChangeText={value => this.setState({ confirm_Email: value })} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Re-Type New Email"></TextInput>
-                            </View>
-                            <TouchableOpacity style={{ ...styles.signinBtn, backgroundColor: '#3EA3E1', width: 128, alignSelf: 'center' }} onPress={() => { this.update() }}>
-                                <Text style={styles.signinTxt1}>Update</Text>
-                            </TouchableOpacity>
                         </View>
-                    </View>
-                    <View style={{ height: 150 }}></View>
-                </ScrollView>
-            </View>
+                        <View style={{ height: 150 }}></View>
+                    </ScrollView>
+                </View>
+            </KeyboardAwareScrollView>
         );
     }
 }

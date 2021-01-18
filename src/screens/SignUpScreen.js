@@ -32,29 +32,6 @@ var renderIf = function (condition, content) {
   return null;
 }
 
-// function buildResult(result, key) {
-//   if (result && result != -1) {
-//     return key + ": " + result + "\n";
-//   }
-//   return ""
-// }
-
-// function buildDateResult(result, key) {
-//   if (result) {
-//     return key + ": " +
-//       result.day + "." + result.month + "." + result.year + "."
-//       + "\n";
-//   }
-//   return ""
-// }
-
-// const licenseKey = Platform.select({
-//   // iOS license key for applicationID: com.microblink.sample
-//   ios: 'sRwAAAEgb3JnLnJlYWN0anMubmF0aXZlLmZzdGFyLmNhbm5hZ29xkIzuDe6sAPx/esV44wkdOUcvts4ROcj6DzDOtk+pH6DxbJazROdgJ0HSrumXoDGEAzaO9bDgSTW7H4GWBS9lAwyboeJkF0qIWJ/1qdM0wZsZIT7C9Jciwz8eIwCQ5q/hiKb+/K7mYTJ0F/hxBWYC7ZWX8ZYzbuIt9H06PcCR5vvc6YZ/NNjl+KGvdvhvP/xnim3zQnXkhcTAo88NOsSb9D4EkKMXxRoXhniJDaPEh3x/ja5te1NwgkF4dmVHYyq1O+tCNqNXBfw1Vh5Le9ttKPbQExVJdmxnrcAlZBfIVWx3/ZVLVywHhxdfhTWcZsTRQRL4GuE=',
-//   // android license key for applicationID: com.microblink.sample
-//   android: 'sRwAAAAgb3JnLnJlYWN0anMubmF0aXZlLmZzdGFyLmNhbm5hZ2+uLqgu92xuqnYqkHR8Sr81G2E+bETfxW8gbfKXS26d78MwYaonbNaLonclr4el7d2bRO7TQM9yKotWQvQF7mPXDnBRNH564wUi7iRmkUqne8797YfL2yF53+mPqd1ecIQW9iJZ9sb3b0ZW2za0nhj/WOLs0zocgKmFZUn8R64sgAodyGfbxOCVnoUdOnr42CcovfbFH7azWMoujjyY10zZQ4kwoO7Xyeu6rhbCZhFYQ1Mn+jhAz7QFegYeag1zQt2F6FfOtyxOR29YqedothoA0fl1ig9K/YR1D7MnFOxqc3Xd60h8Rt4MXvxYir/On6sLMi5hBR0='
-// })
-
 export default class SignUpScreen extends Component {
   constructor(props) {
     super(props);
@@ -123,166 +100,6 @@ export default class SignUpScreen extends Component {
     this.focusListener.remove();
   }
 
-  // async scan() {
-  //   try {
-
-  //     // to scan any machine readable travel document (passports, visas and IDs with
-  //     // machine readable zone), use MrtdRecognizer
-  //     // var mrtdRecognizer = new BlinkIDReactNative.MrtdRecognizer();
-  //     // mrtdRecognizer.returnFullDocumentImage = true;
-
-  //     // var mrtdSuccessFrameGrabber = new BlinkIDReactNative.SuccessFrameGrabberRecognizer(mrtdRecognizer);
-
-  //     // BlinkIDCombinedRecognizer automatically classifies different document types and scans the data from
-  //     // the supported document
-  //     var blinkIdCombinedRecognizer = new BlinkIDReactNative.BlinkIdCombinedRecognizer();
-  //     blinkIdCombinedRecognizer.returnFullDocumentImage = true;
-  //     blinkIdCombinedRecognizer.returnFaceImage = true;
-
-  //     const scanningResults = await BlinkIDReactNative.BlinkID.scanWithCamera(
-  //       new BlinkIDReactNative.BlinkIdOverlaySettings(),
-  //       new BlinkIDReactNative.RecognizerCollection([blinkIdCombinedRecognizer/*, mrtdSuccessFrameGrabber*/]),
-  //       licenseKey
-  //     );
-
-  //     if (scanningResults) {
-  //       let newState = {
-  //         showFrontImageDocument: false,
-  //         resultFrontImageDocument: '',
-  //         showBackImageDocument: false,
-  //         resultBackImageDocument: '',
-  //         showImageFace: false,
-  //         resultImageFace: '',
-  //         results: '',
-  //         showSuccessFrame: false,
-  //         successFrame: ''
-  //       };
-
-  //       for (let i = 0; i < scanningResults.length; ++i) {
-  //         let localState = this.handleResult(scanningResults[i]);
-  //         newState.showFrontImageDocument = newState.showFrontImageDocument || localState.showFrontImageDocument;
-  //         if (localState.showFrontImageDocument) {
-  //           newState.resultFrontImageDocument = localState.resultFrontImageDocument;
-  //         }
-  //         newState.showBackImageDocument = newState.showBackImageDocument || localState.showBackImageDocument;
-  //         if (localState.showBackImageDocument) {
-  //           newState.resultBackImageDocument = localState.resultBackImageDocument;
-  //         }
-  //         newState.showImageFace = newState.showImageFace || localState.showImageFace;
-  //         if (localState.resultImageFace) {
-  //           newState.resultImageFace = localState.resultImageFace;
-  //         }
-  //         newState.results += localState.results;
-  //         newState.showSuccessFrame = newState.showSuccessFrame || localState.showSuccessFrame;
-  //         if (localState.successFrame) {
-  //           newState.successFrame = localState.successFrame;
-  //         }
-
-  //       }
-  //       newState.results += '\n';
-  //       this.setState(newState);
-  //       console.log(this.state.results)
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     this.setState({
-  //       showFrontImageDocument: false, resultFrontImageDocument: '', showBackImageDocument: false, resultBackImageDocument: '', showImageFace: false, resultImageFace: '', results: 'Scanning has been cancelled', showSuccessFrame: false,
-  //       successFrame: ''
-  //     });
-  //   }
-  // }
-
-  // handleResult(result) {
-  //   var localState = {
-  //     showFrontImageDocument: false,
-  //     resultFrontImageDocument: '',
-  //     showBackImageDocument: false,
-  //     resultBackImageDocument: '',
-  //     resultImageFace: '',
-  //     results: '',
-  //     showSuccessFrame: false,
-  //     successFrame: ''
-  //   };
-
-  //   if (result instanceof BlinkIDReactNative.BlinkIdCombinedRecognizerResult) {
-  //     let blinkIdResult = result;
-  //     console.log(blinkIdResult.firstName)
-  //     this.setState({ firstName: blinkIdResult.firstName, lastName: blinkIdResult.lastName, age: blinkIdResult.age })
-
-  //     let resultString =
-  //       buildResult(blinkIdResult.firstName, "FirstName") +
-  //       buildResult(blinkIdResult.lastName, "LastName") +
-  //       buildResult(blinkIdResult.fullName, "FullName") +
-  //       buildResult(blinkIdResult.localizedName, "LocalizedName") +
-  //       buildResult(blinkIdResult.additionalNameInformation, "AdditionalNameInfo") +
-  //       buildResult(blinkIdResult.address, "Address") +
-  //       buildResult(blinkIdResult.additionalAddressInformation, "AdditionalAddressInfo") +
-  //       buildResult(blinkIdResult.documentNumber, "DocumentNumber") +
-  //       buildResult(blinkIdResult.documentAdditionalNumber, "AdditionalDocumentNumber") +
-  //       buildResult(blinkIdResult.sex, "Sex") +
-  //       buildResult(blinkIdResult.issuingAuthority, "IssuingAuthority") +
-  //       buildResult(blinkIdResult.nationality, "Nationality") +
-  //       buildDateResult(blinkIdResult.dateOfBirth, "DateOfBirth") +
-  //       buildResult(blinkIdResult.age, "Age") +
-  //       buildDateResult(blinkIdResult.dateOfIssue, "DateOfIssue") +
-  //       buildDateResult(blinkIdResult.dateOfExpiry, "DateOfExpiry") +
-  //       buildResult(blinkIdResult.dateOfExpiryPermanent, "DateOfExpiryPermanent") +
-  //       buildResult(blinkIdResult.expired, "Expired") +
-  //       buildResult(blinkIdResult.maritalStatus, "MartialStatus") +
-  //       buildResult(blinkIdResult.personalIdNumber, "PersonalIdNumber") +
-  //       buildResult(blinkIdResult.profession, "Profession") +
-  //       buildResult(blinkIdResult.race, "Race") +
-  //       buildResult(blinkIdResult.religion, "Religion") +
-  //       buildResult(blinkIdResult.residentialStatus, "ResidentialStatus") +
-  //       buildResult(blinkIdResult.processingStatus, "ProcessingStatus") +
-  //       buildResult(blinkIdResult.recognitionMode, "RecognitionMode")
-  //       ;
-
-  //     let licenceInfo = blinkIdResult.driverLicenseDetailedInfo;
-  //     if (licenceInfo) {
-  //       resultString +=
-  //         buildResult(licenceInfo.restrictions, "Restrictions") +
-  //         buildResult(licenceInfo.endorsements, "Endorsements") +
-  //         buildResult(licenceInfo.vehicleClass, "Vehicle class") +
-  //         buildResult(licenceInfo.conditions, "Conditions");
-  //     }
-
-  //     // there are other fields to extract
-  //     localState.results += resultString;
-
-  //     // Document image is returned as Base64 encoded JPEG
-  //     if (blinkIdResult.fullDocumentFrontImage) {
-  //       localState.showFrontImageDocument = true;
-  //       localState.resultFrontImageDocument = 'data:image/jpg;base64,' + blinkIdResult.fullDocumentFrontImage;
-  //     }
-  //     if (blinkIdResult.fullDocumentBackImage) {
-  //       localState.showBackImageDocument = true;
-  //       localState.resultBackImageDocument = 'data:image/jpg;base64,' + blinkIdResult.fullDocumentBackImage;
-  //     }
-  //     // Face image is returned as Base64 encoded JPEG
-  //     if (blinkIdResult.faceImage) {
-  //       localState.showImageFace = true;
-  //       localState.resultImageFace = 'data:image/jpg;base64,' + blinkIdResult.faceImage;
-  //     }
-  //   }
-  //   return localState;
-  // }
-
-  // chooseImage = () => {
-  //   ImagePicker.showImagePicker(options, async (response) => {
-  //       console.log('Response = ', response);
-  //       if (response.didCancel) {
-  //           console.log('User cancelled image picker');
-  //       } else if (response.error) {
-  //           console.log('ImagePicker Error: ', response.error);
-  //       } else {
-  //           console.log(response.uri)
-  //           const source = { uri: response.uri };
-  //           const URL = response.data;
-  //       }
-  //   });
-  // }
-
   chooseImage = async () => {
     ImagePicker.showImagePicker(options, response => {
       console.log("Response = ", response.uri);
@@ -302,14 +119,7 @@ export default class SignUpScreen extends Component {
         const Fetch = RNFetchBlob.polyfill.Fetch
         // replace built-in fetch
         window.fetch = new Fetch({
-          // enable this option so that the response data conversion handled automatically
           auto: true,
-          // when receiving response data, the module will match its Content-Type header
-          // with strings in this array. If it contains any one of string in this array, 
-          // the response body will be considered as binary data and the data will be stored
-          // in file system instead of in memory.
-          // By default, it only store response data to file system when Content-Type 
-          // contains string `application/octet`.
           binaryContentTypes: [
             'image/',
             'video/',
@@ -469,15 +279,30 @@ export default class SignUpScreen extends Component {
   handleTimePicker = async (date) => {
     await this.setState({ birthday: dayjs(date).format('MM/DD/YYYY') })
     await this.setState({ birthdayYear: dayjs(date).format('YYYY') })
-    console.log(this.state.birthdayYear)
+    await this.setState({ birthdayMonth: dayjs(date).format('MM') })
+    await this.setState({ birthdayDate: dayjs(date).format('DD') })
+    console.log(this.state.birthdayDate)
     this.setState({ isTimeVisible: false })
     var currentDay = new Date();
     var currentYear = currentDay.getFullYear();
+    var currentMonth = currentDay.getMonth();
+    var currentDate = currentDay.getDate();
+    console.log(currentDate);
     var yearDif = currentYear - this.state.birthdayYear;
-    if (yearDif > 21) {
+    var monDif = currentMonth - this.state.birthdayMonth;
+    var dateDif = currentDate - this.state.birthdayDate;
+    if (yearDif >= 22) {
       await this.setState({ ageFlag: true })
-      await this.setState({ age: yearDif })
       console.log(this.state.ageFlag);
+    } else if (yearDif == 21) {
+      if (monDif >= 0 && dateDif >= 0) {
+        await this.setState({ ageFlag: true })
+        await this.setState({ age: yearDif })
+        console.log(this.state.ageFlag);
+      } else {
+        await this.setState({ ageFlag: false })
+        console.log(this.state.ageFlag);
+      }
     } else {
       await this.setState({ ageFlag: false })
       console.log(this.state.ageFlag);
@@ -536,7 +361,7 @@ export default class SignUpScreen extends Component {
                     <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
                   </TouchableOpacity>
                   <View style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }}>
-                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
+                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                     <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Delivery Zip" value={this.state.zipCode} onChangeText={(text) => { this.setState({ zipCode: text }) }}></TextInput>
                   </View>
                 </View>
