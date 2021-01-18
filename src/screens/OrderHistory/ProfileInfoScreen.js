@@ -168,16 +168,16 @@ export default class ProfileInfoScreen extends Component {
             <View style={styles.inputArea}>
               <View style={{ flexDirection: 'row', width: '100%' }}>
                 <View style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }}>
-                  <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
+                  <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                   <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Fisrt Name" value={this.state.firstName} onChangeText={(text) => { this.setState({ firstName: text }) }}></TextInput>
                 </View>
                 <View style={{ ...styles.inputItem, width: '48.5%' }}>
-                  <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
+                  <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                   <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Last Name" value={this.state.lastName} onChangeText={(text) => { this.setState({ lastName: text }) }}></TextInput>
                 </View>
               </View>
               <View style={{ ...styles.inputItem }}>
-                <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage} />
+                <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <TextInput keyboardType="phone-pad" style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Phone Number" value={this.state.phoneNum} onChangeText={(text) => { this.setState({ phoneNum: text }) }}></TextInput>
               </View>
               <TouchableOpacity style={{ ...styles.inputItem }} onPress={() => { this.setState({ isTimeVisible: true, }) }}>
