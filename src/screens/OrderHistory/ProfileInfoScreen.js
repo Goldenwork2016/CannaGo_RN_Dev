@@ -25,7 +25,7 @@ export default class ProfileInfoScreen extends Component {
       password: '',
       profileimage: '',
       age: '',
-      ageFlag:false,
+      ageFlag: false,
       fein: '',
       userId: "",
       isloading: false,
@@ -77,15 +77,35 @@ export default class ProfileInfoScreen extends Component {
   handleTimePicker = async (date) => {
     await this.setState({ birthday: dayjs(date).format('MM/DD/YYYY') })
     await this.setState({ birthdayYear: dayjs(date).format('YYYY') })
-    console.log(this.state.birthdayYear)
+    await this.setState({ birthdayMonth: dayjs(date).format('MM') })
+    await this.setState({ birthdayDate: dayjs(date).format('DD') })
+    console.log(this.state.birthdayDate)
     this.setState({ isTimeVisible: false })
     var currentDay = new Date();
     var currentYear = currentDay.getFullYear();
+    var currentMonth = currentDay.getMonth();
+    var currentDate = currentDay.getDate();
+    console.log(currentDate);
     var yearDif = currentYear - this.state.birthdayYear;
-    if (yearDif > 21) {
+    var monDif = currentMonth - this.state.birthdayMonth;
+    var dateDif = currentDate - this.state.birthdayDate;
+    if (yearDif >= 22) {
       await this.setState({ ageFlag: true })
-      await this.setState({ age: yearDif })
       console.log(this.state.ageFlag);
+      if (monDif >= 0 && dateDif >= 0) {
+        await this.setState({ age: yearDif })
+      } else {
+        await this.setState({ age: yearDif-1 })
+      }
+    } else if (yearDif == 21) {
+      if (monDif >= 0 && dateDif >= 0) {
+        await this.setState({ ageFlag: true })
+        await this.setState({ age: yearDif })
+        console.log(this.state.ageFlag);
+      } else {
+        await this.setState({ ageFlag: false })
+        console.log(this.state.ageFlag);
+      }
     } else {
       await this.setState({ ageFlag: false })
       console.log(this.state.ageFlag);
@@ -126,7 +146,7 @@ export default class ProfileInfoScreen extends Component {
   }
 
   render() {
-    const { profileimage, firstName, password, lastName, age, phoneNum, email, availableBal, birthday,  ageFlag } = this.state
+    const { profileimage, firstName, password, lastName, age, phoneNum, email, availableBal, birthday, ageFlag } = this.state
     return (
       <View style={styles.container}>
         <ScrollView style={{ width: '100%' }}>
@@ -196,14 +216,14 @@ export default class ProfileInfoScreen extends Component {
             </View>
           </Modal>
           <Modal isVisible={this.state.isModalVisible2}>
-          <View style={styles.modalView}>
-            <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={{ ...styles.Description, textAlign: 'center', width:'90%' }}>Sorry, you have to be 21 years or older to use our service.</Text>
-            <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible2: false })}>
-              <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={{ ...styles.Description, textAlign: 'center', width: '90%' }}>Sorry, you have to be 21 years or older to use our service.</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible2: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
         </ScrollView>
       </View>
     );
