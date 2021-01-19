@@ -22,6 +22,7 @@ export default class ProductDetailScreen extends Component {
             isModalVisible: false,
             alertContent: '',
             isModalVisible1: false,
+            storeId:''
         };
     }
 
@@ -47,6 +48,7 @@ export default class ProductDetailScreen extends Component {
                     'priceValue': snapshot.val().priceValue,
                     'productName': snapshot.val().productName,
                     'coaImage': snapshot.val().coaImage,
+                    'storeId':snapshot.val().storeId
                 }
                 console.log("_____________+++++++++++++_________________");
                 console.log(row)
@@ -75,7 +77,8 @@ export default class ProductDetailScreen extends Component {
                     priceValue: real_data.priceValue,
                     productName: real_data.productName,
                     coaImage: real_data.coaImage,
-                    num: 1
+                    num: 1,
+                    storeId:real_data.storeId
                 });
             this.setState({ isModalVisible1: true })
             setTimeout(() => {
@@ -112,7 +115,7 @@ export default class ProductDetailScreen extends Component {
                                 <Text style={{ ...styles.productDescription, marginBottom: 10 }}>Name: {this.state.real_data.productName}</Text>
                                 <Text style={styles.productDescription}>Price: $ {this.state.real_data.priceValue}</Text>
                             </View>
-                            <TouchableOpacity style={styles.PreviewtBtn} onPress={() => {this.props.navigation.navigate("CoaImageScreen", {coaImage:this.state.real_data.coaImage})}}>
+                            <TouchableOpacity style={styles.PreviewtBtn} onPress={() => { this.props.navigation.navigate("CoaImageScreen", { coaImage: this.state.real_data.coaImage }) }}>
                                 <Text style={styles.previewTxt}>Preview COA</Text>
                             </TouchableOpacity>
                             <View style={{ width: '90%', marginLeft: '5%', marginTop: 50 }}>

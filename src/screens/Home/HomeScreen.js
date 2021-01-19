@@ -17,38 +17,76 @@ class HomeScreen extends Component {
     this.state = {
       usertype: 'consumer',
       real_data: [],
-      userId: '',
+      userId: Firebase.auth().currentUser.uid,
       contentList: [],
       contentList1: [
       ],
       refreshing: false,
-      store_data: []
+      store_data: [],
+      isTouchable: false,
+      cartStoreId: "",
+      storeId: '',
+      touchFlag: true
     };
   }
 
   componentDidMount = async () => {
-    console.log(this.state.userId);
     const { real_data } = this.props
-    console.log("real++++++", real_data)
     const usertype = await AsyncStorage.getItem("usertype");
-    const userId = await AsyncStorage.getItem("userUid");
-    await this.setState({ userId: userId })
-    console.log(this.state.userId)
+    // console.log(this.state.userId)
     await this.setState({ usertype: usertype })
-    // Firebase.database()
-    //   .ref('user/' + this.state.userId)
-    //   .on("value", async (snapshot) => {
-    //     user_data = {
-    //       userType: snapshot.val().userType,
-    //       // data.push(row)
-    //     };
-    //     await this.setState({
-    //       usertype: user_data.userType,
-    //     })
-    //     console.log(this.state.usertype);
-    //   })
-    // await AsyncStorage.setItem('usertype', this.state.usertype);
+
+    Firebase.database()
+      .ref("Carts/" + this.state.userId)
+      .on("value", async (snapshot) => {
+        var data = []
+        var row
+        snapshot.forEach(element => {
+          row = {
+            "storeId": element.val().storeId,
+          }
+          data.push(row)
+        });
+        console.log("_____________+++++++++++++_________________");
+        await this.setState({
+          storeId: data,
+        });
+        console.log("================+++++++++++++_________________");
+        console.log(this.state.storeId[0].storeId)
+        console.log(this.state.storeId)
+        this.state.storeId.length == 0 ? await this.setState({ touchFlag: false }) : await this.setState({ touchFlag: true })
+        console.log(this.state.touchFlag)
+      })
+
+    const { navigation } = this.props
+    this.focusListener = navigation.addListener('didFocus', () => {
+      Firebase.database()
+        .ref("Carts/" + this.state.userId)
+        .on("value", async (snapshot) => {
+          var data = []
+          var row
+          snapshot.forEach(element => {
+            row = {
+              "storeId": element.val().storeId,
+            }
+            data.push(row)
+          });
+          console.log("_____________+++++++++++++_________________");
+          await this.setState({
+            storeId: data,
+          });
+          console.log("================+++++++++++++_________________");
+          console.log(this.state.storeId[0].storeId)
+          console.log(this.state.storeId)
+          this.state.storeId.length == 0 ? await this.setState({ touchFlag: false }) : await this.setState({ touchFlag: true })
+          console.log(this.state.touchFlag)
+        })
+    });
     this.loadData();
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
   }
 
   loadData = async () => {
@@ -71,8 +109,6 @@ class HomeScreen extends Component {
           }
           data.push(row)
         });
-        console.log("_____________+++++++++++++_________________");
-        console.log(data)
         this.setState({
           real_data: data,
 
@@ -83,9 +119,6 @@ class HomeScreen extends Component {
     Firebase.database()
       .ref("user")
       .on("value", async (snapshot) => {
-        console.log("++++++++===============+++++++++++++++")
-        console.log(snapshot)
-        console.log("++++++++===============+++++++++++++++")
         var data = []
         var row
         snapshot.forEach(element => {
@@ -98,15 +131,16 @@ class HomeScreen extends Component {
               usertype: element.val().userType,
             }
             data.push(row)
+            console.log(data);
           }
         });
-        console.log("_____________+++++++++++++_________________");
-        console.log(data)
         this.setState({
           store_data: data,
         });
         this.setState({ refreshing: false })
       })
+
+
   }
 
   _onRefresh = () => {
@@ -128,7 +162,7 @@ class HomeScreen extends Component {
   }
 
   render() {
-    const { real_data, store_data } = this.state
+    const { real_data, store_data, storeId } = this.state
     return (
       <View style={{ flex: 1, alignItems: "center", backgroundColor: 'white' }}>
         {this.state.usertype == "consumer" ?
@@ -146,7 +180,7 @@ class HomeScreen extends Component {
                 numColumns={1}
                 data={store_data.length == 0 ? this.state.contentList : store_data}
                 renderItem={({ item }) => (
-                  <TouchableOpacity style={styles.StoreItem} onPress={() => { this.props.navigation.navigate("ProductScreen", { storeId: item.id }) }}>
+                  <TouchableOpacity style={styles.StoreItem} disabled={this.state.storeId.length == 0 ? true : this.state.storeId[0].storeId == item.id ? false : true} onPress={() => { this.props.navigation.navigate("ProductScreen", { storeId: item.id }) }}>
                     <Text style={styles.homeTitle}> {item.store} </Text>
                     <Image source={store_data.length == 0 ? item.ImageUrl : { uri: item.ImageUrl }} resizeMode='cover' style={styles.storeImage} />
                     <View style={styles.storeDes1}>

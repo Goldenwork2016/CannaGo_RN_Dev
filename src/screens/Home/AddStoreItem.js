@@ -262,7 +262,7 @@ class AddStoreItemScreen extends Component {
   };
 
   AddStore = async () => {
-    const { img_url, itemNum1, feeValue, priceValue, GpriceValue, productName, Tag, Description, coaImage } = this.state
+    const { img_url, itemNum1, feeValue, priceValue, GpriceValue, productName, Tag, Description, coaImage, userId } = this.state
     const { load } = this.props
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
     this.setState({ isLoading: true })
@@ -297,7 +297,8 @@ class AddStoreItemScreen extends Component {
           Tag: Tag,
           Description: Description,
           itemImage: img_url,
-          coaImage: coaImage
+          coaImage: coaImage,
+          storeId:userId
         });
         console.log("true");
         // var data = []
