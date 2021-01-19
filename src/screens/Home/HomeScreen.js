@@ -3,6 +3,8 @@ import { View, Text, Image, ScrollView, FlatList, Dimensions, RefreshControl } f
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 import Firebase from '../../../config/firebase'
+import AlertModal from '../../components/AlertModal'
+import Modal from 'react-native-modal';
 
 import { func, string, bool, object, array } from "prop-types";
 import { connect } from "react-redux";
@@ -26,7 +28,8 @@ class HomeScreen extends Component {
       isTouchable: false,
       cartStoreId: "",
       storeId: '',
-      touchFlag: true
+      touchFlag: true,
+      isModalVisible: false,
     };
   }
 
@@ -54,8 +57,6 @@ class HomeScreen extends Component {
         console.log("================+++++++++++++_________________");
         console.log(this.state.storeId[0].storeId)
         console.log(this.state.storeId)
-        this.state.storeId.length == 0 ? await this.setState({ touchFlag: false }) : await this.setState({ touchFlag: true })
-        console.log(this.state.touchFlag)
       })
 
     const { navigation } = this.props
@@ -78,8 +79,6 @@ class HomeScreen extends Component {
           console.log("================+++++++++++++_________________");
           console.log(this.state.storeId[0].storeId)
           console.log(this.state.storeId)
-          this.state.storeId.length == 0 ? await this.setState({ touchFlag: false }) : await this.setState({ touchFlag: true })
-          console.log(this.state.touchFlag)
         })
     });
     this.loadData();
@@ -161,10 +160,22 @@ class HomeScreen extends Component {
     )
   }
 
+  gotoNextScreen = async (id) => {
+    this.state.storeId.length == 0 ? await this.setState({ touchFlag: false }) : this.state.storeId[0].storeId == id ? await this.setState({ touchFlag: false }) : await this.setState({ touchFlag: true })
+    if (this.state.touchFlag == true) {
+      this.setState({ alertContent: "You can only order products from one store at a time", isModalVisible: true })
+    } else {
+      this.props.navigation.navigate("ProductScreen", { storeId: id })
+    }
+  }
+
   render() {
     const { real_data, store_data, storeId } = this.state
     return (
       <View style={{ flex: 1, alignItems: "center", backgroundColor: 'white' }}>
+        <Modal isVisible={this.state.isModalVisible}>
+          <AlertModal alertContent={this.state.alertContent} onPress={() => this.setState({ isModalVisible: false })} />
+        </Modal>
         {this.state.usertype == "consumer" ?
           <View style={{ width: '100%', borderColor: 'white', flex: 1, }}>
             <View style={{ ...styles.container, paddingTop: 30 }}>
@@ -180,7 +191,8 @@ class HomeScreen extends Component {
                 numColumns={1}
                 data={store_data.length == 0 ? this.state.contentList : store_data}
                 renderItem={({ item }) => (
-                  <TouchableOpacity style={styles.StoreItem} disabled={this.state.storeId.length == 0 ? true : this.state.storeId[0].storeId == item.id ? false : true} onPress={() => { this.props.navigation.navigate("ProductScreen", { storeId: item.id }) }}>
+                  // <TouchableOpacity style={styles.StoreItem} onPress={() => { this.props.navigation.navigate("ProductScreen", { storeId: item.id }) }}>
+                  <TouchableOpacity style={styles.StoreItem} onPress={() => { this.gotoNextScreen(item.id) }}>
                     <Text style={styles.homeTitle}> {item.store} </Text>
                     <Image source={store_data.length == 0 ? item.ImageUrl : { uri: item.ImageUrl }} resizeMode='cover' style={styles.storeImage} />
                     <View style={styles.storeDes1}>
