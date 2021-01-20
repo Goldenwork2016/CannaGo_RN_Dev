@@ -26,40 +26,40 @@ export default class OrderStatusScreen extends Component {
                         <View style={styles.orderStatusItem}>
                             <View style={styles.checkLineArea}>
                                 <View style={styles.checkArea}>
-                                    <Image source={require('../../assets/iamges/checkIcon.png')} resizeMode='stretch' style={styles.checkIcon} />
+                                    {/* <Image source={require('../../assets/iamges/checkIcon.png')} resizeMode='stretch' style={styles.checkIcon} /> */}
                                 </View>
                                 <View style={styles.lineArea}></View>
                             </View>
                             <View style={styles.orderStatus}>
                                 <Text style={styles.statusTitle}>Order Placed</Text>
-                                <Text style={styles.statusDescrition}>We have received your order.</Text>
-                                <Text style={styles.statusDescrition}>11:20 AM, 11/20/2020</Text>
+                                {/* <Text style={styles.statusDescrition}>We have received your order.</Text>
+                                <Text style={styles.statusDescrition}>11:20 AM, 11/20/2020</Text> */}
                             </View>
                         </View>
                         <View style={styles.orderStatusItem}>
                             <View style={styles.checkLineArea}>
                                 <View style={styles.checkArea}>
-                                    <Image source={require('../../assets/iamges/checkIcon.png')} resizeMode='stretch' style={styles.checkIcon} />
+                                    {/* <Image source={require('../../assets/iamges/checkIcon.png')} resizeMode='stretch' style={styles.checkIcon} /> */}
                                 </View>
                                 <View style={styles.lineArea}></View>
                             </View>
                             <View style={styles.orderStatus}>
                                 <Text style={styles.statusTitle}>Order Confirmed</Text>
-                                <Text style={styles.statusDescrition}>The store has confirmed your order</Text>
-                                <Text style={styles.statusDescrition}>11:22 AM, 11/20/2020</Text>
+                                {/* <Text style={styles.statusDescrition}>The store has confirmed your order</Text>
+                                <Text style={styles.statusDescrition}>11:22 AM, 11/20/2020</Text> */}
                             </View>
                         </View>
                         <View style={styles.orderStatusItem}>
                             <View style={styles.checkLineArea}>
                                 <View style={styles.checkArea}>
-                                    <Image source={require('../../assets/iamges/checkIcon.png')} resizeMode='stretch' style={styles.checkIcon} />
+                                    {/* <Image source={require('../../assets/iamges/checkIcon.png')} resizeMode='stretch' style={styles.checkIcon} /> */}
                                 </View>
                                 <View style={styles.lineArea}></View>
                             </View>
                             <View style={styles.orderStatus}>
                                 <Text style={styles.statusTitle}>Order En Route</Text>
-                                <Text style={styles.statusDescrition}>Your order is being delivered</Text>
-                                <Text style={styles.statusDescrition}>10:03 AM, 11/21/2020</Text>
+                                {/* <Text style={styles.statusDescrition}>Your order is being delivered</Text>
+                                <Text style={styles.statusDescrition}>10:03 AM, 11/21/2020</Text> */}
                             </View>
                         </View>
                         <View style={styles.orderStatusItem}>
@@ -70,8 +70,8 @@ export default class OrderStatusScreen extends Component {
                             </View>
                             <View style={styles.orderStatus}>
                                 <Text style={styles.statusTitle}>Order Delivered</Text>
-                                <Text style={styles.statusDescrition}>Your order has been dropped off. </Text>
-                                <Text style={styles.statusDescrition}>10:32 AM, 11/21/2020</Text>
+                                {/* <Text style={styles.statusDescrition}>Your order has been dropped off. </Text>
+                                <Text style={styles.statusDescrition}>10:32 AM, 11/21/2020</Text> */}
                             </View>
                         </View>
                         <TouchableOpacity style={{...styles.AddCartBtn, borderRadius:5, width:200}} onPress = {()=>{this.props.navigation.navigate("RateExperienceScreen")}}>
