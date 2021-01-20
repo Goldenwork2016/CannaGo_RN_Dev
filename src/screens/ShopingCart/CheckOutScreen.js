@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Dimensions, Platform } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Dimensions, FlatList, Platform } from 'react-native';
 import Modal from 'react-native-modalbox';
 import Firebase from '../../../config/firebase'
 
@@ -16,6 +16,9 @@ export default class CheckOutScreen extends Component {
       cardNum: '',
       expired_date: '',
       userId: Firebase.auth().currentUser.uid,
+      real_data: [],
+      contentList: [],
+      totalPrice:''
     };
   }
 
@@ -24,28 +27,43 @@ export default class CheckOutScreen extends Component {
     console.log(this.state.storeId)
 
     Firebase.database()
-      .ref("Carts/" + this.state.storeId)
+      .ref("Carts/" + this.state.userId)
       .on("value", async (snapshot) => {
+        console.log("cart++++++++++")
         console.log(snapshot)
+        var data = []
         var row
-        row = {
-          'Description': snapshot.val().Description,
-          'GpriceValue': snapshot.val().GpriceValue,
-          'Tag': snapshot.val().Tag,
-          'feeValue': snapshot.val().feeValue,
-          'id': snapshot.val().id,
-          'itemImage': snapshot.val().itemImage,
-          'itemNum1': snapshot.val().itemNum1,
-          'priceValue': snapshot.val().priceValue,
-          'productName': snapshot.val().productName,
-          'coaImage': snapshot.val().coaImage,
-        }
-        console.log("_____________+++++++++++++_________________");
-        console.log(row)
+        snapshot.forEach(element => {
+          row = {
+            'Description': element.val().Description,
+            'GpriceValue': element.val().GpriceValue,
+            'Tag': element.val().Tag,
+            'feeValue': element.val().feeValue,
+            'id': element.key,
+            'itemImage': element.val().itemImage,
+            'itemNum1': element.val().itemNum1,
+            'priceValue': element.val().priceValue,
+            'productName': element.val().productName,
+            'coaImage': element.val().coaImage,
+            'num': element.val().num,
+          }
+          data.push(row)
+          console.log("_____________+++++++++++++_________________");
+          console.log(data)
+          console.log("_____________+++++++++++++_________________");
+        })
         await this.setState({
-          real_data: row,
+          real_data: data,
         });
-        console.log(this.state.real_data.itemImage)
+        // console.log(this.state.real_data)
+        var totalPrice = 0;
+        this.state.real_data.forEach(element => {
+          var itemPrice = element.priceValue * element.num
+          totalPrice = totalPrice + itemPrice
+        })
+        this.setState({
+          totalPrice: totalPrice,
+        });
       })
   }
 
@@ -70,6 +88,7 @@ export default class CheckOutScreen extends Component {
   }
 
   render() {
+    const { real_data } = this.state
     return (
       <View style={{ ...styles.container, justifyContent: 'center' }}>
         <ScrollView style={{ width: '100%', flex: 1 }}>
@@ -86,26 +105,31 @@ export default class CheckOutScreen extends Component {
             <View style={styles.paymenntArea}>
               <Text style={styles.OrderSummeryTxt}>Order Summery</Text>
               <View style={styles.orderContent}>
-                <View style={styles.ContentItem}>
-                  <Text style={styles.ItemTxt}>Just CBD Gummies X 2</Text>
-                  <Text style={styles.ItemTxt}>$49.98</Text>
-                </View>
-                <View style={styles.ContentItem}>
-                  <Text style={styles.ItemTxt}>CBD Wax 10 ML</Text>
-                  <Text style={styles.ItemTxt}>$$1.00</Text>
-                </View>
+                <FlatList
+                  style={{ width: '100%' }}
+                  numColumns={1}
+                  data={real_data.length == 0 ? this.state.contentList : real_data}
+                  renderItem={({ item }) => (
+                    // <TouchableOpacity style={styles.StoreItem} onPress={() => { this.props.navigation.navigate("ProductScreen", { storeId: item.id }) }}>
+                    <View style={styles.ContentItem}>
+                      <Text style={styles.ItemTxt}>{item.productName} X {item.num}</Text>
+                      <Text style={styles.ItemTxt}>$ {parseFloat(item.priceValue * item.num).toFixed(2)}</Text>
+                    </View>
+                  )}
+                  keyExtractor={item => `${item.id}`}
+                />
                 <View style={styles.ContentItem}>
                   <Text style={styles.ItemTxt}>Service Fee</Text>
                   <Text style={styles.ItemTxt}>$5.00</Text>
                 </View>
                 <View style={styles.ContentItem}>
                   <Text style={styles.ItemTxt}>State Tax</Text>
-                  <Text style={styles.ItemTxt}>$4.98</Text>
+                  <Text style={styles.ItemTxt}>$ {((this.state.totalPrice+5) * 0.089).toFixed(2)}</Text>
                 </View>
               </View>
               <View style={styles.ContentItem}>
                 <Text style={styles.ItemTxt}>Total Amount</Text>
-                <Text style={{ ...styles.ItemTxt, color: '#E47911' }}>$74.81</Text>
+                <Text style={{ ...styles.ItemTxt, color: '#E47911' }}>$ {parseFloat(this.state.totalPrice +(this.state.totalPrice+5) * 0.089 ).toFixed(2)}</Text>
               </View>
               <View style={styles.ContentItem}>
                 <Text style={styles.ItemTxt}>Promo Code</Text>

@@ -22,7 +22,7 @@ export default class ShoppingCartScreen extends Component {
       itemNum2: 1,
       usertype: 'consumer',
       real_data: [],
-      userId: Firebase.auth().currentUser.uid,
+      userId: "",
       isLoading: false,
       isModalVisible: false,
       alertContent: '',
@@ -34,10 +34,20 @@ export default class ShoppingCartScreen extends Component {
     const usertype = await AsyncStorage.getItem("usertype");
     const userId = await AsyncStorage.getItem("userUid");
     await this.setState({ usertype: usertype })
+    this.setState({ userId: userId })
+    const { navigation } = this.props
+    this.focusListener = navigation.addListener('didFocus', () => {
+      this.loadData();
+    });
     this.loadData();
   }
 
+  componentWillUnmount() {
+    this.focusListener.remove();
+  }
+
   loadData = async () => {
+    console.log("loadData++++++++++++++");
     Firebase.database()
       .ref("Carts/" + this.state.userId)
       .on("value", async (snapshot) => {
@@ -49,17 +59,19 @@ export default class ShoppingCartScreen extends Component {
             "GpriceValue": element.val().GpriceValue,
             "Tag": element.val().Tag,
             "feeValue": element.val().feeValue,
-            "id": element.val().id,
+            "id": element.key,
             "itemImage": element.val().itemImage,
             "itemNum1": element.val().itemNum1,
             "priceValue": element.val().priceValue,
             "productName": element.val().productName,
             "num": element.val().num,
+            "coaImage": element.val().coaImage,
+            "storeId": element.val().storeId,
           }
           data.push(row)
         });
-        console.log("_____________+++++++++++++_________________");
-        console.log(data)
+        // console.log("_____________+++++++++++++_________________");
+        // console.log(data)
         await this.setState({
           real_data: data,
         });
@@ -77,21 +89,62 @@ export default class ShoppingCartScreen extends Component {
     this.props.navigation.navigate("ProductDetailScreen")
   }
 
-  Addcart = (index) => {
+  Addcart = (index, id) => {
+    console.log(id);
+    console.log("addcart++++++++++++_____________");
+    console.log(this.state.real_data[index]);
     this.state.real_data[index].num += 1
+    Firebase.database()
+      .ref('Carts/' + this.state.userId + '/' + id)
+      .update({
+        "Description": this.state.real_data[index].Description,
+        "GpriceValue": this.state.real_data[index].GpriceValue,
+        "Tag": this.state.real_data[index].Tag,
+        "feeValue": this.state.real_data[index].feeValue,
+        "id": id,
+        "itemImage": this.state.real_data[index].itemImage,
+        "itemNum1": this.state.real_data[index].itemNum1,
+        "priceValue": this.state.real_data[index].priceValue,
+        "productName": this.state.real_data[index].productName,
+        "coaImage": this.state.real_data[index].coaImage,
+        "num": this.state.real_data[index].num,
+        "storeId": this.state.real_data[index].storeId
+      });
     this.setState({ auto_num: this.state.auto_num + 1 })
   }
 
-  Minuscart = async (index) => {
+  Minuscart = (index, id) => {
+    console.log("mincart+++++++++++++++");
+    console.log(id);
     this.state.real_data[index].num -= 1
     if (this.state.real_data[index].num <= 1) {
       this.state.real_data[index].num = 1
     }
+    FFirebase.database()
+      .ref('Carts/' + this.state.userId + '/' + id)
+      .update({
+        Description: this.state.real_data[index].Description,
+        GpriceValue: this.state.real_data[index].GpriceValue,
+        Tag: this.state.real_data[index].Tag,
+        feeValue: this.state.real_data[index].feeValue,
+        id: id,
+        itemImage: this.state.real_data[index].itemImage,
+        itemNum1: this.state.real_data[index].itemNum1,
+        priceValue: this.state.real_data[index].priceValue,
+        productName: this.state.real_data[index].productName,
+        coaImage: this.state.real_data[index].coaImage,
+        num: this.state.real_data[index].num,
+        storeId: this.state.real_data[index].storeId
+      });
     this.setState({ auto_num: this.state.auto_num + 1 })
   }
 
   chageState = async () => {
     await this.setState({ isEmpty: false })
+  }
+
+  GotoNextScreen = async () => {
+    this.props.navigation.navigate("CheckOutScreen")
   }
 
   render() {
@@ -132,13 +185,13 @@ export default class ShoppingCartScreen extends Component {
                             <Text style={styles.productDescription}>{item.productName}</Text>
                             <Text style={{ ...styles.productDescription, color: "#61D273" }}>$ {item.priceValue}</Text>
                             <View style={styles.countItem}>
-                              <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Minuscart(index) }}>
+                              <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Minuscart(index, item.id) }}>
                                 <Text style={styles.cartAddBtn}>-</Text>
                               </TouchableOpacity>
                               <View style={styles.cartAccountArea}>
                                 <Text style={styles.cartAddBtn}>{item.num}</Text>
                               </View>
-                              <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Addcart(index) }}>
+                              <TouchableOpacity style={styles.cartAccountArea} onPress={() => { this.Addcart(index, item.id) }}>
                                 <Text style={styles.cartAddBtn}>+</Text>
                               </TouchableOpacity>
                             </View>
@@ -151,7 +204,7 @@ export default class ShoppingCartScreen extends Component {
                 </View>
                 <View style={{ height: 150 }}></View>
               </ScrollView>
-              <TouchableOpacity style={styles.AddCartBtn1} onPress={() => { this.props.navigation.navigate("CheckOutScreen"), this.setState({ isEmpty: true }) }}>
+              <TouchableOpacity style={styles.AddCartBtn1} onPress={() => { this.GotoNextScreen() }}>
                 <Text style={styles.signinTxt1}>Next</Text>
               </TouchableOpacity>
             </View> :

@@ -71,7 +71,6 @@ export default class ProductDetailScreen extends Component {
                     GpriceValue: real_data.GpriceValue,
                     Tag: real_data.Tag,
                     feeValue: real_data.feeValue,
-                    id: real_data.id,
                     itemImage: real_data.itemImage,
                     itemNum1: real_data.itemNum1,
                     priceValue: real_data.priceValue,

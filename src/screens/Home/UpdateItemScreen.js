@@ -261,18 +261,20 @@ class UpdateItemScreen extends Component {
   async update() {
     const { Description, GpriceValue, Tag, feeValue, id, itemImage, itemNum1, priceValue, productName, coaImage } = this.state
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
-    await Firebase.database().ref('Items/' + this.state.userId + '/' + id).update({
-      id: id,
-      itemNum1: itemNum1,
-      feeValue: feeValue,
-      priceValue: priceValue,
-      GpriceValue: GpriceValue,
-      productName: productName,
-      Tag: Tag,
-      Description: Description,
-      itemImage: itemImage,
-      coaImage:coaImage
-    });
+    await Firebase.database()
+      .ref('Items/' + this.state.userId + '/' + id)
+      .update({
+        id: id,
+        itemNum1: itemNum1,
+        feeValue: feeValue,
+        priceValue: priceValue,
+        GpriceValue: GpriceValue,
+        productName: productName,
+        Tag: Tag,
+        Description: Description,
+        itemImage: itemImage,
+        coaImage: coaImage
+      });
     const { load } = this.props
     var data = []
     var row

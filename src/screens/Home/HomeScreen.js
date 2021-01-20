@@ -110,7 +110,6 @@ class HomeScreen extends Component {
         });
         this.setState({
           real_data: data,
-
         });
         this.setState({ refreshing: false })
       })
