@@ -19,7 +19,7 @@ class HomeScreen extends Component {
     this.state = {
       usertype: 'consumer',
       real_data: [],
-      userId: Firebase.auth().currentUser.uid,
+      userId: "",
       contentList: [],
       contentList1: [
       ],
@@ -36,8 +36,10 @@ class HomeScreen extends Component {
   componentDidMount = async () => {
     const { real_data } = this.props
     const usertype = await AsyncStorage.getItem("usertype");
+    const userId = await AsyncStorage.getItem("userUid");
     // console.log(this.state.userId)
     await this.setState({ usertype: usertype })
+    await this.setState({ userId: userId })
 
     Firebase.database()
       .ref("Carts/" + this.state.userId)

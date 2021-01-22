@@ -17,18 +17,21 @@ export default class ProductDetailScreen extends Component {
             productId: '',
             storeId: '',
             real_data: '',
-            userId: Firebase.auth().currentUser.uid,
+            userId: "",
             isLoading: false,
             isModalVisible: false,
             alertContent: '',
             isModalVisible1: false,
-            storeId:''
+            storeId: ''
         };
     }
 
     componentDidMount = async () => {
         await this.setState({ productId: this.props.navigation.getParam('productId') })
         await this.setState({ storeId: this.props.navigation.getParam('storeId') })
+        const userId = await AsyncStorage.getItem("userUid");
+        // console.log(this.state.userId)
+        await this.setState({ userId: userId })
         console.log(this.state.productId)
         console.log(this.state.storeId)
 
@@ -48,7 +51,7 @@ export default class ProductDetailScreen extends Component {
                     'priceValue': snapshot.val().priceValue,
                     'productName': snapshot.val().productName,
                     'coaImage': snapshot.val().coaImage,
-                    'storeId':snapshot.val().storeId
+                    'storeId': snapshot.val().storeId
                 }
                 console.log("_____________+++++++++++++_________________");
                 console.log(row)
@@ -77,7 +80,7 @@ export default class ProductDetailScreen extends Component {
                     productName: real_data.productName,
                     coaImage: real_data.coaImage,
                     num: 1,
-                    storeId:real_data.storeId
+                    storeId: real_data.storeId
                 });
             this.setState({ isModalVisible1: true })
             setTimeout(() => {
