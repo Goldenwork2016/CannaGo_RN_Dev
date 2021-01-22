@@ -120,7 +120,7 @@ export default class ShoppingCartScreen extends Component {
     if (this.state.real_data[index].num <= 1) {
       this.state.real_data[index].num = 1
     }
-    FFirebase.database()
+    Firebase.database()
       .ref('Carts/' + this.state.userId + '/' + id)
       .update({
         Description: this.state.real_data[index].Description,
