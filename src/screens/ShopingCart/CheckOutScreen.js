@@ -18,7 +18,7 @@ export default class CheckOutScreen extends Component {
       userId: Firebase.auth().currentUser.uid,
       real_data: [],
       contentList: [],
-      totalPrice:''
+      totalPrice: ''
     };
   }
 
@@ -124,12 +124,12 @@ export default class CheckOutScreen extends Component {
                 </View>
                 <View style={styles.ContentItem}>
                   <Text style={styles.ItemTxt}>State Tax</Text>
-                  <Text style={styles.ItemTxt}>$ {((this.state.totalPrice+5) * 0.089).toFixed(2)}</Text>
+                  <Text style={styles.ItemTxt}>$ {((this.state.totalPrice + 5) * 0.089).toFixed(2)}</Text>
                 </View>
               </View>
               <View style={styles.ContentItem}>
                 <Text style={styles.ItemTxt}>Total Amount</Text>
-                <Text style={{ ...styles.ItemTxt, color: '#E47911' }}>$ {parseFloat(this.state.totalPrice +(this.state.totalPrice+5) * 0.089 +5).toFixed(2)}</Text>
+                <Text style={{ ...styles.ItemTxt, color: '#E47911' }}>$ {parseFloat(this.state.totalPrice + (this.state.totalPrice + 5) * 0.089 + 5).toFixed(2)}</Text>
               </View>
               <View style={styles.ContentItem}>
                 <Text style={styles.ItemTxt}>Promo Code</Text>
@@ -167,8 +167,20 @@ export default class CheckOutScreen extends Component {
               <View style={{ ...styles.ContentItem, marginTop: 10 }}>
                 <Text style={styles.ItemTxt}>Drop off Address</Text>
               </View>
-              <View style={styles.ContentItem}>
-                <TextInput style={styles.CardNumberInput} placeholderTextColor="#5E5E5E" placeholder="8823 Normal Blvd, Atlanta,GA, 31390" />
+              <View style={styles.inputItem}>
+                <Image source={require('../../assets/iamges/position.png')} resizeMode='stretch' style={styles.InputImage3} />
+                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Street Address" value={this.state.storeStreetAdress} onChangeText={(text) => { this.setState({ storeStreetAdress: text }) }}></TextInput>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={styles.inputItem2}>
+                  <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" placeholder="City" value={this.state.city} onChangeText={(text) => { this.setState({ city: text }) }}></TextInput>
+                </View>
+                <View style={styles.inputItem2}>
+                  <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" editable={false} placeholder="GA" value="GA" value={this.state.GA} onChangeText={(text) => { this.setState({ GA: text }) }}></TextInput>
+                </View>
+                <View style={styles.inputItem2}>
+                  <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" placeholder="Zip Code" value={this.state.zipCode} onChangeText={(text) => { this.setState({ zipCode: text }) }}></TextInput>
+                </View>
               </View>
               <View style={{ ...styles.ContentItem, marginTop: 10 }}>
                 <Text style={styles.ItemTxt}>Special request</Text>
