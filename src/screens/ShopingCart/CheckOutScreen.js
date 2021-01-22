@@ -129,7 +129,7 @@ export default class CheckOutScreen extends Component {
               </View>
               <View style={styles.ContentItem}>
                 <Text style={styles.ItemTxt}>Total Amount</Text>
-                <Text style={{ ...styles.ItemTxt, color: '#E47911' }}>$ {parseFloat(this.state.totalPrice +(this.state.totalPrice+5) * 0.089 ).toFixed(2)}</Text>
+                <Text style={{ ...styles.ItemTxt, color: '#E47911' }}>$ {parseFloat(this.state.totalPrice +(this.state.totalPrice+5) * 0.089 +5).toFixed(2)}</Text>
               </View>
               <View style={styles.ContentItem}>
                 <Text style={styles.ItemTxt}>Promo Code</Text>
