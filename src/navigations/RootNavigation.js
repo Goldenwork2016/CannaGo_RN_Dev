@@ -9,10 +9,11 @@ import DispensariesSignupScreen from '../screens/DispensariesSignupScreen';
 import DriverSignupScreen from '../screens/DriverSignupScreen';
 import SelectStoreHourScreen from '../screens/SelectStoreHourScreen';
 
-import { TabNavigation, TabDriverNavigation } from './TabBarNavigation'
+import { TabNavigation, TabDriverNavigation, OrderStatusTabNavigation } from './TabBarNavigation'
 
 const MainTabNav = createAppContainer(TabNavigation)
 const DriverTabNav = createAppContainer(TabDriverNavigation)
+const OrderStatusTabNav = createAppContainer(OrderStatusTabNavigation)
 
 const AuthStack = createStackNavigator(
     {
@@ -85,7 +86,8 @@ export default createAppContainer(
             Splash: SplashScreen,
             Auth: AuthStack,
             Main: MainStack,
-            Driver: DriverStack
+            Driver: DriverStack,
+            OrderStatus:OrderStatusTabNav
         },
         {
             initialRouteName: 'Splash'

@@ -14,13 +14,37 @@ export default class OrderStatusScreen extends Component {
             ischecked: false,
             storeId: '',
             userId: Firebase.auth().currentUser.uid,
-            orderStatus: ''
+            orderStatus: '',
         };
     }
 
     componentDidMount = async () => {
-        await this.setState({ storeId: this.props.navigation.getParam('storeId') })
-        console.log(this.state.storeId);
+        // await this.setState({ storeId: this.props.navigation.getParam('storeId') })
+        // console.log(this.state.storeId);
+
+        Firebase.database()
+            .ref("Carts/" + this.state.userId)
+            .on("value", async (snapshot) => {
+                var data = []
+                var row
+                snapshot.forEach(element => {
+                    row = {
+                        "storeId": element.val().storeId,
+                    }
+                    data.push(row)
+                });
+                console.log("_____________+++++++++++++_________________");
+                await this.setState({
+                    storeId: data[0].storeId,
+                });
+                console.log("================+++++++++++++_________________");
+                // console.log(this.state.storeId[0].storeId)
+                console.log(this.state.storeId)
+                this.loadStatus();
+            })
+    }
+
+    loadStatus = () => {
         Firebase.database()
             .ref("OrderItems/" + this.state.storeId + '/' + this.state.userId)
             .on("value", async (snapshot) => {

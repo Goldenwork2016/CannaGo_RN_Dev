@@ -22,7 +22,7 @@ export default class CheckOutScreen extends Component {
       totalPrice: '',
       stateTax: '',
       AllPrice: '',
-      placeDate: '',
+      placeDate: true,
       placeStatus: '',
       confirmDate: '',
       confirmStatus: '',
@@ -118,7 +118,7 @@ export default class CheckOutScreen extends Component {
       dropStatus: this.state.dropStatus,
       AllPrice: this.state.AllPrice,
     });
-    this.props.navigation.navigate("OrderStatusScreen", { storeId: this.state.real_data[0].storeId })
+    this.props.navigation.navigate("OrderStatus", { storeId: this.state.real_data[0].storeId })
   }
 
   render() {

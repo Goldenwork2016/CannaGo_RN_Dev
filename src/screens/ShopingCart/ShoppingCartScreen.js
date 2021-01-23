@@ -150,30 +150,31 @@ export default class ShoppingCartScreen extends Component {
     this.setState({ auto_num: this.state.auto_num + 1 })
   }
 
-  Minuscart = (index, id) => {
+  Minuscart = async (index, id) => {
     console.log("mincart+++++++++++++++");
     console.log(id);
     this.state.real_data[index].num -= 1
-    if (this.state.real_data[index].num <= 1) {
-      this.state.real_data[index].num = 1
+    if (this.state.real_data[index].num <= 0) {
+      await Firebase.database().ref('Carts/' + this.state.userId + '/' + id).remove();
+    } else {
+      Firebase.database()
+        .ref('Carts/' + this.state.userId + '/' + id)
+        .update({
+          Description: this.state.real_data[index].Description,
+          GpriceValue: this.state.real_data[index].GpriceValue,
+          Tag: this.state.real_data[index].Tag,
+          feeValue: this.state.real_data[index].feeValue,
+          id: id,
+          itemImage: this.state.real_data[index].itemImage,
+          itemNum1: this.state.real_data[index].itemNum1,
+          priceValue: this.state.real_data[index].priceValue,
+          productName: this.state.real_data[index].productName,
+          coaImage: this.state.real_data[index].coaImage,
+          num: this.state.real_data[index].num,
+          storeId: this.state.real_data[index].storeId
+        });
+      this.setState({ auto_num: this.state.auto_num + 1 })
     }
-    Firebase.database()
-      .ref('Carts/' + this.state.userId + '/' + id)
-      .update({
-        Description: this.state.real_data[index].Description,
-        GpriceValue: this.state.real_data[index].GpriceValue,
-        Tag: this.state.real_data[index].Tag,
-        feeValue: this.state.real_data[index].feeValue,
-        id: id,
-        itemImage: this.state.real_data[index].itemImage,
-        itemNum1: this.state.real_data[index].itemNum1,
-        priceValue: this.state.real_data[index].priceValue,
-        productName: this.state.real_data[index].productName,
-        coaImage: this.state.real_data[index].coaImage,
-        num: this.state.real_data[index].num,
-        storeId: this.state.real_data[index].storeId
-      });
-    this.setState({ auto_num: this.state.auto_num + 1 })
   }
 
   chageState = async () => {
@@ -307,11 +308,11 @@ export default class ShoppingCartScreen extends Component {
                         </View>
                         <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between' }}>
                           <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>CannaGo Service Fee</Text>
-                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>-${parseFloat(totalPrice*0.3).toFixed(2)}</Text>
+                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>-${parseFloat(totalPrice * 0.3).toFixed(2)}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between' }}>
                           <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>Your Payout</Text>
-                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10, color: '#61D273' }}>${parseFloat(totalPrice*0.7).toFixed(2)}</Text>
+                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10, color: '#61D273' }}>${parseFloat(totalPrice * 0.7).toFixed(2)}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                           <TouchableOpacity style={styles.orderBtn}>

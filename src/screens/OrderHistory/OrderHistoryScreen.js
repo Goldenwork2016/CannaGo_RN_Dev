@@ -16,7 +16,6 @@ export default class OrderHistoryScreen extends Component {
   }
 
   componentDidMount = async () => {
-    alert("sdfsdfsdfsdfsd")
     await this.setState({ storeId: this.props.navigation.getParam('storeId') })
     console.log(this.state.storeId);
     Firebase.database()
