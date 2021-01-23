@@ -307,11 +307,11 @@ export default class ShoppingCartScreen extends Component {
                         </View>
                         <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between' }}>
                           <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>CannaGo Service Fee</Text>
-                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>-${parseFloat(totalPrice).toFixed(2) *0.3}</Text>
+                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>-${parseFloat(totalPrice*0.3).toFixed(2)}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between' }}>
                           <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>Your Payout</Text>
-                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10, color: '#61D273' }}>${parseFloat(totalPrice).toFixed(2) *0.7}</Text>
+                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10, color: '#61D273' }}>${parseFloat(totalPrice*0.7).toFixed(2)}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                           <TouchableOpacity style={styles.orderBtn}>
