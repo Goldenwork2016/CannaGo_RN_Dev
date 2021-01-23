@@ -23,7 +23,7 @@ export default class ShoppingCartScreen extends Component {
       itemNum2: 1,
       usertype: 'consumer',
       real_data: [],
-      userId: "",
+      userId: Firebase.auth().currentUser.uid,
       isLoading: false,
       isModalVisible: false,
       alertContent: '',
@@ -38,7 +38,7 @@ export default class ShoppingCartScreen extends Component {
     const usertype = await AsyncStorage.getItem("usertype");
     const userId = await AsyncStorage.getItem("userUid");
     await this.setState({ usertype: usertype })
-    this.setState({ userId: userId })
+    // this.setState({ userId: userId })
     const { navigation } = this.props
     this.focusListener = navigation.addListener('didFocus', () => {
       this.loadData();
@@ -74,7 +74,7 @@ export default class ShoppingCartScreen extends Component {
           order_data: data,
         });
         console.log("++++++++++++++store+++++++++++++++++++");
-        console.log(tthis.state.order_data[0].priceValue);
+        console.log(this.state.order_data[0].orderItem);
         console.log("++++++++++++++store+++++++++++++++++++");
       })
   }
@@ -113,7 +113,7 @@ export default class ShoppingCartScreen extends Component {
           real_data: data,
         });
         console.log("================+++++++++++++_________________");
-        console.log(this.state.real_data)
+        console.log(this.state.real_data[0])
       })
   }
 
@@ -188,11 +188,11 @@ export default class ShoppingCartScreen extends Component {
     return e.length < length ? e : e.substring(0, length) + '...';
   }
 
-  addPriceValue(id){
+  addPriceValue(index) {
     var price = 0.0
     totalPrice = 0.0
-    this.state.order_data[id].orderItem.forEach(element => {
-      price = parseFloat(element.priceValue) 
+    this.state.order_data[index].orderItem.forEach(element => {
+      price = parseFloat(element.priceValue) * element.num
       totalPrice = totalPrice + price
     })
     // this.setState({ totalPrice: price })
@@ -284,7 +284,7 @@ export default class ShoppingCartScreen extends Component {
                           renderItem={({ item, newIndex }) => (
                             <View style={styles.historyContent}>
                               <View style={styles.histroyImageArea}>
-                                <Image source={require('../../assets/iamges/product3.png')} resizeMode='stretch' style={{ width: 60, height: 60 }} />
+                                <Image source={{ uri: item.itemImage }} resizeMode='stretch' style={{ width: 60, height: 60 }} />
                               </View>
                               <View>
                                 <Text style={styles.ItemHeader}>{item.productName}</Text>
@@ -306,12 +306,12 @@ export default class ShoppingCartScreen extends Component {
                           <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>$ {this.addPriceValue(index)}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between' }}>
-                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>CannnaGo Service Fee</Text>
+                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>CannaGo Service Fee</Text>
                           <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>-$5.00</Text>
                         </View>
                         <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between' }}>
                           <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>Your Payout</Text>
-                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10, color: '#61D273' }}>${parseFloat(totalPrice-5.00).toFixed(2)}</Text>
+                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10, color: '#61D273' }}>${parseFloat(totalPrice - 5.00).toFixed(2)}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                           <TouchableOpacity style={styles.orderBtn}>

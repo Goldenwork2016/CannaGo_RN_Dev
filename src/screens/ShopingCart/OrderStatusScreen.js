@@ -14,19 +14,39 @@ export default class OrderStatusScreen extends Component {
             ischecked: false,
             storeId: '',
             userId: Firebase.auth().currentUser.uid,
-            orderStatus:''
+            orderStatus: ''
         };
     }
 
     componentDidMount = async () => {
         await this.setState({ storeId: this.props.navigation.getParam('storeId') })
         console.log(this.state.storeId);
+        Firebase.database()
+            .ref("OrderItems/" + this.state.storeId + '/' + this.state.userId)
+            .on("value", async (snapshot) => {
+                console.log("cart++++++++++")
+                console.log(snapshot)
+                var row
+                row = {
+                    orderItem: snapshot.val().orderItem,
+                    placeDate: snapshot.val().placeDate,
+                    placeStatus: snapshot.val().placeStatus,
+                    confirmDate: snapshot.val().confirmDate,
+                    confirmStatus: snapshot.val().confirmStatus,
+                    deliveryDate: snapshot.val().deliveryDate,
+                    deliveryStatus: snapshot.val().deliveryStatus,
+                    dropDate: snapshot.val().dropDate,
+                    dropStatus: snapshot.val().dropStatus,
+                    AllPrice: snapshot.val().AllPrice,
+                }
+                this.setState({ orderStatus: row })
+            })
     }
 
     render() {
-        const {orderStatus} = this.state
+        const { orderStatus } = this.state
         return (
-            <View style={styles.container}>
+            <View style={styles.container} >
                 <ScrollView style={{ width: '100%' }}>
                     <View style={styles.container}>
                         <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 55 : 25 }}>
@@ -43,7 +63,7 @@ export default class OrderStatusScreen extends Component {
                                 <View style={styles.orderStatus}>
                                     <Text style={styles.statusTitle}>Order Placed</Text>
                                     <Text style={styles.statusDescrition}>We have received your order.</Text>
-                                <Text style={styles.statusDescrition}>{orderStatus.placeDate}</Text>
+                                    <Text style={styles.statusDescrition}>{orderStatus.placeDate}</Text>
                                 </View>
                             </View>
                             <View style={styles.orderStatusItem}>
