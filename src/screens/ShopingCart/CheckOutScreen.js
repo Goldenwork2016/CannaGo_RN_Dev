@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Dimensions, FlatList, Platform } from 'react-native';
 import Modal from 'react-native-modalbox';
 import Firebase from '../../../config/firebase'
-
+import dayjs from 'dayjs';
 import { styles } from '../../components/styles'
 
 const height = Dimensions.get('screen').height;
+let today = '';
 
 export default class CheckOutScreen extends Component {
   constructor(props) {
@@ -18,7 +19,17 @@ export default class CheckOutScreen extends Component {
       userId: Firebase.auth().currentUser.uid,
       real_data: [],
       contentList: [],
-      totalPrice: ''
+      totalPrice: '',
+      stateTax: '',
+      AllPrice: '',
+      placeDate: '',
+      placeStatus: '',
+      confirmDate: '',
+      confirmStatus: '',
+      deliveryDate: '',
+      deliveryStatus: '',
+      dropDate: '',
+      dropStatus: '',
     };
   }
 
@@ -46,6 +57,7 @@ export default class CheckOutScreen extends Component {
             'productName': element.val().productName,
             'coaImage': element.val().coaImage,
             'num': element.val().num,
+            'storeId': element.val().storeId
           }
           data.push(row)
           console.log("_____________+++++++++++++_________________");
@@ -61,9 +73,11 @@ export default class CheckOutScreen extends Component {
           var itemPrice = element.priceValue * element.num
           totalPrice = totalPrice + itemPrice
         })
-        this.setState({
+        await this.setState({
           totalPrice: totalPrice,
         });
+        await this.setState({ stateTax: ((this.state.totalPrice + 5) * 0.089).toFixed(2) });
+        await this.setState({ AllPrice: parseFloat(this.state.totalPrice + (this.state.totalPrice + 5) * 0.089 + 5).toFixed(2) })
       })
   }
 
@@ -85,6 +99,26 @@ export default class CheckOutScreen extends Component {
     if (this.state.expired_date.length === 2) {
       await this.setState({ expired_date: this.state.expired_date + "/" })
     }
+  }
+
+  checkOut = async () => {
+    today = new Date();
+    await this.setState({ placeDate: dayjs(today).format('hh:mm A MM/DD/YYYY') })
+    console.log(this.state.placeDate);
+    var newItemKey = Firebase.database().ref().child('Items').push().key;
+    Firebase.database().ref('OrderItems/' + this.state.real_data[0].storeId + '/' + this.state.userId).update({
+      orderItem: this.state.real_data,
+      placeDate: this.state.placeDate,
+      placeStatus: this.state.placeStatus,
+      confirmDate: this.state.confirmDate,
+      confirmStatus: this.state.confirmStatus,
+      deliveryDate: this.state.deliveryDate,
+      deliveryStatus: this.state.deliveryStatus,
+      dropDate: this.state.dropDate,
+      dropStatus: this.state.dropStatus,
+      AllPrice: this.state.AllPrice,
+    });
+    this.props.navigation.navigate("OrderStatusScreen", { storeId: this.state.real_data[0].storeId })
   }
 
   render() {
@@ -124,12 +158,12 @@ export default class CheckOutScreen extends Component {
                 </View>
                 <View style={styles.ContentItem}>
                   <Text style={styles.ItemTxt}>State Tax</Text>
-                  <Text style={styles.ItemTxt}>$ {((this.state.totalPrice + 5) * 0.089).toFixed(2)}</Text>
+                  <Text style={styles.ItemTxt}>$ {this.state.stateTax}</Text>
                 </View>
               </View>
               <View style={styles.ContentItem}>
                 <Text style={styles.ItemTxt}>Total Amount</Text>
-                <Text style={{ ...styles.ItemTxt, color: '#E47911' }}>$ {parseFloat(this.state.totalPrice + (this.state.totalPrice + 5) * 0.089 + 5).toFixed(2)}</Text>
+                <Text style={{ ...styles.ItemTxt, color: '#E47911' }}>$ {this.state.AllPrice}</Text>
               </View>
               <View style={styles.ContentItem}>
                 <Text style={styles.ItemTxt}>Promo Code</Text>
@@ -189,7 +223,7 @@ export default class CheckOutScreen extends Component {
                 <TextInput style={styles.specialInput} multiline={true} placeholderTextColor="#5E5E5E" placeholder="The gate code is #01234" />
               </View>
             </View>
-            <TouchableOpacity style={{ ...styles.signinBtn, width: '85%', alignSelf: 'center' }} onPress={() => { this.props.navigation.navigate("OrderStatusScreen") }}>
+            <TouchableOpacity style={{ ...styles.signinBtn, width: '85%', alignSelf: 'center' }} onPress={() => { this.checkOut() }}>
               <Text style={styles.signinTxt1}>Check Out</Text>
             </TouchableOpacity>
           </View>

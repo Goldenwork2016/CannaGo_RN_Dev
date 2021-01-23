@@ -11,6 +11,7 @@ import { styles } from '../../components/styles'
 
 const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
+var totalPrice = 0.0
 
 export default class ShoppingCartScreen extends Component {
   constructor(props) {
@@ -27,8 +28,11 @@ export default class ShoppingCartScreen extends Component {
       isModalVisible: false,
       alertContent: '',
       isModalVisible1: false,
-      auto_num: 0
+      auto_num: 0,
+      order_data: '',
+      totalPrice: ''
     };
+    this.addPriceValue = this.addPriceValue.bind(this)
   }
   componentDidMount = async () => {
     const usertype = await AsyncStorage.getItem("usertype");
@@ -40,6 +44,39 @@ export default class ShoppingCartScreen extends Component {
       this.loadData();
     });
     this.loadData();
+
+    console.log(this.state.storeId);
+    Firebase.database()
+      .ref('OrderItems/' + this.state.userId)
+      .on("value", async (snapshot) => {
+        console.log("++++++++++++++store+++++++++++++++++++");
+        console.log(snapshot);
+        var data = []
+        var row
+        snapshot.forEach(element => {
+          console.log(element.val().orderItem);
+          row = {
+            "confirmDate": element.val().confirmDate,
+            "confirmStatus": element.val().confirmStatus,
+            "deliveryDate": element.val().deliveryDate,
+            "deliveryStatus": element.val().deliveryStatus,
+            "dropDate": element.val().dropDate,
+            "dropStatus": element.val().dropStatus,
+            "placeDate": element.val().placeDate,
+            "placeStatus": element.val().placeStatus,
+            "allPrice": element.val().AllPrice,
+            "oderId": element.key,
+            "orderItem": element.val().orderItem
+          };
+          data.push(row)
+        })
+        await this.setState({
+          order_data: data,
+        });
+        console.log("++++++++++++++store+++++++++++++++++++");
+        console.log(tthis.state.order_data[0].priceValue);
+        console.log("++++++++++++++store+++++++++++++++++++");
+      })
   }
 
   componentWillUnmount() {
@@ -147,6 +184,21 @@ export default class ShoppingCartScreen extends Component {
     this.props.navigation.navigate("CheckOutScreen")
   }
 
+  cutText = (e, length) => {
+    return e.length < length ? e : e.substring(0, length) + '...';
+  }
+
+  addPriceValue(id){
+    var price = 0.0
+    totalPrice = 0.0
+    this.state.order_data[id].orderItem.forEach(element => {
+      price = parseFloat(element.priceValue) 
+      totalPrice = totalPrice + price
+    })
+    // this.setState({ totalPrice: price })
+    return parseFloat(totalPrice).toFixed(2)
+  }
+
   render() {
     const { real_data } = this.state
     return (
@@ -218,65 +270,62 @@ export default class ShoppingCartScreen extends Component {
                 </View>
               </View>
               <ImageBackground source={require('../../assets/iamges/orderBackgroudImage.png')} resizeMode='stretch' style={{ ...styles.backgroundImage, width: width * 0.9 }} >
-                <ScrollView style={{ width: '100%' }}>
-                  <View style={styles.historyItem}>
-                    <Text style={styles.ItemHeader}>Order Placed 11/24/20,11:04 AM</Text>
-                    <Text style={styles.ItemHeader}>Order Reference #FG1735UIWH7</Text>
-                    <View style={styles.historyContent}>
-                      <View style={styles.histroyImageArea}>
-                        <Image source={require('../../assets/iamges/product3.png')} resizeMode='stretch' style={{ width: 60, height: 60 }} />
-                      </View>
-                      <View>
-                        <Text style={styles.ItemHeader}>Just CBD Gummies</Text>
-                        <Text style={styles.ItemHeader}>from Cannabis Station </Text>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text style={styles.ItemHeader}>Quantity</Text>
-                          <View style={styles.qualityArea}>
-                            <Text style={styles.ItemHeader}>1</Text>
-                          </View>
+                <View style={{ width: '100%' }}>
+                  <FlatList
+                    data={this.state.order_data ? this.state.order_data : []}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item, index }) => (
+                      <View style={styles.historyItem}>
+                        <Text style={styles.ItemHeader}>Order Placed {item.placeDate}</Text>
+                        <Text style={styles.ItemHeader}>Order Reference #{this.cutText(item.oderId, 10)}</Text>
+                        <FlatList
+                          data={item.orderItem}
+                          keyExtractor={(newItem, newIndex) => newIndex.toString()}
+                          renderItem={({ item, newIndex }) => (
+                            <View style={styles.historyContent}>
+                              <View style={styles.histroyImageArea}>
+                                <Image source={require('../../assets/iamges/product3.png')} resizeMode='stretch' style={{ width: 60, height: 60 }} />
+                              </View>
+                              <View>
+                                <Text style={styles.ItemHeader}>{item.productName}</Text>
+                                <Text style={styles.ItemHeader}>from Cannabis Station </Text>
+                                <View style={{ flexDirection: 'row' }}>
+                                  <Text style={styles.ItemHeader}>Quantity</Text>
+                                  <View style={styles.qualityArea}>
+                                    <Text style={styles.ItemHeader}>{item.num}</Text>
+                                  </View>
+                                </View>
+                                <Text style={{ ...styles.ItemHeader, color: '#61D273' }}>${item.priceValue}</Text>
+                              </View>
+                            </View>
+                          )}
+                        />
+                        <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between' }}>
+                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>Product Total</Text>
+                          {/* <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>$ {index}</Text> */}
+                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>$ {this.addPriceValue(index)}</Text>
                         </View>
-                        <Text style={{ ...styles.ItemHeader, color: '#61D273' }}>$12.55</Text>
-                      </View>
-                    </View>
-                    <View style={styles.historyContent}>
-                      <View style={styles.histroyImageArea}>
-                        <Image source={require('../../assets/iamges/product2.png')} resizeMode='stretch' style={{ width: 70, height: 70 }} />
-                      </View>
-                      <View>
-                        <Text style={styles.ItemHeader}>Just CBD Gummies</Text>
-                        <Text style={styles.ItemHeader}>from Cannabis Station </Text>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text style={styles.ItemHeader}>Quantity</Text>
-                          <View style={styles.qualityArea}>
-                            <Text style={styles.ItemHeader}>2</Text>
-                          </View>
+                        <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between' }}>
+                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>CannnaGo Service Fee</Text>
+                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>-$5.00</Text>
                         </View>
-                        <Text style={{ ...styles.ItemHeader, color: '#61D273' }}>$15.00</Text>
+                        <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between' }}>
+                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>Your Payout</Text>
+                          <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10, color: '#61D273' }}>${parseFloat(totalPrice-5.00).toFixed(2)}</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                          <TouchableOpacity style={styles.orderBtn}>
+                            <Text style={styles.OrderTxt}>Order Ready for Pickup</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity>
+                            <Text style={{ ...styles.ReportTxt, marginTop: 7 }}>Don't have Item</Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
-                    </View>
-                    {/* <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 30 }}>Delivered 11/22/20, 10:32 AM</Text> */}
-                    <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between' }}>
-                      <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>Product Total</Text>
-                      <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>$27.55</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between' }}>
-                      <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>CannnaGo Service Fee</Text>
-                      <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>-$8.26</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', width: '80%', justifyContent: 'space-between' }}>
-                      <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>Your Payout</Text>
-                      <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10, color: '#61D273' }}>$19.00</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                      <TouchableOpacity style={styles.orderBtn}>
-                        <Text style={styles.OrderTxt}>Order Ready for Pickup</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity>
-                        <Text style={{ ...styles.ReportTxt, marginTop: 7 }}>Don't have Item</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <View style={styles.historyItem}>
+                    )}
+                  />
+
+                  {/* <View style={styles.historyItem}>
                     <Text style={styles.ItemHeader}>Order Placed 11/24/20,11:04 AM</Text>
                     <Text style={styles.ItemHeader}>Order Reference #HEYF71736JDH</Text>
                     <View style={styles.historyContent}>
@@ -307,7 +356,7 @@ export default class ShoppingCartScreen extends Component {
                       <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>Your Payout</Text>
                       <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10, color: '#61D273' }}>$19.00</Text>
                     </View>
-                    {/* <View style={styles.historyContent}>
+                    <View style={styles.historyContent}>
                       <View style={styles.histroyImageArea}>
                         <Image source={require('../../assets/iamges/product4.png')} resizeMode='stretch' style={{ width: 70, height: 70 }} />
                       </View>
@@ -315,15 +364,15 @@ export default class ShoppingCartScreen extends Component {
                         <Text style={styles.ItemHeader}>Hemp Oil</Text>
                         <Text style={{ ...styles.ItemHeader, color: '#61D273' }}>$25</Text>
                       </View>
-                    </View> */}
+                    </View>
                     <Text style={{ ...styles.ItemHeader, textAlign: 'center', }}>Order Completed 11/22/20, 10:32 AM</Text>
-                    {/* <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>Total Amount: <Text style={{ color: '#61D273' }}>$50</Text></Text> */}
+                    <Text style={{ ...styles.ItemHeader, textAlign: 'center', marginTop: 10 }}>Total Amount: <Text style={{ color: '#61D273' }}>$50</Text></Text>
                     <TouchableOpacity onPress={() => this.refs.modal6.open()}>
                       <Text style={styles.ReportTxt}>Report an Issue</Text>
                     </TouchableOpacity>
-                  </View>
+                  </View> */}
                   <View style={{ height: 200 }}></View>
-                </ScrollView>
+                </View>
               </ImageBackground>
               <Modal style={styles.modal1} position={"bottom"} ref={"modal6"} swipeArea={20}>
                 <TouchableOpacity style={styles.closeBtn} onPress={() => { this.closeModal() }}>
