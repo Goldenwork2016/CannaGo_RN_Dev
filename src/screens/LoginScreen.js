@@ -134,6 +134,7 @@ class LoginScreen extends Component {
         self.setState({ isLoading: true })
         Firebase.auth().signInWithEmailAndPassword(email, password)
           .then(function (user) {
+            self.setState({ userId: user.user.uid })
             AsyncStorage.setItem('Loggined', "Success");
             AsyncStorage.setItem('userUid', user.user.uid);
             const { load, userInfo } = self.props
@@ -193,11 +194,12 @@ class LoginScreen extends Component {
 
             self.setState({ isLoading: false })
             // clearTimeout(myTimer)
-            self.setState({ isModalVisible6: true })
-            setTimeout(() => {
-              self.props.navigation.navigate('Main', { userUid: self.state.userUid })
-              self.setState({ isModalVisible6: false })
-            }, 2000)
+            // self.setState({ isModalVisible6: true })
+            // setTimeout(() => {
+            //   self.props.navigation.navigate('Main', { userUid: self.state.userUid })
+            //   self.setState({ isModalVisible6: false })
+            // }, 2000)
+            self.login()
           })
           .catch((error) => {
             console.log(error.message)
@@ -215,6 +217,91 @@ class LoginScreen extends Component {
       }
 
     }
+  }
+
+  login = () => {
+    const self = this;
+    if (self.state.isDispensaries === true) {
+      self.setState({ isModalVisible6: true })
+      setTimeout(() => {
+        self.props.navigation.navigate('Main', { userUid: self.state.userUid })
+        self.setState({ isModalVisible6: false })
+      }, 2000)
+    } else {
+      Firebase.database()
+        .ref("Carts/" + this.state.userId)
+        .once("value")
+        .then(async (snapshot) => {
+          var data = []
+          var row
+          snapshot.forEach(element => {
+            row = {
+              "storeId": element.val().storeId,
+            }
+            data.push(row)
+          });
+          console.log("_____________+++++++++++++_________________");
+          await this.setState({
+            storeId: data[0].storeId,
+          });
+          console.log("================+++++++++++++_________________");
+          // console.log(this.state.storeId[0].storeId)
+          console.log(this.state.storeId)
+          this.loadStatus();
+        })
+        .catch(error => {
+          self.setState({ isModalVisible6: true })
+          setTimeout(() => {
+            self.props.navigation.navigate('Main', { userUid: self.state.userUid })
+            self.setState({ isModalVisible6: false })
+          }, 2000)
+        })
+    }
+  }
+
+  loadStatus = () => {
+    const self = this;
+    Firebase.database()
+      .ref("OrderItems/" + this.state.storeId + '/' + this.state.userId)
+      .once("value")
+      .then(async (snapshot) => {
+        console.log("cart++++++++++")
+        console.log(snapshot)
+        var row
+        row = {
+          orderItem: snapshot.val().orderItem,
+          placeDate: snapshot.val().placeDate,
+          placeStatus: snapshot.val().placeStatus,
+          confirmDate: snapshot.val().confirmDate,
+          confirmStatus: snapshot.val().confirmStatus,
+          deliveryDate: snapshot.val().deliveryDate,
+          deliveryStatus: snapshot.val().deliveryStatus,
+          dropDate: snapshot.val().dropDate,
+          dropStatus: snapshot.val().dropStatus,
+          AllPrice: snapshot.val().AllPrice,
+        }
+        await this.setState({ orderStatus: row })
+        if (this.state.orderStatus.placeStatus == true && this.state.orderStatus.dropStatus == true) {
+          self.setState({ isModalVisible6: true })
+          setTimeout(() => {
+            self.props.navigation.navigate('Main', { userUid: self.state.userUid })
+            self.setState({ isModalVisible6: false })
+          }, 2000)
+        } else {
+          self.setState({ isModalVisible6: true })
+          setTimeout(() => {
+            self.props.navigation.navigate('OrderStatus', { userUid: self.state.userUid })
+            self.setState({ isModalVisible6: false })
+          }, 2000)
+        }
+      })
+      .catch(error => {
+        self.setState({ isModalVisible6: true })
+        setTimeout(() => {
+          self.props.navigation.navigate('Main', { userUid: self.state.userUid })
+          self.setState({ isModalVisible6: false })
+        }, 2000)
+      })
   }
 
   gotoMain() {
@@ -331,7 +418,7 @@ class LoginScreen extends Component {
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
             <Text style={styles.Description}>You have entered the wrong email or password.</Text>
-            <Text style={{...styles.Description, marginTop:-10}}>Please try again.</Text>
+            <Text style={{ ...styles.Description, marginTop: -10 }}>Please try again.</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible7: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
@@ -341,7 +428,7 @@ class LoginScreen extends Component {
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
             <Text style={styles.Description}>This email does not exist. </Text>
-            <Text style={{...styles.Description, marginTop:-10}}>Please create an account.</Text>
+            <Text style={{ ...styles.Description, marginTop: -10 }}>Please create an account.</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible8: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
