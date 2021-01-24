@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, SafeAreaView, TextInput, Platform } from 'react-native';
 import Firebase from '../../../config/firebase'
 
 import { styles } from '../../components/styles'
@@ -70,9 +70,13 @@ export default class OrderStatusScreen extends Component {
     render() {
         const { orderStatus } = this.state
         return (
-            <View style={styles.container} >
+            <SafeAreaView style={styles.container} >
                 <ScrollView style={{ width: '100%' }}>
                     <View style={styles.container}>
+                        <View style={styles.CheckStatus}>
+                            <Image source={require('../../assets/iamges/location.png')} resizeMode='stretch' style={styles.locationkIcon} />
+                            <Text style={styles.locationTxt}>Check your order status</Text>
+                        </View>
                         <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 55 : 25 }}>
                             <Text style={styles.OrderStatusTitle}>Order Status</Text>
                         </View>
@@ -135,7 +139,7 @@ export default class OrderStatusScreen extends Component {
                     </View>
                     <View style={{ height: 150 }}></View>
                 </ScrollView>
-            </View>
+            </SafeAreaView>
         );
     }
 }

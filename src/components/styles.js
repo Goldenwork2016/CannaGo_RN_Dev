@@ -23,6 +23,17 @@ export const styles = StyleSheet.create({
         margin: '5%',
         elevation: 5
     },
+    CheckStatus:{
+        width:224,
+        height:60,
+        marginTop:-25,
+        backgroundColor:'#61D273',
+        borderBottomRightRadius:30,
+        borderBottomLeftRadius:30,
+        justifyContent:'center',
+        alignItems:'center', 
+        flexDirection:'row'
+    },
     logoImage: {
         width: 162,
         height: 170,
@@ -793,6 +804,13 @@ export const styles = StyleSheet.create({
         width: 30,
         height: 25
     },
+    locationkIcon: {
+        width: 15,
+        height: 19,
+        position:'absolute',
+        left:23,
+        top:32
+    },
     lineArea: {
         height: 70,
         width: 1,
@@ -817,6 +835,12 @@ export const styles = StyleSheet.create({
         fontSize: 12,
         color: '#707070',
         marginTop: 1
+    },
+    locationTxt: {
+        fontFamily: 'Poppins-Regular',
+        fontSize: 10,
+        color: 'white',
+        marginTop:20
     },
     rateTitle: {
         alignSelf: 'center',
