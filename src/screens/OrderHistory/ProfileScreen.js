@@ -58,7 +58,8 @@ class ProfileScreen extends Component {
       storeHours: '',
       companyName: '',
       fein: '',
-      userId: Firebase.auth().currentUser.uid,
+      userId: "",
+      // userId: Firebase.auth().currentUser.uid,
       availableBal: 0,
       isModalVisible1: false,
       timeFlag: false,
@@ -74,7 +75,7 @@ class ProfileScreen extends Component {
     const { real_data, user_real_info } = this.props
     const usertype = await AsyncStorage.getItem("usertype");
     const userId = await AsyncStorage.getItem("userUid");
-    // await this.setState({ userId: userId })
+    await this.setState({ userId: userId })
     await this.setState({ usertype: usertype });
     console.log("_______________+++++++++++++++++++++++________________")
     console.log(this.state.usertype)
@@ -141,7 +142,7 @@ class ProfileScreen extends Component {
         this.compareTime();
       });
       this.compareTime();
-    } else if (this.state.usertype == "consumer") {
+    } else if (this.state.usertype == "driver") {
       console.log("================================");
       Firebase.database()
         .ref('user/' + this.state.userId)
@@ -154,7 +155,6 @@ class ProfileScreen extends Component {
             phoneNum: snapshot.val().phoneNum,
             profileimage: snapshot.val().profileimage,
             userType: snapshot.val().userType,
-            zipCode: snapshot.val().zipCode,
             age: snapshot.val().age,
             // data.push(row)
           };
@@ -170,6 +170,39 @@ class ProfileScreen extends Component {
             userType: user_data.userType,
             zipCode: user_data.zipCode,
             age: user_data.age,
+          })
+        })
+    } else if (this.state.usertype == "consumer") {
+      console.log("================================");
+      Firebase.database()
+        .ref('user/' + this.state.userId)
+        .on("value", async (snapshot) => {
+          user_data = {
+            email: snapshot.val().email,
+            firstName: snapshot.val().fristName,
+            lastName: snapshot.val().lastName,
+            password: snapshot.val().password,
+            phoneNum: snapshot.val().phoneNum,
+            profileimage: snapshot.val().profileimage,
+            userType: snapshot.val().userType,
+            zipCode: snapshot.val().zipCode,
+            age: snapshot.val().age,
+            availableBal: snapshot.val().availableBal,
+            // data.push(row)
+          };
+          console.log("================================");
+          console.log(user_data);
+          await this.setState({
+            firstName: user_data.firstName,
+            lastName: user_data.lastName,
+            email: user_data.email,
+            phoneNum: user_data.phoneNum,
+            password: user_data.password,
+            profileimage: user_data.profileimage,
+            userType: user_data.userType,
+            zipCode: user_data.zipCode,
+            age: user_data.age,
+            availableBal:availableBal
           })
         })
     }
@@ -304,48 +337,8 @@ class ProfileScreen extends Component {
     const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, availableBal, storePhoneNum, storeAddress, storeHours, companyName, fein } = this.state
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
     await Firebase.database().ref('user/' + this.state.userId).update({
-      //   fristName: firstName,
-      //   lastName: lastName,
-      //   email: email,
-      //   phoneNum: phoneNum,
-      //   password: password,
-      //   storeName: storeName,
-      //   storePhoneNum: storePhoneNum,
-      //   storeStreetAdress: storeAddress,
-      //   storeHours: storeHours,
-      //   companyName: companyName,
-      //   fein: fein,
-      //   userType: userType,
       profileimage: profileimage,
-      // availableBal: availableBal,
     });
-    // const { updateUserInfo } = this.props
-    // var updateUserInfo_row
-    // await Firebase.database()
-    //   .ref('user/' + this.state.userId)
-    //   .once("value")
-    //   .then(snapshot => {
-    //     console.log("====++=======================================");
-    //     console.log(snapshot)
-    //     updateUserInfo_row = {
-    //       fristName: snapshot.fristName,
-    //       lastName: snapshot.lastName,
-    //       email: snapshot.email,
-    //       phoneNum: snapshot.phoneNum,
-    //       password: snapshot.password,
-    //       storeName: snapshot.storeName,
-    //       storePhoneNum: snapshot.storePhoneNum,
-    //       storeStreetAdress: snapshot.storeAddress,
-    //       storeHours: snapshot.storeHours,
-    //       companyName: snapshot.companyName,
-    //       fein: snapshot.fein,
-    //       userType: snapshot.userType,
-    //       profileimage: snapshot.profileimage,
-    //     }
-    //     console.log("___________+++++++++++++++++++++++++______________")
-    //     console.log(updateUserInfo_row)
-    //     updateUserInfo(updateUserInfo_row)
-    //   });
   }
 
   checkfun = async () => {
@@ -447,7 +440,7 @@ class ProfileScreen extends Component {
                   </View>
                 </View>
                 <View style={styles.inputArea}>
-                  <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', marginTop: 20, fontSize: 40, }}>$0.00</Text>
+                  <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', marginTop: 20, fontSize: 40, }}>$ {parseFloat(availableBal).toFixed(2)}</Text>
                   <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', color: '#7a7a7b', marginBottom: 20 }}>Available Balance</Text>
                   <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("DispensaryUpdateScreen") }}>
                     <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
@@ -494,17 +487,17 @@ class ProfileScreen extends Component {
                   <View style={styles.personUploadgImage}>
                     <View style={styles.personImageArea}>
                       <View style={styles.personImageArea1}>
-                        <Image source={this.state.avatarSource} resizeMode='cover' style={styles.personImage} />
+                        <Image Image source={{ uri: profileimage }} resizeMode='cover' style={styles.personImage} />
                       </View>
                     </View>
                     <TouchableOpacity style={{ ...styles.addBtn, bottom: 50 }} onPress={() => { this.chooseImage() }}>
                       <Image source={require('../../assets/iamges/addImage.png')} resizeMode='stretch' style={styles.addImage} />
                     </TouchableOpacity>
-                    <Text style={{ ...styles.inputTxt, color: '#121214', alignSelf: 'center', marginTop: 20 }}>John H, 25</Text>
+                    <Text style={{ ...styles.inputTxt, alignSelf: 'center', textAlign: "center", marginTop: 20 }}>{firstName} {lastName}, {age}</Text>
                   </View>
                 </View>
                 <View style={styles.inputArea}>
-                  <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', marginTop: 0, fontSize: 40, }}>$275.70</Text>
+                  <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', marginTop: 0, fontSize: 40, }}>$ {parseFloat(availableBal).toFixed(2)}</Text>
                   <Text style={{ ...styles.SignInfoTxt, textAlign: 'center', color: '#7a7a7b', marginBottom: 20 }}>Available Balance</Text>
                   <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("DriverInformationScreen") }}>
                     <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />

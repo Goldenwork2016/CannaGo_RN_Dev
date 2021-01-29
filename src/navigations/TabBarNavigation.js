@@ -229,6 +229,12 @@ const OrderHistory = createStackNavigator(
                 headerShown: false,
             }
         },
+        DriverInformationScreen: {
+            screen: DriverInformationScreen,
+            navigationOptions: {
+                headerShown: false,
+            }
+        },
     },
     {
         initialRouteName: 'ProfileScreen',

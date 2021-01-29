@@ -120,108 +120,109 @@ class LoginScreen extends Component {
   routing = () => {
     const { email, password } = this.state
     const self = this;
-    if (self.state.isDriver === true) {
-      return self.props.navigation.navigate('Driver')
+    if (email == "") {
+      self.setState({ isModalVisible1: true })
+    } else if (reg.test(email) === false) {
+      self.setState({ isModalVisible2: true })
+    } else if (password == "") {
+      self.setState({ isModalVisible3: true })
     } else {
-      if (email == "") {
-        self.setState({ isModalVisible1: true })
-      } else if (reg.test(email) === false) {
-        self.setState({ isModalVisible2: true })
-      } else if (password == "") {
-        self.setState({ isModalVisible3: true })
-      } else {
-        // var myTimer = setTimeout(function () { self.NetworkSensor() }.bind(self), 25000)
-        self.setState({ isLoading: true })
-        Firebase.auth().signInWithEmailAndPassword(email, password)
-          .then(function (user) {
-            self.setState({ userId: user.user.uid })
-            AsyncStorage.setItem('Loggined', "Success");
-            AsyncStorage.setItem('userUid', user.user.uid);
-            const { load, userInfo } = self.props
-            var data = []
-            var user_info
-            var user_row
-            var row
-            Firebase.database()
-              .ref('Items/' + user.user.uid)
-              .once("value")
-              .then(snapshot => {
-                snapshot.forEach(element => {
-                  row = {
-                    Description: element.val().Description,
-                    GpriceValue: element.val().GpriceValue,
-                    Tag: element.val().Tag,
-                    feeValue: element.val().feeValue,
-                    id: element.val().id,
-                    itemImage: element.val().itemImage,
-                    itemNum1: element.val().itemNum1,
-                    priceValue: element.val().priceValue,
-                    productName: element.val().productName
-                  }
-                  data.push(row)
-                });
-                // console.log(data)
-                load(data)
-              });
-
-            Firebase.database()
-              .ref('user/' + user.user.uid)
-              .on("value", snapshot => {
-                console.log(snapshot)
-                user_info
-                user_row = {
-                  companyName: snapshot.val().companyName,
-                  email: snapshot.val().email,
-                  fein: snapshot.val().fein,
-                  phoneNum: snapshot.val().phoneNum,
-                  firstName: snapshot.val().fristName,
-                  lastName: snapshot.val().lastName,
-                  password: snapshot.val().password,
-                  profileimage: snapshot.val().profileimage,
-                  storeAddress: snapshot.val().storeStreetAdress,
-                  storeName: snapshot.val().storeName,
-                  storeHours: snapshot.val().storeHours,
-                  storePhoneNum: snapshot.val().storePhoneNum,
-                  userType: snapshot.val().userType,
-                  availableBal: snapshot.val().availableBal,
-                  GA: snapshot.val().GA,
-                  zipCode: snapshot.val().zipCode,
+      // var myTimer = setTimeout(function () { self.NetworkSensor() }.bind(self), 25000)
+      self.setState({ isLoading: true })
+      Firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(function (user) {
+          self.setState({ userId: user.user.uid })
+          AsyncStorage.setItem('Loggined', "Success");
+          AsyncStorage.setItem('userUid', user.user.uid);
+          const { load, userInfo } = self.props
+          var data = []
+          var user_info
+          var user_row
+          var row
+          Firebase.database()
+            .ref('Items/' + user.user.uid)
+            .once("value")
+            .then(snapshot => {
+              snapshot.forEach(element => {
+                row = {
+                  Description: element.val().Description,
+                  GpriceValue: element.val().GpriceValue,
+                  Tag: element.val().Tag,
+                  feeValue: element.val().feeValue,
+                  id: element.val().id,
+                  itemImage: element.val().itemImage,
+                  itemNum1: element.val().itemNum1,
+                  priceValue: element.val().priceValue,
+                  productName: element.val().productName
                 }
-                user_info = user_row;
-                // console.log(data)
-                userInfo(user_info)
+                data.push(row)
               });
+              // console.log(data)
+              load(data)
+            });
 
-            self.setState({ isLoading: false })
-            // clearTimeout(myTimer)
-            // self.setState({ isModalVisible6: true })
-            // setTimeout(() => {
-            //   self.props.navigation.navigate('Main', { userUid: self.state.userUid })
-            //   self.setState({ isModalVisible6: false })
-            // }, 2000)
-            self.login()
-          })
-          .catch((error) => {
-            console.log(error.message)
-            if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
-              this.setState({ isModalVisible9: true })
-            }
-            if (error.message == "There is no user record corresponding to this identifier. The user may have been deleted.") {
-              this.setState({ isModalVisible8: true })
-            }
-            if (error.message == "The password is invalid or the user does not have a password.") {
-              this.setState({ isModalVisible7: true })
-            }
-            self.setState({ isLoading: false })
-          })
-      }
+          Firebase.database()
+            .ref('user/' + user.user.uid)
+            .on("value", snapshot => {
+              console.log(snapshot)
+              user_info
+              user_row = {
+                companyName: snapshot.val().companyName,
+                email: snapshot.val().email,
+                fein: snapshot.val().fein,
+                phoneNum: snapshot.val().phoneNum,
+                firstName: snapshot.val().fristName,
+                lastName: snapshot.val().lastName,
+                password: snapshot.val().password,
+                profileimage: snapshot.val().profileimage,
+                storeAddress: snapshot.val().storeStreetAdress,
+                storeName: snapshot.val().storeName,
+                storeHours: snapshot.val().storeHours,
+                storePhoneNum: snapshot.val().storePhoneNum,
+                userType: snapshot.val().userType,
+                availableBal: snapshot.val().availableBal,
+                GA: snapshot.val().GA,
+                zipCode: snapshot.val().zipCode,
+              }
+              user_info = user_row;
+              // console.log(data)
+              userInfo(user_info)
+            });
 
+          self.setState({ isLoading: false })
+          // clearTimeout(myTimer)
+          // self.setState({ isModalVisible6: true })
+          // setTimeout(() => {
+          //   self.props.navigation.navigate('Main', { userUid: self.state.userUid })
+          //   self.setState({ isModalVisible6: false })
+          // }, 2000)
+          self.login()
+        })
+        .catch((error) => {
+          console.log(error.message)
+          if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
+            this.setState({ isModalVisible9: true })
+          }
+          if (error.message == "There is no user record corresponding to this identifier. The user may have been deleted.") {
+            this.setState({ isModalVisible8: true })
+          }
+          if (error.message == "The password is invalid or the user does not have a password.") {
+            this.setState({ isModalVisible7: true })
+          }
+          self.setState({ isLoading: false })
+        })
     }
   }
 
   login = () => {
     const self = this;
-    if (self.state.isDispensaries === true) {
+    if (self.state.isDriver === true) {
+      self.setState({ isModalVisible6: true })
+      setTimeout(() => {
+        self.props.navigation.navigate('Driver', { userUid: self.state.userUid })
+        self.setState({ isModalVisible6: false })
+      }, 2000)
+    } else if (self.state.isDispensaries === true) {
       self.setState({ isModalVisible6: true })
       setTimeout(() => {
         self.props.navigation.navigate('Main', { userUid: self.state.userUid })
@@ -417,7 +418,8 @@ class LoginScreen extends Component {
         <Modal isVisible={this.state.isModalVisible7}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={{...styles.Description, textAlign:'center'}}>You have entered the wrong email or password. Please try again.</Text>
+            <Text style={{ ...styles.Description, textAlign: 'center' }}>You have entered the wrong email or password. Please try again.</Text>
+            {/* <Text style={{ ...styles.Description, marginTop: -10 }}></Text> */}
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible7: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
@@ -426,8 +428,8 @@ class LoginScreen extends Component {
         <Modal isVisible={this.state.isModalVisible8}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>This email does not exist. </Text>
-            <Text style={{ ...styles.Description, marginTop: -10 }}>Please create an account.</Text>
+            <Text style={styles.Description}>This email does not exist. Please create an account.</Text>
+            {/* <Text style={{ ...styles.Description, marginTop: -25 }}></Text> */}
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible8: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
