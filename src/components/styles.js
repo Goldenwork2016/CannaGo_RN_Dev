@@ -117,7 +117,7 @@ export const styles = StyleSheet.create({
         fontSize: 20,
         color: '#414041',
         textAlign: 'center',
-        width: '90%',
+        width: '95%',
         lineHeight: 25,
         fontFamily: 'Poppins-Regular',
         fontSize: 18
@@ -954,8 +954,9 @@ export const styles = StyleSheet.create({
     },
     selectTxt: {
         color: '#000',
-        fontSize: 13,
-        fontFamily: 'Poppins'
+        fontSize: 11,
+        fontFamily: 'Poppins',
+        width:'80%'
     },
     unselectArea: {
         width: '17%',

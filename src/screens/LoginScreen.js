@@ -417,8 +417,7 @@ class LoginScreen extends Component {
         <Modal isVisible={this.state.isModalVisible7}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>You have entered the wrong email or password.</Text>
-            <Text style={{ ...styles.Description, marginTop: -10 }}>Please try again.</Text>
+            <Text style={{...styles.Description, textAlign:'center'}}>You have entered the wrong email or password. Please try again.</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible7: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>

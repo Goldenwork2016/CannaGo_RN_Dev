@@ -1,18 +1,29 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-
+import Spinner from 'react-native-loading-spinner-overlay';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import dayjs from 'dayjs';
+import RNFetchBlob from "react-native-fetch-blob";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Modal from 'react-native-modal';
+import AsyncStorage from '@react-native-community/async-storage';
+import Firebase from 'firebase';
 import { styles } from '../components/styles'
 
-import NonImage from '../assets/iamges/personImage.png'
+import NonImage from '../assets/iamges/emptyPerson.png'
 import uncheckImage from '../assets/iamges/uncheckImage.png'
 import checkImage from '../assets/iamges/checkImage.png'
+import AlertModal from '../components/AlertModal'
 
 const options = {
     title: 'Choose Photo',
     takePhotoButtonTitle: 'Take photo with your camera',
     chooseFromLibraryButtonTitle: 'Choose photo from library'
 }
+
+let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+let reg_strong = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,30}$/;
 
 export default class DriverSignUpScreen extends Component {
     constructor(props) {
@@ -22,6 +33,44 @@ export default class DriverSignUpScreen extends Component {
             ischecked: false,
             checkImage: checkImage,
             uncheckImage: uncheckImage,
+            //state for driver license
+            showFrontImageDocument: false,
+            resultFrontImageDocument: '',
+            showBackImageDocument: false,
+            resultBackImageDocument: '',
+            showImageFace: false,
+            resultImageFace: '',
+            showSuccessFrame: false,
+            successFrame: '',
+            results: '',
+            licenseKeyErrorMessage: '',
+            firstName: '',
+            img_url: '',
+            lastName: '',
+            isTimeVisible: false,
+            birthday: '',
+            ageFlag: false,
+            birthdayYear: '',
+            age: '',
+            email: '',
+            password: '',
+            conPassword: '',
+            phoneNum: '',
+            vehicleName: '',
+            vehicleModel: '',
+            vehicleColor: '',
+            vehicleLicense: '',
+            taxInfo: '',
+            isModalVisible: false,
+            timeFlag: false,
+            isloading: false,
+            loggedIn: false,
+            isImageUploading: false,
+            licenseState: '',
+            licenseNumber: '',
+            licenseExpiration: '',
+            userType: 'driver',
+            isExpirationTimeVisible: false
         };
     }
 
@@ -40,9 +89,20 @@ export default class DriverSignUpScreen extends Component {
     //   });
     // }
 
-    chooseImage = () => {
+    componentDidMount = () => {
+        const { navigation } = this.props;
+        this.focusListener = navigation.addListener('didFocus', async () => {
+
+        });
+    }
+
+    componentWillUnmount() {
+        this.focusListener.remove();
+    }
+
+    chooseImage = async () => {
         ImagePicker.showImagePicker(options, response => {
-            console.log("Response = ", response);
+            console.log("Response = ", response.uri);
 
             if (response.didCancel) {
                 console.log("User cancelled image picker");
@@ -50,6 +110,67 @@ export default class DriverSignUpScreen extends Component {
                 console.log("ImagePicker Error: ", response.error);
             } else {
                 const source = { uri: response.uri };
+                // console.log(response.data);
+                const Blob = RNFetchBlob.polyfill.Blob;    //firebase image upload
+                const fs = RNFetchBlob.fs;
+                window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+                window.Blob = Blob;
+
+                const Fetch = RNFetchBlob.polyfill.Fetch
+                // replace built-in fetch
+                window.fetch = new Fetch({
+                    auto: true,
+                    binaryContentTypes: [
+                        'image/',
+                        'video/',
+                        'audio/',
+                        'foo/',
+                    ]
+                }).build()
+
+                let uploadBlob = null;
+
+                var path = Platform.OS === "ios" ? response.uri.replace("file://", "") : response.uri
+
+                var d = new Date();
+                var _name = d.getHours() + d.getMinutes() + d.getSeconds() + 'img.jpg';
+
+                fs.readFile(path, "base64")
+                    .then(data => {
+                        //console.log(data);
+                        let mime = "image/jpg";
+                        return Blob.build(data, { type: `${mime};BASE64` });
+                    })
+                    .then(blob => {
+                        this.setState({ isImageUploading: true })
+                        uploadBlob = blob;
+                        Firebase
+                            .storage()
+                            .ref("ProfileImages/" + _name)
+                            .put(blob)
+                            .then(() => {
+                                uploadBlob.close();
+                                return Firebase
+                                    .storage()
+                                    .ref("ProfileImages/" + _name)
+                                    .getDownloadURL();
+                            })
+                            .then(async uploadedFile => {
+                                console.log("++++++++++++");
+                                console.log({ uploadedFile });
+                                await this.setState({ img_url: uploadedFile })
+                                console.log(this.state.img_url);
+                                this.setState({ isImageUploading: false })
+                                this.setState({ isModalVisible12: true })
+                                setTimeout(() => {
+                                    this.setState({ isModalVisible12: false })
+                                }, 2000)
+                            })
+                            .catch(error => {
+                                console.log({ error });
+                            });
+                    });
+
                 this.setState({
                     avatarSource: source
                 });
@@ -61,91 +182,320 @@ export default class DriverSignUpScreen extends Component {
         await this.setState({ ischecked: !this.state.ischecked });
     }
 
+    SingUp = () => {
+        console.log("++++++++++++++++_______");
+        const { firstName, lastName, birthday, ageFlag, phoneNum, email, zipCode, password, conPassword, img_url, userType, age, ischecked, licenseExpiration, licenseState, licenseNumber, taxInfo, vehicleName, vehicleColor, vehicleModel,vehicleLicense } = this.state;
+        console.log(img_url);
+        if (img_url == "") {
+            this.setState({ alertContent: 'Please Select Profile Image.', isModalVisible: true })
+        } else if (firstName == "") {
+            this.setState({ alertContent: 'Please input first name.', isModalVisible: true })
+        } else if (lastName == "") {
+            this.setState({ alertContent: 'Please input last name.', isModalVisible: true })
+        } else if (birthday == "") {
+            this.setState({ alertContent: 'Please select your birthday.', isModalVisible: true })
+        } else if (email == "") {
+            this.setState({ alertContent: 'Please input email address.', isModalVisible: true })
+        } else if (reg.test(email) === false) {
+            this.setState({ alertContent: 'Email type error, Please type again.', isModalVisible: true })
+        } else if (password == "") {
+            this.setState({ alertContent: 'Please input your password.', isModalVisible: true })
+        } else if (reg_strong.test(password) === false) {
+            this.setState({ isModalVisible6: true })
+        } else if (password != conPassword) {
+            this.setState({ alertContent: "Password doesn't match.", isModalVisible: true })
+        } else if (phoneNum == "") {
+            this.setState({ alertContent: 'Please input phone number.', isModalVisible: true })
+        } else if (licenseNumber == "") {
+            this.setState({ alertContent: 'Please input driver license number.', isModalVisible: true })
+        } else if (licenseState == "") {
+            this.setState({ alertContent: 'Please input driver license state.', isModalVisible: true })
+        } else if (licenseExpiration == "") {
+            this.setState({ alertContent: 'Please input driver license expiration.', isModalVisible: true })
+        } else if (vehicleName == "") {
+            this.setState({ alertContent: 'Please input vehicle name.', isModalVisible: true })
+        } else if (vehicleModel == "") {
+            this.setState({ alertContent: 'Please input vehicle model.', isModalVisible: true })
+        }  else if (vehicleColor == "") {
+            this.setState({ alertContent: 'Please input vehicle color.', isModalVisible: true })
+        }  else if (vehicleLicense == "") {
+            this.setState({ alertContent: 'Please input vehicle license plate number.', isModalVisible: true })
+        } else if (taxInfo == "") {
+            this.setState({ alertContent: 'Please input tax information.', isModalVisible: true })
+        } else if (ischecked == false) {
+            this.setState({ alertContent: 'You need to agree our Terms and Conditions.', isModalVisible: true })
+        }
+        else {
+            // var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
+            this.setState({ isLoading: true })
+            try {
+                Firebase
+                    .auth()
+                    .createUserWithEmailAndPassword(email, password)
+                    .then((res) => {
+                        AsyncStorage.setItem('Loggined', "Success");
+                        AsyncStorage.setItem('userUid', res.user.uid);
+                        this.setState({ isLoading: false })
+                        // clearTimeout(myTimer)
+                        var user = Firebase.auth().currentUser;
+                        Firebase.database().ref('user/' + res.user.uid).update({
+                            email: email,
+                            fristName: firstName,
+                            lastName: lastName,
+                            phoneNum: phoneNum,
+                            password: password,
+                            profileimage: img_url,
+                            userType: userType,
+                            birthday: birthday,
+                            age: age,
+                            licenseNumber: licenseNumber,
+                            licenseState: licenseState,
+                            licenseExpiration: licenseExpiration,
+                            vehicleName: vehicleName,
+                            vehicleModel: vehicleModel,
+                            vehicleColor: vehicleColor,
+                            vehicleLicense: vehicleLicense,
+                            taxInfo: taxInfo,
+                            availableBal: 0
+                        });
+                        this.setState({ isModalVisible17: true })
+                        setTimeout(() => {
+                            this.props.navigation.navigate('Driver')
+                            this.setState({ isModalVisible17: false })
+                        }, 2000)
+                        // user.sendEmailVerification().then(function () {
+                        //   console.log('email sent!!!');// Email sent.
+                        //   this.showAlert("Created new account successfully! please check your email! if you login, you need email verification.");
+                        // }.bind(this)).catch(function (error) {
+                        //   console.log(error);
+                        // });
+                    }
+                    )
+                    .catch((error) => {
+                        console.log(error)
+                        if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
+                            this.setState({ alertContent: 'Your internet Connection is failed.', isModalVisible: true })
+                        } else {
+                            this.setState({ alertContent: 'The email address is already in use by another account.', isModalVisible: true })
+                        }
+                        this.setState({ isLoading: false })
+                    })
+            }
+            catch (error) {
+                console.log(error.toString())
+            }
+        }
+
+    }
+
+    handleTimePicker = async (date) => {
+        await this.setState({ birthday: dayjs(date).format('MM/DD/YYYY') })
+        await this.setState({ birthdayYear: dayjs(date).format('YYYY') })
+        await this.setState({ birthdayMonth: dayjs(date).format('MM') })
+        await this.setState({ birthdayDate: dayjs(date).format('DD') })
+        console.log(this.state.birthdayDate)
+        this.setState({ isTimeVisible: false })
+        var currentDay = new Date();
+        var currentYear = currentDay.getFullYear();
+        var currentMonth = currentDay.getMonth();
+        var currentDate = currentDay.getDate();
+        var yearDif = currentYear - this.state.birthdayYear;
+        console.log(yearDif);
+        var monDif = currentMonth - this.state.birthdayMonth;
+        var dateDif = currentDate - this.state.birthdayDate;
+        if (monDif >= 0 && dateDif >= 0) {
+            await this.setState({ ageFlag: true })
+            await this.setState({ age: yearDif })
+            console.log(this.state.age);
+        } else {
+            await this.setState({ age: yearDif - 1 })
+            console.log(this.state.age);
+        }
+    }
+    hideTimePicker = () => {
+        this.setState({ isTimeVisible: false })
+    }
+
+    handleTimePicker1 = async (date) => {
+        await this.setState({ licenseExpiration: dayjs(date).format('MM/YYYY') })
+    }
+
+    hideTimePicker1 = () => {
+        this.setState({ isExpirationTimeVisible: false })
+    }
+
     render() {
         return (
-            <View style={styles.container}>
-                <ScrollView style={{ width: '100%' }}>
-                    <View style={styles.container}>
-                        <View style={{ width: '100%', alignItems: 'center', marginTop: 40 }}>
-                            <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
-                                <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
-                            </TouchableOpacity>
-                            <View style={styles.personUploadgImage}>
-                                <View style={styles.personImageArea}>
-                                    <View style={styles.personImageArea1}>
-                                        <Image source={this.state.avatarSource} resizeMode='stretch' style={styles.personImage} />
-                                    </View>
+            <KeyboardAwareScrollView style={{ flex: 1 }}>
+                <View style={styles.container}>
+                    <ScrollView style={{ width: '100%' }}>
+                        <View style={styles.container}>
+                            <Spinner
+                                visible={this.state.isLoading}
+                                textContent={'Creating your account...'}
+                                textStyle={{ color: 'white' }}
+                            />
+                            <Spinner
+                                visible={this.state.isImageUploading}
+                                textContent={'Uploading profile image...'}
+                                textStyle={{ color: 'white' }}
+                            />
+                            <DateTimePickerModal
+                                isVisible={this.state.isTimeVisible}
+                                mode="date"
+                                onConfirm={(date) => { this.handleTimePicker(date) }}
+                                onCancel={this.hideTimePicker}
+                            />
+                            <DateTimePickerModal
+                                isVisible={this.state.isExpirationTimeVisible}
+                                mode="date"
+                                onConfirm={(date) => { this.handleTimePicker1(date) }}
+                                onCancel={this.hideTimePicker1}
+                            />
+                            <Modal isVisible={this.state.isModalVisible}>
+                                <AlertModal alertContent={this.state.alertContent} onPress={() => this.setState({ isModalVisible: false })} />
+                            </Modal>
+                            <Modal isVisible={this.state.isModalVisible1}>
+                                <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+                                    <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+                                    <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular', width: '90%' }}>Password was changed successfully.</Text>
                                 </View>
-                                <TouchableOpacity style={styles.addBtn} onPress={() => { this.chooseImage() }}>
-                                    <Image source={require('../assets/iamges/addImage.png')} resizeMode='stretch' style={styles.addImage} />
+                            </Modal>
+                            <Modal isVisible={this.state.isModalVisible6}>
+                                <View style={styles.modalView1}>
+                                    <Text style={styles.TitleTxt1}>OOPS!</Text>
+                                    <View style={{ width: "95%", alignSelf: 'center' }}>
+                                        <Text style={{ ...styles.Description, textAlign: 'center' }}>
+                                            Password must contain following:
+                                        </Text>
+                                        <Text style={styles.Description1}>
+                                            A lowercase letter{'\n'}
+                                            A capital letter{'\n'}
+                                            A number{'\n'}
+                                            A special character{'\n'}
+                                            Minimum 8 characters
+                                        </Text>
+                                    </View>
+                                    <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible6: false })}>
+                                        <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </Modal>
+                            <Modal isVisible={this.state.isModalVisible12}>
+                                <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+                                    <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+                                    <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Profile image is uploaded</Text>
+                                </View>
+                            </Modal>
+                            <Modal isVisible={this.state.isModalVisible17}>
+                                <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+                                    <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+                                    <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome to CannaGo App!</Text>
+                                </View>
+                            </Modal>
+                            <View style={{ width: '100%', alignItems: 'center', marginTop: 40 }}>
+                                <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
+                                    <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
+                                </TouchableOpacity>
+                                <View style={styles.personUploadgImage}>
+                                    <View style={styles.personImageArea}>
+                                        <View style={styles.personImageArea1}>
+                                            <Image source={this.state.avatarSource} resizeMode='cover' style={styles.personImage} />
+                                        </View>
+                                    </View>
+                                    <TouchableOpacity style={styles.addBtn} onPress={() => { this.chooseImage() }}>
+                                        <Image source={require('../assets/iamges/addImage.png')} resizeMode='cover' style={styles.addImage} />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <View style={styles.inputArea}>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="First Name" value={this.state.firstName} onChangeText={(text) => { this.setState({ firstName: text }) }}></TextInput>
+                                </View>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Last Name" value={this.state.lastName} onChangeText={(text) => { this.setState({ lastName: text }) }}></TextInput>
+                                </View>
+                                <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isTimeVisible: true, }) }}>
+                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <Text style={{ ...styles.inputTxt, color: this.state.birthday == "" ? "#7a7a7b" : "#000" }}>{this.state.birthday == "" ? "Date of Birth" : this.state.birthday}</Text>
+                                    <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
+                                </TouchableOpacity>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
+                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Email Address" value={this.state.email} onChangeText={(text) => { this.setState({ email: text }) }}></TextInput>
+                                </View>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
+                                    <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Password" value={this.state.password} onChangeText={(text) => { this.setState({ password: text }) }}></TextInput>
+                                </View>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
+                                    <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Retype password" value={this.state.conPassword} onChangeText={(text) => { this.setState({ conPassword: text }) }}></TextInput>
+                                </View>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <TextInput style={styles.inputTxt} keyboardType='phone-pad' placeholderTextColor="#7a7a7b" placeholder="Mobile Number" value={this.state.phoneNum} onChangeText={(text) => { this.setState({ phoneNum: text }) }}></TextInput>
+                                </View>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <TextInput style={styles.inputTxt} keyboardType='number-pad' placeholderTextColor="#7a7a7b" placeholder="Driver's License Number" value={this.state.licenseNumber} onChangeText={(text) => { this.setState({ licenseNumber: text }) }}></TextInput>
+                                </View>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Driver's License State" value={this.state.licenseState} onChangeText={(text) => { this.setState({ licenseState: text }) }}></TextInput>
+                                    <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
+                                </View>
+                                <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isExpirationTimeVisible: true, }) }}>
+                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <Text style={{ ...styles.inputTxt, color: this.state.licenseExpiration == "" ? "#7a7a7b" : "#000" }}>{this.state.licenseExpiration == "" ? "Driver's License Expiration" : this.state.licenseExpiration}</Text>
+                                    <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
+                                </TouchableOpacity>
+                                <View style={styles.SignInfoArea}>
+                                    <Text style={styles.SignInfoTxt}>Vehicle Information</Text>
+                                </View>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Name" value={this.state.vehicleName} onChangeText={(text) => { this.setState({ vehicleName: text }) }}></TextInput>
+                                </View>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Model" value={this.state.vehicleModel} onChangeText={(text) => { this.setState({ vehicleModel: text }) }}></TextInput>
+                                </View>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Color" value={this.state.vehicleColor} onChangeText={(text) => { this.setState({ vehicleColor: text }) }}></TextInput>
+                                </View>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" keyboardType="number-pad" placeholder="Vehicle License Plate Number" value={this.state.vehicleLicense} onChangeText={(text) => { this.setState({ vehicleLicense: text }) }}></TextInput>
+                                </View>
+                                <View style={styles.SignInfoArea}>
+                                    <Text style={styles.SignInfoTxt}>Tax Information</Text>
+                                </View>
+                                <View style={styles.inputItem}>
+                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="1099 Agreement" value={this.state.taxInfo} onChangeText={(text) => { this.setState({ taxInfo: text }) }}></TextInput>
+                                </View>
+                                <View style={styles.TermsArea}>
+                                    <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun() }}>
+                                        <Image source={this.state.ischecked ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
+                                    </TouchableOpacity>
+                                    <Text style={styles.termsTxt}>By checking this I agree to CannaGo's  </Text>
+                                    <TouchableOpacity style={styles.forgotBtn1}>
+                                        <Text style={{ color: '#61D273', fontSize: 10, fontFamily: 'Poppins-Regular' }}>Terms & Conditions</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <TouchableOpacity style={styles.signinBtn} onPress={() => this.SingUp()}>
+                                    <Text style={styles.signinTxt1}>Create Account</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <View style={styles.inputArea}>
-                            <View style={styles.inputItem}>
-                                <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
-                                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Email Address"></TextInput>
-                            </View>
-                            <View style={styles.inputItem}>
-                                <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
-                                <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Password"></TextInput>
-                            </View>
-                            <View style={styles.inputItem}>
-                                <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
-                                <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Retype password"></TextInput>
-                            </View>
-                            <View style={styles.inputItem}>
-                                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Mobile Number"></TextInput>
-                            </View>
-                            <TouchableOpacity style={styles.inputItem}>
-                                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                <Text style={{ ...styles.inputTxt, color: '#7a7a7b' }}>Scan Driver's License</Text>
-                                <Image source={require('../assets/iamges/arrow-left.png')} resizeMode='stretch' style={styles.arrowleft} />
-                            </TouchableOpacity>
-                            <View style={styles.SignInfoArea}>
-                                <Text style={styles.SignInfoTxt}>Vehicle Information</Text>
-                            </View>
-                            <View style={styles.inputItem}>
-                                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Name"></TextInput>
-                            </View>
-                            <View style={styles.inputItem}>
-                                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Model"></TextInput>
-                            </View>
-                            <View style={styles.inputItem}>
-                                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Color"></TextInput>
-                            </View>
-                            <View style={styles.inputItem}>
-                                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle License Plate Number"></TextInput>
-                            </View>
-                            <View style={styles.SignInfoArea}>
-                                <Text style={styles.SignInfoTxt}>Tax Information</Text>
-                            </View>
-                            <View style={styles.inputItem}>
-                                <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="1099 Agreement"></TextInput>
-                            </View>
-                            <View style={styles.TermsArea}>
-                                <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun() }}>
-                                    <Image source={this.state.ischecked ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
-                                </TouchableOpacity>
-                                <Text style={styles.termsTxt}>By checking this I agree to CannaGo's  </Text>
-                                <TouchableOpacity style={styles.forgotBtn1}>
-                                    <Text style={{ color: '#61D273', fontSize: 10, fontFamily: 'Poppins-Regular' }}>Terms & Conditions</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <TouchableOpacity style={styles.signinBtn} onPress={() => { this.props.navigation.navigate("Driver") }}>
-                                <Text style={styles.signinTxt1}>Create Account</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={{ height: 50 }}></View>
-                </ScrollView>
-            </View>
+                        <View style={{ height: 50 }}></View>
+                    </ScrollView>
+                </View>
+            </KeyboardAwareScrollView>
         );
     }
 }
