@@ -289,19 +289,30 @@ export default class SignUpScreen extends Component {
     var currentDate = currentDay.getDate();
     console.log(currentDate);
     var yearDif = currentYear - this.state.birthdayYear;
-    var monDif = currentMonth - this.state.birthdayMonth;
+    var monDif = currentMonth + 1 - this.state.birthdayMonth;
     var dateDif = currentDate - this.state.birthdayDate;
     if (yearDif >= 22) {
       await this.setState({ ageFlag: true })
       console.log(this.state.ageFlag);
     } else if (yearDif == 21) {
-      if (monDif >= 0 && dateDif >= 0) {
+      if (monDif == 0) {
+        if (dateDif >= 0) {
+          await this.setState({ ageFlag: true })
+          await this.setState({ age: yearDif })
+          console.log(this.state.age);
+        } else {
+          await this.setState({ ageFlag: false })
+          await this.setState({ age: yearDif - 1 })
+          console.log(this.state.age);
+        }
+      } else if (monDif < 0) {
+        await this.setState({ ageFlag: false })
+        await this.setState({ age: yearDif - 1 })
+        console.log(this.state.age);
+      } else {
         await this.setState({ ageFlag: true })
         await this.setState({ age: yearDif })
-        console.log(this.state.ageFlag);
-      } else {
-        await this.setState({ ageFlag: false })
-        console.log(this.state.ageFlag);
+        console.log(this.state.age);
       }
     } else {
       await this.setState({ ageFlag: false })
