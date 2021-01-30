@@ -119,14 +119,14 @@ export default class DriverInformationScreen extends Component {
         var currentDate = currentDay.getDate();
         var yearDif = currentYear - this.state.birthdayYear;
         console.log(yearDif);
-        var monDif = currentMonth - this.state.birthdayMonth;
+        var monDif = currentMonth + 1 - this.state.birthdayMonth;
         var dateDif = currentDate - this.state.birthdayDate;
-        if (monDif >= 0 && dateDif >= 0) {
+        if (monDif < 0 && dateDif < 0) {
             await this.setState({ ageFlag: true })
-            await this.setState({ age: yearDif })
+            await this.setState({ age: yearDif - 1 })
             console.log(this.state.age);
         } else {
-            await this.setState({ age: yearDif - 1 })
+            await this.setState({ age: yearDif })
             console.log(this.state.age);
         }
     }

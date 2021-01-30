@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -410,7 +410,7 @@ class UpdateItemScreen extends Component {
                   <View style={styles.inputItem}>
                     {/* <TextInput value={priceValue} onChangeText={value => this.setState({ priceValue: value })} onBlur={() => { this.setState({ priceValue: parseFloat(this.state.priceValue).toFixed(2) }) }} style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" placeholder="$15.33"></TextInput> */}
                     <Text style={{ marginLeft: 20, marginRight: 0 }}>$</Text>
-                    <TextInput style={{ ...styles.inputTxt, marginLeft: 0 }} placeholderTextColor="#7a7a7b" value={this.state.priceValue} placeholder="0.00" onChangeText={(text) => { this.changePrice(text) }}
+                    <TextInput style={{ ...styles.inputTxt, marginLeft: 0, marginTop:Platform.OS == 'ios' ? 0 : 5 }} placeholderTextColor="#7a7a7b" value={this.state.priceValue} placeholder="0.00" onChangeText={(text) => { this.changePrice(text) }}
                       onBlur={() => { this.setState({ priceValue: parseFloat(this.state.priceValue).toFixed(2) }) }}></TextInput>
                   </View>
                 </View>

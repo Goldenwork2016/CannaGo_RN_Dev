@@ -406,7 +406,7 @@ class AddStoreItemScreen extends Component {
                   <Text style={{ ...styles.quantityNum, textAlign: 'center', marginBottom: 10 }}>Product Price</Text>
                   <View style={styles.inputItem}>
                     <Text style={{ marginLeft: 20, marginRight: 0 }}>$</Text>
-                    <TextInput style={{ ...styles.inputTxt, marginLeft: 0 }} placeholderTextColor="#7a7a7b" value={this.state.priceValue} placeholder="0.00" onChangeText={(text) => { this.changePrice(text) }}
+                    <TextInput style={{ ...styles.inputTxt, marginLeft: 0, marginTop:Platform.OS == 'ios' ? 0 : 5 }} placeholderTextColor="#7a7a7b" value={this.state.priceValue} placeholder="0.00" onChangeText={(text) => { this.changePrice(text) }}
                       onBlur={() => { this.setState({ priceValue: parseFloat(this.state.priceValue).toFixed(2) }) }}></TextInput>
                   </View>
                 </View>

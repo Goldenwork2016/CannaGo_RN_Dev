@@ -184,7 +184,7 @@ export default class DriverSignUpScreen extends Component {
 
     SingUp = () => {
         console.log("++++++++++++++++_______");
-        const { firstName, lastName, birthday, ageFlag, phoneNum, email, zipCode, password, conPassword, img_url, userType, age, ischecked, licenseExpiration, licenseState, licenseNumber, taxInfo, vehicleName, vehicleColor, vehicleModel,vehicleLicense } = this.state;
+        const { firstName, lastName, birthday, ageFlag, phoneNum, email, zipCode, password, conPassword, img_url, userType, age, ischecked, licenseExpiration, licenseState, licenseNumber, taxInfo, vehicleName, vehicleColor, vehicleModel, vehicleLicense } = this.state;
         console.log(img_url);
         if (img_url == "") {
             this.setState({ alertContent: 'Please Select Profile Image.', isModalVisible: true })
@@ -216,9 +216,9 @@ export default class DriverSignUpScreen extends Component {
             this.setState({ alertContent: 'Please input vehicle name.', isModalVisible: true })
         } else if (vehicleModel == "") {
             this.setState({ alertContent: 'Please input vehicle model.', isModalVisible: true })
-        }  else if (vehicleColor == "") {
+        } else if (vehicleColor == "") {
             this.setState({ alertContent: 'Please input vehicle color.', isModalVisible: true })
-        }  else if (vehicleLicense == "") {
+        } else if (vehicleLicense == "") {
             this.setState({ alertContent: 'Please input vehicle license plate number.', isModalVisible: true })
         } else if (taxInfo == "") {
             this.setState({ alertContent: 'Please input tax information.', isModalVisible: true })
@@ -293,22 +293,35 @@ export default class DriverSignUpScreen extends Component {
         await this.setState({ birthdayYear: dayjs(date).format('YYYY') })
         await this.setState({ birthdayMonth: dayjs(date).format('MM') })
         await this.setState({ birthdayDate: dayjs(date).format('DD') })
-        console.log(this.state.birthdayDate)
+        console.log("__________");
+        console.log(this.state.birthdayMonth)
         this.setState({ isTimeVisible: false })
         var currentDay = new Date();
         var currentYear = currentDay.getFullYear();
         var currentMonth = currentDay.getMonth();
+        console.log(currentDay);
         var currentDate = currentDay.getDate();
         var yearDif = currentYear - this.state.birthdayYear;
+        console.log("__________");
         console.log(yearDif);
-        var monDif = currentMonth - this.state.birthdayMonth;
+        var monDif = currentMonth + 1 - this.state.birthdayMonth;
+        console.log(monDif);
         var dateDif = currentDate - this.state.birthdayDate;
-        if (monDif >= 0 && dateDif >= 0) {
-            await this.setState({ ageFlag: true })
-            await this.setState({ age: yearDif })
+        console.log(dateDif);
+        if (monDif == 0) {
+            if (dateDif >= 0) {
+                await this.setState({ age: yearDif })
+                console.log(this.state.age);
+            } else {
+                await this.setState({ ageFlag: true })
+                await this.setState({ age: yearDif - 1 })
+                console.log(this.state.age);
+            }
+        } else if (monDif < 0) {
+            await this.setState({ age: yearDif - 1 })
             console.log(this.state.age);
         } else {
-            await this.setState({ age: yearDif - 1 })
+            await this.setState({ age: yearDif })
             console.log(this.state.age);
         }
     }
@@ -318,6 +331,7 @@ export default class DriverSignUpScreen extends Component {
 
     handleTimePicker1 = async (date) => {
         await this.setState({ licenseExpiration: dayjs(date).format('MM/YYYY') })
+        this.setState({ isExpirationTimeVisible: false })
     }
 
     hideTimePicker1 = () => {

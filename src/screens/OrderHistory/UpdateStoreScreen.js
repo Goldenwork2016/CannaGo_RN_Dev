@@ -104,23 +104,75 @@ export default class SelectStoreHourScreen extends Component {
                                     <View>
                                         <View style={styles.TimePickerRow}>
                                             <View style={styles.selectArea}>
-                                                <View style={styles.selectBtn}>
-                                                    <View style={{ width: '75%', marginLeft: '5%' }}>
-                                                        <RNPickerSelect
-                                                            placeholder={{ label: 'Select...' }}
-                                                            value={this.state.dayData[index].openStatus}
-                                                            onValueChange={(value) => {
-                                                                this._onChangeStatus(value, index);
-                                                            }}
-                                                            items={[
-                                                                { label: 'Closed', value: 'Closed' },
-                                                                { label: 'Open', value: 'Open' },
-                                                            ]}
-                                                        />
+                                                {Platform.OS == 'ios' ?
+                                                    <View style={styles.selectBtn}>
+                                                        <View style={{ width: '75%', marginLeft: '5%' }}>
+                                                            <RNPickerSelect
+                                                                placeholder={{ label: 'Select...' }}
+                                                                value={this.state.dayData[index].openStatus}
+                                                                onValueChange={(value) => {
+                                                                    this._onChangeStatus(value, index);
+                                                                }}
+                                                                items={[
+                                                                    { label: 'Closed', value: 'Closed' },
+                                                                    { label: 'Open', value: 'Open' },
+                                                                ]}
+                                                            />
+                                                        </View>
+                                                        {/* <Text style={styles.selectTxt}>Closed</Text> */}
+                                                        <Image source={require('../../assets/iamges/arrowdown.png')} resizeMode='stretch' style={styles.arrowdown} />
+                                                    </View> :
+                                                    <View style={styles.selectBtn}>
+                                                        <View style={{ width: '100%', marginLeft: '1%' }}>
+                                                            <RNPickerSelect
+                                                                placeholder={{ label: 'Select...' }}
+                                                                value={this.state.dayData[index].openStatus}
+                                                                onValueChange={(value) => {
+                                                                    console.log(value);
+                                                                    this._onChangeStatus(value, index);
+                                                                }}
+                                                                style={{
+                                                                    inputIOS: {
+                                                                        fontSize: 16,
+                                                                        paddingVertical: 12,
+                                                                        paddingHorizontal: 10,
+                                                                        borderWidth: 1,
+                                                                        borderColor: 'gray',
+                                                                        borderRadius: 4,
+                                                                        color: 'black',
+                                                                        paddingRight: 30, // to ensure the text is never behind the icon
+                                                                        // transform: [
+                                                                        //     { scaleX: 1.5 },
+                                                                        //     { scaleY: 1.5 },
+                                                                        // ]
+                                                                    },
+                                                                    inputAndroid: {
+                                                                        fontSize: 7,
+                                                                        fontFamily: 'Poppins',
+                                                                        marginRight: -35,
+                                                                        marginLeft: -15,
+                                                                        // paddingRight: 30, // to ensure the text is never behind the icon
+                                                                        transform: [
+                                                                            { scaleX: 0.8 },
+                                                                            { scaleY: 0.8 },
+                                                                        ]
+                                                                    },
+                                                                }}
+
+                                                                items={[
+                                                                    { label: 'Closed', value: 'Closed' },
+                                                                    { label: 'Open', value: 'Open' },
+                                                                ]}
+                                                                Icon={() => {
+                                                                    return <Image source={require('../../assets/iamges/arrowdown.png')} resizeMode='stretch' style={{ ...styles.arrowdown, position: 'absolute', top: 15, right: 0 }} />
+                                                                }}
+                                                            />
+                                                        </View>
+                                                        {/* <Text style={styles.selectTxt}>Closed</Text> */}
+                                                        {/* <Image source={require('../../assets/iamges/arrowdown.png')} resizeMode='stretch' style={styles.arrowdown} /> */}
                                                     </View>
-                                                    {/* <Text style={styles.selectTxt}>Closed</Text> */}
-                                                    <Image source={require('../../assets/iamges/arrowdown.png')} resizeMode='stretch' style={styles.arrowdown} />
-                                                </View>
+                                                }
+
                                             </View>
                                             <View style={styles.unselectArea}>
                                                 <Text style={styles.selectTxt}>{item.day}</Text>
