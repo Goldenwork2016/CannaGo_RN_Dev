@@ -25,7 +25,7 @@ class ChangePasswordScreen extends Component {
       new_password: '',
       confirm_password: '',
       usertype: '',
-      userId: firebase.auth().currentUser.uid,
+      userId: "",
       isModalVisible: false,
       isModalVisible1: false,
       alertContent: ''
@@ -34,7 +34,9 @@ class ChangePasswordScreen extends Component {
 
   componentDidMount = async () => {
     const usertype = await AsyncStorage.getItem("usertype");
+    this.setState({ usertype: usertype })
     const userId = await AsyncStorage.getItem("userUid");
+    this.setState({ userId: userId })
     await this.setState({ current_password: this.props.navigation.getParam("passoword") })
     console.log(this.state.current_password);
   }
@@ -93,7 +95,7 @@ class ChangePasswordScreen extends Component {
 
   upload_password = async (password) => {
     try {
-      await firebase.database().ref('user/' + this.state.userId).update({
+      await firebase.database().ref('user/' + this.state.userId + this.state.usertype).update({
         password: password,
       });
     } catch (error) {

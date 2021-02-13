@@ -7,6 +7,8 @@ import RNPickerSelect from "react-native-picker-select";
 import AlertModal from '../components/AlertModal'
 import Modal from 'react-native-modal';
 
+const initialDate = "2021-01-17T01:00:00.000Z"
+
 import NonImage from '../assets/iamges/productDetail1.png'
 export default class SelectStoreHourScreen extends Component {
     constructor(props) {
@@ -59,6 +61,7 @@ export default class SelectStoreHourScreen extends Component {
             this.state.dayData[index].endTime = ""
         }
         this.setState({ renderValue: this.state.renderValue + 1 })
+        console.log("aasdasdasdasd")
         console.log(this.state.dayData)
     };
 
@@ -103,7 +106,7 @@ export default class SelectStoreHourScreen extends Component {
                             <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
                                 <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                             </TouchableOpacity>
-                            <View style={{ ...styles.personUploadgImage, marginTop: 70 }}>
+                            <View style={{ ...styles.personUploadgImage, marginTop: 70, width: '100%' }}>
                                 <Text style={styles.DetailTitle}>Please enter your daily hours of operation</Text>
                             </View>
                         </View>
@@ -183,7 +186,7 @@ export default class SelectStoreHourScreen extends Component {
 
                                             </View>
                                             <View style={styles.unselectArea}>
-                                                <Text style={styles.selectTxt}>{item.day}</Text>
+                                                <Text style={{ ...styles.selectTxt, textAlign: 'center' }}>{item.day}</Text>
                                             </View>
                                             <View style={styles.selectArea}>
                                                 <TouchableOpacity style={styles.selectBtn} onPress={() => { this.setState({ isTimeVisible: this.state.dayData[index].openStatus == "Open" ? true : false, index: index, ii: 1 }) }}>
@@ -192,7 +195,7 @@ export default class SelectStoreHourScreen extends Component {
                                                 </TouchableOpacity>
                                             </View>
                                             <View style={{ ...styles.unselectArea, width: '12%' }}>
-                                                <Text style={styles.selectTxt}>To</Text>
+                                                <Text style={{ ...styles.selectTxt, textAlign: 'center' }}>To</Text>
                                             </View>
                                             <View style={styles.selectArea}>
                                                 <TouchableOpacity style={styles.selectBtn} onPress={() => { this.setState({ isTimeVisible: this.state.dayData[index].openStatus == "Open" ? true : false, index: index, ii: 2 }) }}>
@@ -209,7 +212,7 @@ export default class SelectStoreHourScreen extends Component {
                                 isVisible={this.state.isTimeVisible}
                                 headerTextIOS="Pick a time"
                                 mode="time"
-                                date="2021-01-17T01:00:00.000Z"
+                                date={new Date(initialDate)}
                                 onConfirm={(time) => this.handleTimePicker(time, this.state.index, this.state.ii)}
                                 onCancel={this.hideTimePicker}
                             />

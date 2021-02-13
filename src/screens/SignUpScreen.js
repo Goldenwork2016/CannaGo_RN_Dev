@@ -233,7 +233,7 @@ export default class SignUpScreen extends Component {
             this.setState({ isLoading: false })
             // clearTimeout(myTimer)
             var user = Firebase.auth().currentUser;
-            Firebase.database().ref('user/' + res.user.uid).update({
+            Firebase.database().ref('user/' + res.user.uid + '/consumer').update({
               email: email,
               fristName: firstName,
               lastName: lastName,
@@ -262,9 +262,77 @@ export default class SignUpScreen extends Component {
           .catch((error) => {
             console.log(error)
             if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
-              this.setState({ isModalVisible10: true })
-            } else {
-              this.setState({ isModalVisible11: true })
+              this.setState({ alertContent: 'Your internet Connection is failed.', isModalVisible: true })
+            } else if (error.message == "The email address is already in use by another account." && this.state.isflag) {
+              Firebase.database()
+                .ref('user')
+                .on("value", async (snapshot) => {
+                  var data = []
+                  var row
+                  snapshot.forEach(async element => {
+                    console.log(element)
+                    if (element.val().hasOwnProperty('consumer')) {
+                      if (element.val().driver.email == email) {
+                        this.setState({ alertContent: 'The email address is already in use by another account.', isModalVisible: true })
+                      }
+                    } else {
+                      if (element.val().hasOwnProperty('driver')) {
+                        if (element.val().consumer.email == email) {
+                          await this.setState({ userId: element.key, isConsumer: true })
+                          console.log(this.state.userId);
+                          AsyncStorage.setItem('userUid', this.state.userId);
+                          Firebase.database().ref('user/' + res.user.uid + '/consumer').update({
+                            email: email,
+                            fristName: firstName,
+                            lastName: lastName,
+                            phoneNum: phoneNum,
+                            password: password,
+                            profileimage: img_url,
+                            userType: userType,
+                            availableBal: 0,
+                            birthday: birthday,
+                            zipCode: zipCode,
+                            age: age
+                          });
+                          this.setState({ isModalVisible17: true })
+                          setTimeout(() => {
+                            this.props.navigation.navigate('Main')
+                            this.setState({ isModalVisible17: false })
+                          }, 2000)
+                        }
+                      }
+                      if (element.val().hasOwnProperty('dispensary')) {
+                        if (element.val().dispensary.email == email) {
+                          await this.setState({ userId: element.key, isDispensary: true })
+                          AsyncStorage.setItem('userUid', this.state.userId);
+                          Firebase.database().ref('user/' + res.user.uid + '/consumer').update({
+                            email: email,
+                            fristName: firstName,
+                            lastName: lastName,
+                            phoneNum: phoneNum,
+                            password: password,
+                            profileimage: img_url,
+                            userType: userType,
+                            availableBal: 0,
+                            birthday: birthday,
+                            zipCode: zipCode,
+                            age: age
+                          });
+                          this.setState({ isModalVisible17: true })
+                          setTimeout(() => {
+                            this.props.navigation.navigate('Main')
+                            this.setState({ isModalVisible17: false })
+                          }, 2000)
+                        }
+                      }
+                    }
+                  });
+                  // console.log("_____________+++++++++++++_________________");
+                  // await this.setState({
+                  //     userData: data,
+                  // });
+                  // console.log(this.state.userData);
+                })
             }
             this.setState({ isLoading: false })
           })
@@ -293,6 +361,7 @@ export default class SignUpScreen extends Component {
     var dateDif = currentDate - this.state.birthdayDate;
     if (yearDif >= 22) {
       await this.setState({ ageFlag: true })
+      await this.setState({ age: yearDif })
       console.log(this.state.ageFlag);
     } else if (yearDif == 21) {
       if (monDif == 0) {

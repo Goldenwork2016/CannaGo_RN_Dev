@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import RNPickerSelect from "react-native-picker-select";
 import Firebase from '../../../config/firebase'
 import NonImage from '../../assets/iamges/productDetail1.png'
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class SelectStoreHourScreen extends Component {
     constructor(props) {
@@ -28,14 +29,16 @@ export default class SelectStoreHourScreen extends Component {
             //     { id: 7, day: 'Sat.', startTime: '', endTime: '', openStatus:false },
             // ],
             dayData: [],
-            userId: Firebase.auth().currentUser.uid,
+            userId: "",
             count: 0
         };
     }
 
-    componentDidMount = () => {
+    componentDidMount = async() => {
+        const userId = await AsyncStorage.getItem("userUid");
+        this.setState({userId:userId})
         Firebase.database()
-            .ref('user/' + this.state.userId)
+            .ref('user/' + this.state.userId + '/dispensary')
             .on("value", async (snapshot) => {
                 console.log(snapshot);
                 user_data = {
@@ -75,7 +78,7 @@ export default class SelectStoreHourScreen extends Component {
 
     SaveHours = () => {
         Firebase.database()
-            .ref('user/' + this.state.userId)
+            .ref('user/' + this.state.userId + '/dispensary')
             .update({
                 storeHours: this.state.dayData,
             }
@@ -92,7 +95,7 @@ export default class SelectStoreHourScreen extends Component {
                             <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
                                 <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                             </TouchableOpacity>
-                            <View style={{ ...styles.personUploadgImage, marginTop: 70 }}>
+                            <View style={{ ...styles.personUploadgImage, marginTop: 70, width: '100%' }}>
                                 <Text style={styles.DetailTitle}>Please enter your daily hours of operation</Text>
                             </View>
                         </View>
@@ -175,7 +178,7 @@ export default class SelectStoreHourScreen extends Component {
 
                                             </View>
                                             <View style={styles.unselectArea}>
-                                                <Text style={styles.selectTxt}>{item.day}</Text>
+                                                <Text style={{ ...styles.selectTxt, textAlign: 'center' }}>{item.day}</Text>
                                             </View>
                                             <View style={styles.selectArea}>
                                                 <TouchableOpacity style={styles.selectBtn} onPress={() => { this.setState({ isTimeVisible: this.state.dayData[index].openStatus == "Open" ? true : false, index: index, ii: 1 }) }}>
@@ -184,7 +187,7 @@ export default class SelectStoreHourScreen extends Component {
                                                 </TouchableOpacity>
                                             </View>
                                             <View style={{ ...styles.unselectArea, width: '12%' }}>
-                                                <Text style={styles.selectTxt}>To</Text>
+                                                <Text style={{ ...styles.selectTxt, textAlign: 'center' }}>To</Text>
                                             </View>
                                             <View style={styles.selectArea}>
                                                 <TouchableOpacity style={styles.selectBtn} onPress={() => { this.setState({ isTimeVisible: this.state.dayData[index].openStatus == "Open" ? true : false, index: index, ii: 2 }) }}>
@@ -216,3 +219,24 @@ export default class SelectStoreHourScreen extends Component {
         );
     }
 }
+
+
+// const pickerSelectStyles = StyleSheet.create({
+//     inputIOS: {
+//         fontSize: 16,
+//         paddingVertical: 12,
+//         paddingHorizontal: 10,
+//         borderWidth: 1,
+//         borderColor: 'gray',
+//         borderRadius: 4,
+//         color: 'black',
+//         paddingRight: 30, // to ensure the text is never behind the icon
+//     },
+//     inputAndroid: {
+//         fontSize: 7,
+//         fontFamily: 'Poppins',
+//         marginRight: -15,
+//         marginLeft: -7,
+//         // paddingRight: 30, // to ensure the text is never behind the icon
+//     },
+// });

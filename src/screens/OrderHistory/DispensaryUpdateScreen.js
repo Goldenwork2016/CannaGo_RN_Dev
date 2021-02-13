@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import ImagePicker from 'react-native-image-picker';
 import Modal from 'react-native-modal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -48,13 +49,16 @@ class DispensaryUpdateScreen extends Component {
       storeHours: '',
       companyName: '',
       fein: '',
-      userId: Firebase.auth().currentUser.uid,
+      userId: "",
       isModalVisible1: false,
       real_data: ''
     };
   }
 
-  componentDidMount = () => {
+  componentDidMount = async() => {
+    const usertype = await AsyncStorage.getItem("usertype");
+    const userId = await AsyncStorage.getItem("userUid");
+    await this.setState({ userId: userId })
     const { navigation } = this.props;
     this.focusListener = navigation.addListener('didFocus', async () => {
       if (this.props.navigation.getParam("storeHour") != undefined) {
@@ -63,7 +67,7 @@ class DispensaryUpdateScreen extends Component {
       console.log(this.state.storeHours);
     });
     Firebase.database()
-      .ref('user/' + this.state.userId)
+      .ref('user/' + this.state.userId + '/dispensary')
       .on("value", async (snapshot) => {
         user_data = {
           GA: snapshot.val().GA,
@@ -164,7 +168,7 @@ class DispensaryUpdateScreen extends Component {
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
     try {
       await Firebase.database()
-        .ref('user/' + this.state.userId)
+        .ref('user/' + this.state.userId + '/dispensary')
         .update({
           fristName: firstName,
           lastName: lastName,

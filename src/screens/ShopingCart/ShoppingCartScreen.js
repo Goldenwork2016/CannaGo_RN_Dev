@@ -23,7 +23,7 @@ export default class ShoppingCartScreen extends Component {
       itemNum2: 1,
       usertype: 'consumer',
       real_data: [],
-      userId: Firebase.auth().currentUser.uid,
+      userId: "",
       isLoading: false,
       isModalVisible: false,
       alertContent: '',
@@ -37,6 +37,7 @@ export default class ShoppingCartScreen extends Component {
   componentDidMount = async () => {
     const usertype = await AsyncStorage.getItem("usertype");
     const userId = await AsyncStorage.getItem("userUid");
+    await this.setState({userId:userId})
     await this.setState({ usertype: usertype })
     // this.setState({ userId: userId })
     const { navigation } = this.props

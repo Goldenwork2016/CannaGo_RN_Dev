@@ -123,12 +123,12 @@ class HomeScreen extends Component {
         var row
         snapshot.forEach(element => {
           // console.log(element.key)
-          if (element.val().userType == "dispensary") {
+          if (element.val().hasOwnProperty('dispensary')) {
             row = {
               id: element.key,
-              store: element.val().storeName,
-              ImageUrl: element.val().profileimage,
-              usertype: element.val().userType,
+              store: element.val().dispensary.storeName,
+              ImageUrl: element.val().dispensary.profileimage,
+              usertype: element.val().dispensary.userType,
             }
             data.push(row)
             console.log(data);

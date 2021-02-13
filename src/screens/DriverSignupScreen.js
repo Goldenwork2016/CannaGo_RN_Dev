@@ -69,8 +69,14 @@ export default class DriverSignUpScreen extends Component {
             licenseState: '',
             licenseNumber: '',
             licenseExpiration: '',
-            userType: 'driver',
-            isExpirationTimeVisible: false
+            userType: "driver",
+            isExpirationTimeVisible: false,
+            userId: '',
+            userData: '',
+            isConsumer: false,
+            isDispensary: false,
+            isDriver: false,
+            isflag:true
         };
     }
 
@@ -102,7 +108,6 @@ export default class DriverSignUpScreen extends Component {
 
     chooseImage = async () => {
         ImagePicker.showImagePicker(options, response => {
-            console.log("Response = ", response.uri);
 
             if (response.didCancel) {
                 console.log("User cancelled image picker");
@@ -156,10 +161,7 @@ export default class DriverSignUpScreen extends Component {
                                     .getDownloadURL();
                             })
                             .then(async uploadedFile => {
-                                console.log("++++++++++++");
-                                console.log({ uploadedFile });
                                 await this.setState({ img_url: uploadedFile })
-                                console.log(this.state.img_url);
                                 this.setState({ isImageUploading: false })
                                 this.setState({ isModalVisible12: true })
                                 setTimeout(() => {
@@ -183,18 +185,18 @@ export default class DriverSignUpScreen extends Component {
     }
 
     SingUp = () => {
-        console.log("++++++++++++++++_______");
         const { firstName, lastName, birthday, ageFlag, phoneNum, email, zipCode, password, conPassword, img_url, userType, age, ischecked, licenseExpiration, licenseState, licenseNumber, taxInfo, vehicleName, vehicleColor, vehicleModel, vehicleLicense } = this.state;
-        console.log(img_url);
-        if (img_url == "") {
-            this.setState({ alertContent: 'Please Select Profile Image.', isModalVisible: true })
-        } else if (firstName == "") {
-            this.setState({ alertContent: 'Please input first name.', isModalVisible: true })
-        } else if (lastName == "") {
-            this.setState({ alertContent: 'Please input last name.', isModalVisible: true })
-        } else if (birthday == "") {
-            this.setState({ alertContent: 'Please select your birthday.', isModalVisible: true })
-        } else if (email == "") {
+        // if (img_url == "") {
+        //     this.setState({ alertContent: 'Please Select Profile Image.', isModalVisible: true })
+        // } 
+        // else if (firstName == "") {
+        //     this.setState({ alertContent: 'Please input first name.', isModalVisible: true })
+        // } else if (lastName == "") {
+        //     this.setState({ alertContent: 'Please input last name.', isModalVisible: true })
+        // } else if (birthday == "") {
+        //     this.setState({ alertContent: 'Please select your birthday.', isModalVisible: true })
+        // } 
+        if (email == "") {
             this.setState({ alertContent: 'Please input email address.', isModalVisible: true })
         } else if (reg.test(email) === false) {
             this.setState({ alertContent: 'Email type error, Please type again.', isModalVisible: true })
@@ -202,29 +204,30 @@ export default class DriverSignUpScreen extends Component {
             this.setState({ alertContent: 'Please input your password.', isModalVisible: true })
         } else if (reg_strong.test(password) === false) {
             this.setState({ isModalVisible6: true })
-        } else if (password != conPassword) {
-            this.setState({ alertContent: "Password doesn't match.", isModalVisible: true })
-        } else if (phoneNum == "") {
-            this.setState({ alertContent: 'Please input phone number.', isModalVisible: true })
-        } else if (licenseNumber == "") {
-            this.setState({ alertContent: 'Please input driver license number.', isModalVisible: true })
-        } else if (licenseState == "") {
-            this.setState({ alertContent: 'Please input driver license state.', isModalVisible: true })
-        } else if (licenseExpiration == "") {
-            this.setState({ alertContent: 'Please input driver license expiration.', isModalVisible: true })
-        } else if (vehicleName == "") {
-            this.setState({ alertContent: 'Please input vehicle name.', isModalVisible: true })
-        } else if (vehicleModel == "") {
-            this.setState({ alertContent: 'Please input vehicle model.', isModalVisible: true })
-        } else if (vehicleColor == "") {
-            this.setState({ alertContent: 'Please input vehicle color.', isModalVisible: true })
-        } else if (vehicleLicense == "") {
-            this.setState({ alertContent: 'Please input vehicle license plate number.', isModalVisible: true })
-        } else if (taxInfo == "") {
-            this.setState({ alertContent: 'Please input tax information.', isModalVisible: true })
-        } else if (ischecked == false) {
-            this.setState({ alertContent: 'You need to agree our Terms and Conditions.', isModalVisible: true })
         }
+        // else if (password != conPassword) {
+        //     this.setState({ alertContent: "Password doesn't match.", isModalVisible: true })
+        // } else if (phoneNum == "") {
+        //     this.setState({ alertContent: 'Please input phone number.', isModalVisible: true })
+        // } else if (licenseNumber == "") {
+        //     this.setState({ alertContent: 'Please input driver license number.', isModalVisible: true })
+        // } else if (licenseState == "") {
+        //     this.setState({ alertContent: 'Please input driver license state.', isModalVisible: true })
+        // } else if (licenseExpiration == "") {
+        //     this.setState({ alertContent: 'Please input driver license expiration.', isModalVisible: true })
+        // } else if (vehicleName == "") {
+        //     this.setState({ alertContent: 'Please input vehicle name.', isModalVisible: true })
+        // } else if (vehicleModel == "") {
+        //     this.setState({ alertContent: 'Please input vehicle model.', isModalVisible: true })
+        // } else if (vehicleColor == "") {
+        //     this.setState({ alertContent: 'Please input vehicle color.', isModalVisible: true })
+        // } else if (vehicleLicense == "") {
+        //     this.setState({ alertContent: 'Please input vehicle license plate number.', isModalVisible: true })
+        // } else if (taxInfo == "") {
+        //     this.setState({ alertContent: 'Please input tax information.', isModalVisible: true })
+        // } else if (ischecked == false) {
+        //     this.setState({ alertContent: 'You need to agree our Terms and Conditions.', isModalVisible: true })
+        // }
         else {
             // var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
             this.setState({ isLoading: true })
@@ -232,13 +235,14 @@ export default class DriverSignUpScreen extends Component {
                 Firebase
                     .auth()
                     .createUserWithEmailAndPassword(email, password)
-                    .then((res) => {
+                    .then(async (res) => {
                         AsyncStorage.setItem('Loggined', "Success");
                         AsyncStorage.setItem('userUid', res.user.uid);
+                        await this.setState({ userId: res.user.uid })
                         this.setState({ isLoading: false })
                         // clearTimeout(myTimer)
                         var user = Firebase.auth().currentUser;
-                        Firebase.database().ref('user/' + res.user.uid).update({
+                        Firebase.database().ref('user/' + res.user.uid + '/driver').update({
                             email: email,
                             fristName: firstName,
                             lastName: lastName,
@@ -275,8 +279,94 @@ export default class DriverSignUpScreen extends Component {
                         console.log(error)
                         if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
                             this.setState({ alertContent: 'Your internet Connection is failed.', isModalVisible: true })
-                        } else {
-                            this.setState({ alertContent: 'The email address is already in use by another account.', isModalVisible: true })
+                        } else if (error.message == "The email address is already in use by another account." && this.state.isflag) {
+                            Firebase.database()
+                                .ref('user')
+                                .on("value", async (snapshot) => {
+                                    var data = []
+                                    var row
+                                    snapshot.forEach(async element => {
+                                        console.log(element)
+                                        if (element.val().hasOwnProperty('dispe')) {
+                                            if (element.val().driver.email == email) {
+                                                this.setState({ alertContent: 'The email address is already in use by another account.', isModalVisible: true })
+                                            }
+                                        } else {
+                                            if (element.val().hasOwnProperty('consumer')) {
+                                                console.log("consumer");
+                                                if (element.val().consumer.email == email) {
+                                                    console.log("consumerTrue");
+                                                    await this.setState({ userId: element.key, isConsumer: true })
+                                                    console.log(this.state.userId);
+                                                    AsyncStorage.setItem('userUid', this.state.userId);
+                                                    Firebase.database().ref('user/' + this.state.userId + '/driver').set({
+                                                        email: email,
+                                                        fristName: firstName,
+                                                        lastName: lastName,
+                                                        phoneNum: phoneNum,
+                                                        password: password,
+                                                        profileimage: img_url,
+                                                        userType: userType,
+                                                        birthday: birthday,
+                                                        age: age,
+                                                        licenseNumber: licenseNumber,
+                                                        licenseState: licenseState,
+                                                        licenseExpiration: licenseExpiration,
+                                                        vehicleName: vehicleName,
+                                                        vehicleModel: vehicleModel,
+                                                        vehicleColor: vehicleColor,
+                                                        vehicleLicense: vehicleLicense,
+                                                        taxInfo: taxInfo,
+                                                        availableBal: 0
+                                                    });
+                                                    this.setState({ isModalVisible17: true, isflag: false })
+                                                    setTimeout(() => {
+                                                        this.props.navigation.navigate('Driver')
+                                                        this.setState({ isModalVisible17: false })
+                                                    }, 2000)
+                                                }
+                                            }
+                                            if (element.val().hasOwnProperty('dispensary')) {
+                                                console.log("dispensary");
+                                                if (element.val().dispensary.email == email) {
+                                                    console.log("dispensaryTrue");
+                                                    await this.setState({ userId: element.key, isDispensary: true })
+                                                    AsyncStorage.setItem('userUid', this.state.userId);
+                                                    Firebase.database().ref('user/' + this.state.userId + '/driver').set({
+                                                        email: email,
+                                                        fristName: firstName,
+                                                        lastName: lastName,
+                                                        phoneNum: phoneNum,
+                                                        password: password,
+                                                        profileimage: img_url,
+                                                        userType: userType,
+                                                        birthday: birthday,
+                                                        age: age,
+                                                        licenseNumber: licenseNumber,
+                                                        licenseState: licenseState,
+                                                        licenseExpiration: licenseExpiration,
+                                                        vehicleName: vehicleName,
+                                                        vehicleModel: vehicleModel,
+                                                        vehicleColor: vehicleColor,
+                                                        vehicleLicense: vehicleLicense,
+                                                        taxInfo: taxInfo,
+                                                        availableBal: 0
+                                                    });
+                                                    this.setState({ isModalVisible17: true, isflag: false })
+                                                    setTimeout(() => {
+                                                        this.props.navigation.navigate('Driver')
+                                                        this.setState({ isModalVisible17: false })
+                                                    }, 2000)
+                                                }
+                                            }
+                                        }
+                                    });
+                                    // console.log("_____________+++++++++++++_________________");
+                                    // await this.setState({
+                                    //     userData: data,
+                                    // });
+                                    // console.log(this.state.userData);
+                                })
                         }
                         this.setState({ isLoading: false })
                     })

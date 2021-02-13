@@ -11,12 +11,14 @@ export default class OrderHistoryScreen extends Component {
     super(props);
     this.state = {
       modalVisible: false,
-      userId: Firebase.auth().currentUser.uid,
+      userId: "",
     };
   }
 
   componentDidMount = async () => {
     await this.setState({ storeId: this.props.navigation.getParam('storeId') })
+    const userId = await AsyncStorage.getItem("userUid");
+    this.setState({ userId: userId })
     console.log(this.state.storeId);
     Firebase.database()
       .ref('OrderItems/' + this.state.userId)

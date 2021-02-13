@@ -4,6 +4,7 @@ import Modal from 'react-native-modalbox';
 import Firebase from '../../../config/firebase'
 import dayjs from 'dayjs';
 import { styles } from '../../components/styles'
+import AsyncStorage from '@react-native-community/async-storage';
 
 const height = Dimensions.get('screen').height;
 let today = '';
@@ -16,7 +17,7 @@ export default class CheckOutScreen extends Component {
       isEmpty: false,
       cardNum: '',
       expired_date: '',
-      userId: Firebase.auth().currentUser.uid,
+      userId: "",
       real_data: [],
       contentList: [],
       totalPrice: '',
@@ -34,8 +35,8 @@ export default class CheckOutScreen extends Component {
   }
 
   componentDidMount = async () => {
-    console.log(this.state.productId)
-    console.log(this.state.storeId)
+    const userId = await AsyncStorage.getItem("userUid");
+    this.setState({ userId: userId })
 
     Firebase.database()
       .ref("Carts/" + this.state.userId)

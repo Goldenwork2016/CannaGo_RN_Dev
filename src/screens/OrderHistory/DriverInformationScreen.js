@@ -58,7 +58,7 @@ export default class DriverInformationScreen extends Component {
         await this.setState({ userId: userId })
         await this.setState({ usertype: usertype });
         Firebase.database()
-            .ref('user/' + this.state.userId)
+            .ref('user/' + this.state.userId + '/driver')
             .on("value", async (snapshot) => {
                 user_data = {
                     email: snapshot.val().email,
@@ -155,7 +155,7 @@ export default class DriverInformationScreen extends Component {
         this.setState({ isLoading: true })
         try {
             await Firebase.database()
-                .ref('user/' + this.state.userId)
+                .ref('user/' + this.state.userId + '/driver')
                 .update({
                     email: email,
                     fristName: firstName,

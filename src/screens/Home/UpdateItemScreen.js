@@ -6,6 +6,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import RNFetchBlob from "react-native-fetch-blob";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Firebase from '../../../config/firebase'
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { func, string, bool, object } from "prop-types";
 import { connect } from "react-redux";
@@ -42,7 +43,8 @@ class UpdateItemScreen extends Component {
       coaImage: '',
       priceValue: '',
       productName: '',
-      userId: Firebase.auth().currentUser.uid,
+      userId: "",
+      // userId: Firebase.auth().currentUser.uid,
       isModalVisible1: false,
       isModalVisible2: false,
       timeFlag: false,
@@ -86,7 +88,9 @@ class UpdateItemScreen extends Component {
     // alert('network error')
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const userId = await AsyncStorage.getItem("userUid");
+    this.setState({ userId: userId })
     console.log(this.props.navigation.getParam('item'))
     const item = this.props.navigation.getParam('item');
     this.setState({
@@ -410,7 +414,7 @@ class UpdateItemScreen extends Component {
                   <View style={styles.inputItem}>
                     {/* <TextInput value={priceValue} onChangeText={value => this.setState({ priceValue: value })} onBlur={() => { this.setState({ priceValue: parseFloat(this.state.priceValue).toFixed(2) }) }} style={{ ...styles.inputTxt, textAlign: 'center' }} placeholderTextColor="#7a7a7b" placeholder="$15.33"></TextInput> */}
                     <Text style={{ marginLeft: 20, marginRight: 0 }}>$</Text>
-                    <TextInput style={{ ...styles.inputTxt, marginLeft: 0, marginTop:Platform.OS == 'ios' ? 0 : 5 }} placeholderTextColor="#7a7a7b" value={this.state.priceValue} placeholder="0.00" onChangeText={(text) => { this.changePrice(text) }}
+                    <TextInput style={{ ...styles.inputTxt, marginLeft: 0, marginTop: Platform.OS == 'ios' ? 0 : 5 }} placeholderTextColor="#7a7a7b" value={this.state.priceValue} placeholder="0.00" onChangeText={(text) => { this.changePrice(text) }}
                       onBlur={() => { this.setState({ priceValue: parseFloat(this.state.priceValue).toFixed(2) }) }}></TextInput>
                   </View>
                 </View>

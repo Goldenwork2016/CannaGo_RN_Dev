@@ -40,9 +40,10 @@ export default class ProfileInfoScreen extends Component {
     const usertype = await AsyncStorage.getItem("usertype");
     const userId = await AsyncStorage.getItem("userUid");
     await this.setState({ userId: userId })
+    console.log(this.state.userId);
     await this.setState({ usertype: usertype });
     Firebase.database()
-      .ref('user/' + this.state.userId)
+      .ref('user/' + this.state.userId + '/consumer')
       .on("value", async (snapshot) => {
         user_data = {
           email: snapshot.val().email,

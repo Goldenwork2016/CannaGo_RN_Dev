@@ -13,14 +13,14 @@ export default class OrderStatusScreen extends Component {
             avatarSource: NonImage,
             ischecked: false,
             storeId: '',
-            userId: Firebase.auth().currentUser.uid,
+            userId: "",
             orderStatus: '',
         };
     }
 
     componentDidMount = async () => {
-        // await this.setState({ storeId: this.props.navigation.getParam('storeId') })
-        // console.log(this.state.storeId);
+        const userId = await AsyncStorage.getItem("userUid");
+        this.setState({ userId: userId })
 
         Firebase.database()
             .ref("Carts/" + this.state.userId)

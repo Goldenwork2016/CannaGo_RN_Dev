@@ -59,7 +59,6 @@ class ProfileScreen extends Component {
       companyName: '',
       fein: '',
       userId: "",
-      // userId: Firebase.auth().currentUser.uid,
       availableBal: 0,
       isModalVisible1: false,
       timeFlag: false,
@@ -76,6 +75,7 @@ class ProfileScreen extends Component {
     const usertype = await AsyncStorage.getItem("usertype");
     const userId = await AsyncStorage.getItem("userUid");
     await this.setState({ userId: userId })
+    console.log(this.state.userId);
     await this.setState({ usertype: usertype });
     console.log("_______________+++++++++++++++++++++++________________")
     console.log(this.state.usertype)
@@ -95,7 +95,7 @@ class ProfileScreen extends Component {
 
     if (this.state.usertype == "dispensary") {
       Firebase.database()
-        .ref('user/' + this.state.userId)
+        .ref('user/' + this.state.userId + '/dispensary')
         .on("value", async (snapshot) => {
           user_data = {
             GA: snapshot.val().GA,
@@ -145,7 +145,7 @@ class ProfileScreen extends Component {
     } else if (this.state.usertype == "driver") {
       console.log("================================");
       Firebase.database()
-        .ref('user/' + this.state.userId)
+        .ref('user/' + this.state.userId + '/driver')
         .on("value", async (snapshot) => {
           user_data = {
             email: snapshot.val().email,
@@ -175,7 +175,7 @@ class ProfileScreen extends Component {
     } else if (this.state.usertype == "consumer") {
       console.log("================================");
       Firebase.database()
-        .ref('user/' + this.state.userId)
+        .ref('user/' + this.state.userId + '/consumer')
         .on("value", async (snapshot) => {
           user_data = {
             email: snapshot.val().email,
@@ -202,7 +202,7 @@ class ProfileScreen extends Component {
             userType: user_data.userType,
             zipCode: user_data.zipCode,
             age: user_data.age,
-            availableBal:availableBal
+            availableBal: user_data.availableBal
           })
         })
     }
@@ -256,12 +256,15 @@ class ProfileScreen extends Component {
 
   chooseImage = async () => {
     ImagePicker.showImagePicker(options, response => {
+      console.log("Response = ", response.uri);
 
       if (response.didCancel) {
+        console.log("User cancelled image picker");
       } else if (response.error) {
+        console.log("ImagePicker Error: ", response.error);
       } else {
-        this.setState({ isLoading: true })
         const source = { uri: response.uri };
+        // console.log(response.data);
         const Blob = RNFetchBlob.polyfill.Blob;    //firebase image upload
         const fs = RNFetchBlob.fs;
         window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
@@ -270,14 +273,7 @@ class ProfileScreen extends Component {
         const Fetch = RNFetchBlob.polyfill.Fetch
         // replace built-in fetch
         window.fetch = new Fetch({
-          // enable this option so that the response data conversion handled automatically
           auto: true,
-          // when receiving response data, the module will match its Content-Type header
-          // with strings in this array. If it contains any one of string in this array, 
-          // the response body will be considered as binary data and the data will be stored
-          // in file system instead of in memory.
-          // By default, it only store response data to file system when Content-Type 
-          // contains string `application/octet`.
           binaryContentTypes: [
             'image/',
             'video/',
@@ -300,6 +296,7 @@ class ProfileScreen extends Component {
             return Blob.build(data, { type: `${mime};BASE64` });
           })
           .then(blob => {
+            this.setState({ isImageUploading: true })
             uploadBlob = blob;
             Firebase
               .storage()
@@ -313,12 +310,14 @@ class ProfileScreen extends Component {
                   .getDownloadURL();
               })
               .then(async uploadedFile => {
-                await this.setState({ profileimage: uploadedFile })
-                this.setState({ isLoading: false })
-                this.update()
-                this.setState({ isModalVisible1: true })
+                console.log("++++++++++++");
+                console.log({ uploadedFile });
+                await this.setState({ img_url: uploadedFile })
+                console.log(this.state.img_url);
+                this.setState({ isImageUploading: false })
+                this.setState({ isModalVisible12: true })
                 setTimeout(() => {
-                  this.setState({ isModalVisible1: false })
+                  this.setState({ isModalVisible12: false })
                 }, 2000)
               })
               .catch(error => {
@@ -336,9 +335,20 @@ class ProfileScreen extends Component {
   async update() {
     const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, availableBal, storePhoneNum, storeAddress, storeHours, companyName, fein } = this.state
     var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
-    await Firebase.database().ref('user/' + this.state.userId).update({
-      profileimage: profileimage,
-    });
+    if (this.state.usertype == "dispensary") {
+      await Firebase.database().ref('user/' + this.state.userId + '/dispensary').update({
+        profileimage: profileimage,
+      });
+    } else if (this.state.usertype == "consumer") {
+      await Firebase.database().ref('user/' + this.state.userId + '/consumer').update({
+        profileimage: profileimage,
+      });
+    } else if (this.state.usertype == "driver") {
+      await Firebase.database().ref('user/' + this.state.userId + '/driver').update({
+        profileimage: profileimage,
+      });
+    }
+
   }
 
   checkfun = async () => {

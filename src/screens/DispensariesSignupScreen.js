@@ -276,7 +276,7 @@ export default class DispensariesSignupScreen extends Component {
             this.setState({ isLoading: false })
             // clearTimeout(myTimer)
             var user = Firebase.auth().currentUser;
-            Firebase.database().ref('user/' + res.user.uid).update({
+            Firebase.database().ref('user/' + res.user.uid + '/dispensary').update({
               email: ownerEmail,
               fristName: fristName,
               lastName: lastName,
@@ -311,9 +311,89 @@ export default class DispensariesSignupScreen extends Component {
           .catch((error) => {
             console.log(error)
             if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
-              this.setState({ isModalVisible22: true })
-            } else {
-              this.setState({ isModalVisible21: true })
+              this.setState({ alertContent: 'Your internet Connection is failed.', isModalVisible: true })
+            } else if (error.message == "The email address is already in use by another account.") {
+              Firebase.database()
+                .ref('user')
+                .on("value", async (snapshot) => {
+                  var data = []
+                  var row
+                  snapshot.forEach(async element => {
+                    console.log(element)
+                    if (element.val().hasOwnProperty('dispensary')) {
+                      if (element.val().driver.email == ownerEmail) {
+                        this.setState({ alertContent: 'The email address is already in use by another account.', isModalVisible: true })
+                      }
+                    } else {
+                      if (element.val().hasOwnProperty('driver')) {
+                        if (element.val().consumer.email == ownerEmail) {
+                          await this.setState({ userId: element.key, isConsumer: true })
+                          console.log(this.state.userId);
+                          AsyncStorage.setItem('userUid', this.state.userId);
+                          Firebase.database().ref('user/' + this.state.userId + '/dispensary').update({
+                            email: ownerEmail,
+                            fristName: fristName,
+                            lastName: lastName,
+                            phoneNum: ownerPhoneNum,
+                            password: password,
+                            storeName: storeName,
+                            storePhoneNum: storePhoneNum,
+                            storeStreetAdress: storeStreetAdress,
+                            city: city,
+                            GA: GA,
+                            zipCode: zipCode,
+                            storeHours: storeHours,
+                            companyName: companyName,
+                            fein: fein,
+                            profileimage: img_url,
+                            userType: userType,
+                            availableBal: 0
+                          });
+                          this.setState({ isModalVisible17: true })
+                          setTimeout(() => {
+                            this.props.navigation.navigate('Main')
+                            this.setState({ isModalVisible17: false })
+                          }, 2000)
+                        }
+                      }
+                      if (element.val().hasOwnProperty('consumer')) {
+                        if (element.val().dispensary.email == ownerEmail) {
+                          await this.setState({ userId: element.key, isDispensary: true })
+                          AsyncStorage.setItem('userUid', this.state.userId);
+                          Firebase.database().ref('user/' + this.state.uid + '/dispensary').update({
+                            email: ownerEmail,
+                            fristName: fristName,
+                            lastName: lastName,
+                            phoneNum: ownerPhoneNum,
+                            password: password,
+                            storeName: storeName,
+                            storePhoneNum: storePhoneNum,
+                            storeStreetAdress: storeStreetAdress,
+                            city: city,
+                            GA: GA,
+                            zipCode: zipCode,
+                            storeHours: storeHours,
+                            companyName: companyName,
+                            fein: fein,
+                            profileimage: img_url,
+                            userType: userType,
+                            availableBal: 0
+                          });
+                          this.setState({ isModalVisible17: true })
+                          setTimeout(() => {
+                            this.props.navigation.navigate('Main')
+                            this.setState({ isModalVisible17: false })
+                          }, 2000)
+                        }
+                      }
+                    }
+                  });
+                  // console.log("_____________+++++++++++++_________________");
+                  // await this.setState({
+                  //     userData: data,
+                  // });
+                  // console.log(this.state.userData);
+                })
             }
             this.setState({ isLoading: false })
           })
