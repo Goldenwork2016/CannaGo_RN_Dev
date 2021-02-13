@@ -10,11 +10,13 @@ import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-community/async-storage';
 import Firebase from 'firebase';
 import { styles } from '../components/styles'
-
+import RNPickerSelect from "react-native-picker-select";
 import NonImage from '../assets/iamges/emptyPerson.png'
 import uncheckImage from '../assets/iamges/uncheckImage.png'
 import checkImage from '../assets/iamges/checkImage.png'
 import AlertModal from '../components/AlertModal'
+
+import states from '../components/US_state'
 
 const options = {
     title: 'Choose Photo',
@@ -76,7 +78,7 @@ export default class DriverSignUpScreen extends Component {
             isConsumer: false,
             isDispensary: false,
             isDriver: false,
-            isflag:true
+            isflag: true
         };
     }
 
@@ -378,6 +380,10 @@ export default class DriverSignUpScreen extends Component {
 
     }
 
+    _onChangeStatus = (value) => {
+        this.setState({ licenseState: value })
+    };
+
     handleTimePicker = async (date) => {
         await this.setState({ birthday: dayjs(date).format('MM/DD/YYYY') })
         await this.setState({ birthdayYear: dayjs(date).format('YYYY') })
@@ -452,6 +458,7 @@ export default class DriverSignUpScreen extends Component {
                             />
                             <DateTimePickerModal
                                 isVisible={this.state.isExpirationTimeVisible}
+                                customDatePickerIOS={Platform.OS === 'ios' ? UncontrolledDatePickerIOS : null}
                                 mode="date"
                                 onConfirm={(date) => { this.handleTimePicker1(date) }}
                                 onCancel={this.hideTimePicker1}
@@ -544,13 +551,74 @@ export default class DriverSignUpScreen extends Component {
                                 </View>
                                 <View style={styles.inputItem}>
                                     <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} keyboardType='number-pad' placeholderTextColor="#7a7a7b" placeholder="Driver's License Number" value={this.state.licenseNumber} onChangeText={(text) => { this.setState({ licenseNumber: text }) }}></TextInput>
+                                    <TextInput style={styles.inputTxt} maxLength={7} placeholderTextColor="#7a7a7b" placeholder="Driver's License Number" value={this.state.licenseNumber} onChangeText={(text) => { this.setState({ licenseNumber: text }) }}></TextInput>
                                 </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Driver's License State" value={this.state.licenseState} onChangeText={(text) => { this.setState({ licenseState: text }) }}></TextInput>
-                                    <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
-                                </View>
+                                {Platform.OS == 'ios' ?
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <View style={{ width: '75%', marginLeft: '5%' }}>
+                                            <RNPickerSelect
+                                                placeholder={{ label: "Driver's License State" }}
+                                                value={this.state.licenseState}
+                                                onValueChange={(value) => {
+                                                    this._onChangeStatus(value);
+                                                }}
+                                                items={states}
+                                            />
+                                        </View>
+                                        {/* <Text style={styles.selectTxt}>Closed</Text> */}
+                                        <Image source={require('../assets/iamges/arrowdown.png')} resizeMode='stretch' style={styles.arrowdown} />
+                                    </View> :
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        {/* <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Driver's License State" value={this.state.licenseState} onChangeText={(text) => { this.setState({ licenseState: text }) }}></TextInput> */}
+                                        <View style={{ width: '86%', marginLeft: '-9%' }}>
+                                            <RNPickerSelect
+                                                placeholder={{ label: "Driver's License State" }}
+                                                placeholderTextColor="red"
+                                                value={this.state.licenseState}
+                                                onValueChange={(value) => {
+                                                    this._onChangeStatus(value);
+                                                }}
+                                                style={{
+                                                    inputIOS: {
+                                                        fontSize: 16,
+                                                        paddingVertical: 12,
+                                                        paddingHorizontal: 10,
+                                                        borderWidth: 1,
+                                                        borderColor: 'gray',
+                                                        borderRadius: 4,
+                                                        color: 'black',
+                                                        paddingRight: 30, // to ensure the text is never behind the icon
+                                                        // transform: [
+                                                        //     { scaleX: 1.5 },
+                                                        //     { scaleY: 1.5 },
+                                                        // ]
+                                                    },
+                                                    inputAndroid: {
+                                                        fontSize: 7,
+                                                        placeholder: {
+                                                            color: 'red',
+                                                        },
+                                                        color: 'black',
+                                                        fontFamily: 'Poppins',
+                                                        // paddingRight: 30, // to ensure the text is never behind the icon
+                                                        transform: [
+                                                            { scaleX: 0.8 },
+                                                            { scaleY: 0.8 },
+                                                        ]
+                                                    },
+                                                }}
+
+                                                items={states}
+                                                Icon={() => {
+                                                    return <Image source={require('../assets/iamges/arrowdown.png')} resizeMode='stretch' style={{ width: 20, height: 23, position: 'absolute', top: 12, right: 0 }} />
+                                                }}
+                                            />
+                                        </View>
+                                        {/* <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} /> */}
+                                    </View>
+                                }
                                 <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isExpirationTimeVisible: true, }) }}>
                                     <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                                     <Text style={{ ...styles.inputTxt, color: this.state.licenseExpiration == "" ? "#7a7a7b" : "#000" }}>{this.state.licenseExpiration == "" ? "Driver's License Expiration" : this.state.licenseExpiration}</Text>
