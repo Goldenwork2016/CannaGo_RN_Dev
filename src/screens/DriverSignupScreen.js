@@ -458,7 +458,7 @@ export default class DriverSignUpScreen extends Component {
                             />
                             <DateTimePickerModal
                                 isVisible={this.state.isExpirationTimeVisible}
-                                customDatePickerIOS={Platform.OS === 'ios' ? UncontrolledDatePickerIOS : null}
+                                // customDatePickerIOS={Platform.OS === 'ios' ? UncontrolledDatePickerIOS : null}
                                 mode="date"
                                 onConfirm={(date) => { this.handleTimePicker1(date) }}
                                 onCancel={this.hideTimePicker1}
