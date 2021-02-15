@@ -2159,11 +2159,6 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blinkid-react-native@^5.9.0:
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/blinkid-react-native/-/blinkid-react-native-5.9.0.tgz#52102755c8839ac7a7053b1f4187b8617bcdd795"
-  integrity sha512-XuHLRMUTZST6+FGBzg4yHyxnHVmEgRD5vgGQDmB6M0eifqYLv2u7bBvQoRb6c08WDxbqpxoawBJ8YXPJWCbcCg==
-
 bplist-creator@0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/bplist-creator/-/bplist-creator-0.0.8.tgz#56b2a6e79e9aec3fc33bf831d09347d73794e79c"
@@ -5711,6 +5706,11 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.5"
 
+moment@^2.24.0, moment@^2.29.1:
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -6521,6 +6521,14 @@ react-native-modalbox@^2.0.2:
   integrity sha512-uSuoZ+siPPNqWGyw8NXhA/Aots7mOx2+qijFoeovequY0kczZEPZDd0ARHbzg+1cE3H3AATJEwGdkVA8lUxs0g==
   dependencies:
     prop-types "^15.5.10"
+
+react-native-month-year-picker@^1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/react-native-month-year-picker/-/react-native-month-year-picker-1.6.3.tgz#9717ae901950f43329f66703f735de1b178e0c13"
+  integrity sha512-nVsyzq9YpOKqkU2LjAxX9YjNMY+pBnKhJCBUIf3vaAN7peZBP52qUnKP52KTPEpgDWtdRXR5t0q6XaG4v4Gsvw==
+  dependencies:
+    invariant "^2.2.4"
+    moment "^2.24.0"
 
 react-native-picker-select@^8.0.4:
   version "8.0.4"

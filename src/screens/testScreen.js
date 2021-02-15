@@ -1,66 +1,65 @@
-import React, { Component } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'
+import React, { useState, useCallback } from 'react';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import moment from 'moment';
 
-class testScreen extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        };
-    }
-
-    render() {
-        return (
-            <SafeAreaView style={styles.container}>
-                <ScrollView style={{ width: '100%', flex: 1, }}>
-                    <View style={{ width: '100%' }}>
-                        <View style={{ flexDirection: 'row', width: '85%', alignSelf: 'center', alignItems: 'center', marginTop: 30 }}>
-                            <View style={styles.inputItem}>
-                                <Icon name="search" size={20} color="#768895" style={{ marginLeft: 10, marginRight: 10 }} />
-                                <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Search MovieDB" value={this.state.phoneNum} onChangeText={(text) => { this.setState({ phoneNum: text }) }}></TextInput>
-                            </View>
-                            <TouchableOpacity style={{ width: '20%', marginLeft: '5%', borderRadius: 5, justifyContent: 'center', alignItems: 'center', backgroundColor: '#5b5bef', height: 40 }}>
-                                <Icon name="plus" size={15} color="#fff" />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ flexDirection: 'row', width: '85%', alignSelf: 'center', alignItems: 'center', marginTop: 30 }}>
-                            <View style={{ ...styles.inputItem, width: '100%' }}>
-                                <TextInput style={{ ...styles.inputTxt, paddingLeft: 20 }} placeholderTextColor="#7a7a7b" placeholder="Search My Movies" value={this.state.phoneNum} onChangeText={(text) => { this.setState({ phoneNum: text }) }}></TextInput>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={{ flexDirection: 'row', width: '85%', alignSelf: 'center', alignItems: 'center', marginTop: 30 }}>
-                        <View>
-                            <View>
-                                <Icon name="eye" size={15} color="#fff" />
-                            </View>
-                        </View>
-                    </View>
-                </ScrollView>
-            </SafeAreaView>
-        );
-    }
-}
+import MonthPicker from 'react-native-month-year-picker';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%'
+        backgroundColor: '#dfe6e9',
     },
-    inputItem: {
-        flexDirection: 'row',
-        width: '75%',
+    button: {
+        justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 2,
-        borderColor: '#768895',
-        height: 50,
-        borderRadius: 3
+        backgroundColor: '#b2bec3',
+        borderRadius: 4,
+        padding: 10,
     },
-    inputTxt: {
-        fontSize: 20
-    }
-})
+    buttonText: {
+        color: '#2d3436',
+    },
+});
 
-export default testScreen;
+const DEFAULT_OUTPUT_FORMAT = 'MM/YYYY';
+
+const App = () => {
+    const [date, setDate] = useState(new Date());
+    const [show, setShow] = useState(false);
+
+    const showPicker = useCallback((value) => setShow(value), []);
+
+    const onValueChange = useCallback(
+        (event, newDate) => {
+            const selectedDate = newDate || date;
+            console.log(selectedDate);
+            showPicker(false);
+            setDate(selectedDate);
+        },
+        [date, showPicker],
+    );
+
+    return (
+        <SafeAreaView style={styles.container}>
+            <Text>Month Year Picker Example</Text>
+            <Text>{moment(date).format(DEFAULT_OUTPUT_FORMAT)}</Text>
+            <TouchableOpacity onPress={() => showPicker(true)} style={styles.button}>
+                <Text style={styles.buttonText}>OPEN</Text>
+            </TouchableOpacity>
+            {show && (
+                <MonthPicker
+                    onChange={onValueChange}
+                    value={date}
+                    minimumDate={new Date()}
+                    maximumDate={new Date(2100, 5)}
+                    locale="en"
+                    mode="full"
+                />
+            )}
+        </SafeAreaView>
+    );
+};
+
+export default App;

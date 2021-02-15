@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import React, { Component, useCallback } from 'react';
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Dimensions } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -8,6 +8,8 @@ import RNFetchBlob from "react-native-fetch-blob";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-community/async-storage';
+import MonthPicker from 'react-native-month-year-picker';
+import moment from 'moment';
 import Firebase from 'firebase';
 import { styles } from '../components/styles'
 import RNPickerSelect from "react-native-picker-select";
@@ -23,6 +25,10 @@ const options = {
     takePhotoButtonTitle: 'Take photo with your camera',
     chooseFromLibraryButtonTitle: 'Choose photo from library'
 }
+
+const { screenWidth, screenHeight } = Dimensions.get('window')
+
+const DEFAULT_OUTPUT_FORMAT = 'MM/YYYY';
 
 let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 let reg_strong = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,30}$/;
@@ -78,7 +84,8 @@ export default class DriverSignUpScreen extends Component {
             isConsumer: false,
             isDispensary: false,
             isDriver: false,
-            isflag: true
+            isflag: true,
+            date: new Date()
         };
     }
 
@@ -188,16 +195,16 @@ export default class DriverSignUpScreen extends Component {
 
     SingUp = () => {
         const { firstName, lastName, birthday, ageFlag, phoneNum, email, zipCode, password, conPassword, img_url, userType, age, ischecked, licenseExpiration, licenseState, licenseNumber, taxInfo, vehicleName, vehicleColor, vehicleModel, vehicleLicense } = this.state;
-        // if (img_url == "") {
-        //     this.setState({ alertContent: 'Please Select Profile Image.', isModalVisible: true })
-        // } 
-        // else if (firstName == "") {
-        //     this.setState({ alertContent: 'Please input first name.', isModalVisible: true })
-        // } else if (lastName == "") {
-        //     this.setState({ alertContent: 'Please input last name.', isModalVisible: true })
-        // } else if (birthday == "") {
-        //     this.setState({ alertContent: 'Please select your birthday.', isModalVisible: true })
-        // } 
+        if (img_url == "") {
+            this.setState({ alertContent: 'Please Select Profile Image.', isModalVisible: true })
+        }
+        else if (firstName == "") {
+            this.setState({ alertContent: 'Please input first name.', isModalVisible: true })
+        } else if (lastName == "") {
+            this.setState({ alertContent: 'Please input last name.', isModalVisible: true })
+        } else if (birthday == "") {
+            this.setState({ alertContent: 'Please select your birthday.', isModalVisible: true })
+        }
         if (email == "") {
             this.setState({ alertContent: 'Please input email address.', isModalVisible: true })
         } else if (reg.test(email) === false) {
@@ -207,29 +214,29 @@ export default class DriverSignUpScreen extends Component {
         } else if (reg_strong.test(password) === false) {
             this.setState({ isModalVisible6: true })
         }
-        // else if (password != conPassword) {
-        //     this.setState({ alertContent: "Password doesn't match.", isModalVisible: true })
-        // } else if (phoneNum == "") {
-        //     this.setState({ alertContent: 'Please input phone number.', isModalVisible: true })
-        // } else if (licenseNumber == "") {
-        //     this.setState({ alertContent: 'Please input driver license number.', isModalVisible: true })
-        // } else if (licenseState == "") {
-        //     this.setState({ alertContent: 'Please input driver license state.', isModalVisible: true })
-        // } else if (licenseExpiration == "") {
-        //     this.setState({ alertContent: 'Please input driver license expiration.', isModalVisible: true })
-        // } else if (vehicleName == "") {
-        //     this.setState({ alertContent: 'Please input vehicle name.', isModalVisible: true })
-        // } else if (vehicleModel == "") {
-        //     this.setState({ alertContent: 'Please input vehicle model.', isModalVisible: true })
-        // } else if (vehicleColor == "") {
-        //     this.setState({ alertContent: 'Please input vehicle color.', isModalVisible: true })
-        // } else if (vehicleLicense == "") {
-        //     this.setState({ alertContent: 'Please input vehicle license plate number.', isModalVisible: true })
-        // } else if (taxInfo == "") {
-        //     this.setState({ alertContent: 'Please input tax information.', isModalVisible: true })
-        // } else if (ischecked == false) {
-        //     this.setState({ alertContent: 'You need to agree our Terms and Conditions.', isModalVisible: true })
-        // }
+        else if (password != conPassword) {
+            this.setState({ alertContent: "Password doesn't match.", isModalVisible: true })
+        } else if (phoneNum == "") {
+            this.setState({ alertContent: 'Please input phone number.', isModalVisible: true })
+        } else if (licenseNumber == "") {
+            this.setState({ alertContent: 'Please input driver license number.', isModalVisible: true })
+        } else if (licenseState == "") {
+            this.setState({ alertContent: 'Please input driver license state.', isModalVisible: true })
+        } else if (licenseExpiration == "") {
+            this.setState({ alertContent: 'Please input driver license expiration.', isModalVisible: true })
+        } else if (vehicleName == "") {
+            this.setState({ alertContent: 'Please input vehicle name.', isModalVisible: true })
+        } else if (vehicleModel == "") {
+            this.setState({ alertContent: 'Please input vehicle model.', isModalVisible: true })
+        } else if (vehicleColor == "") {
+            this.setState({ alertContent: 'Please input vehicle color.', isModalVisible: true })
+        } else if (vehicleLicense == "") {
+            this.setState({ alertContent: 'Please input vehicle license plate number.', isModalVisible: true })
+        } else if (taxInfo == "") {
+            this.setState({ alertContent: 'Please input tax information.', isModalVisible: true })
+        } else if (ischecked == false) {
+            this.setState({ alertContent: 'You need to agree our Terms and Conditions.', isModalVisible: true })
+        }
         else {
             // var myTimer = setTimeout(function () { this.NetworkSensor() }.bind(this), 25000)
             this.setState({ isLoading: true })
@@ -425,9 +432,12 @@ export default class DriverSignUpScreen extends Component {
         this.setState({ isTimeVisible: false })
     }
 
-    handleTimePicker1 = async (date) => {
-        await this.setState({ licenseExpiration: dayjs(date).format('MM/YYYY') })
-        this.setState({ isExpirationTimeVisible: false })
+    handleTimePicker1 = async (event, newDate) => {
+        console.log("++++++++++++++++++++")
+        console.log(newDate)
+        const selectedDate = newDate || this.state.date;
+        await this.setState({ licenseExpiration: moment(selectedDate).format(DEFAULT_OUTPUT_FORMAT) })
+        await this.setState({ isExpirationTimeVisible: false })
     }
 
     hideTimePicker1 = () => {
@@ -435,239 +445,253 @@ export default class DriverSignUpScreen extends Component {
     }
 
     render() {
+        const self = this;
         return (
-            <KeyboardAwareScrollView style={{ flex: 1 }}>
-                <View style={styles.container}>
-                    <ScrollView style={{ width: '100%' }}>
-                        <View style={styles.container}>
-                            <Spinner
-                                visible={this.state.isLoading}
-                                textContent={'Creating your account...'}
-                                textStyle={{ color: 'white' }}
-                            />
-                            <Spinner
-                                visible={this.state.isImageUploading}
-                                textContent={'Uploading profile image...'}
-                                textStyle={{ color: 'white' }}
-                            />
-                            <DateTimePickerModal
-                                isVisible={this.state.isTimeVisible}
-                                mode="date"
-                                onConfirm={(date) => { this.handleTimePicker(date) }}
-                                onCancel={this.hideTimePicker}
-                            />
-                            <DateTimePickerModal
+            <View style={{ flex: 1, height: screenHeight }}>
+                <KeyboardAwareScrollView style={{ flex: 1, height: screenHeight }}>
+                    <View style={styles.container}>
+                        <ScrollView style={{ width: '100%', flex: 1 }}>
+                            {self.state.isExpirationTimeVisible && (
+                                <MonthPicker
+                                    onChange={self.handleTimePicker1}
+                                    value={self.state.date}
+                                    minimumDate={new Date()}
+                                    maximumDate={new Date(2050, 12)}
+                                    locale="en"
+                                    mode="full"
+                                    okButton="Confirm"
+                                    cancelButton="Abort"
+                                />
+                            )}
+                            <View style={styles.container}>
+                                <Spinner
+                                    visible={this.state.isLoading}
+                                    textContent={'Creating your account...'}
+                                    textStyle={{ color: 'white' }}
+                                />
+                                <Spinner
+                                    visible={this.state.isImageUploading}
+                                    textContent={'Uploading profile image...'}
+                                    textStyle={{ color: 'white' }}
+                                />
+                                <DateTimePickerModal
+                                    isVisible={this.state.isTimeVisible}
+                                    mode="date"
+                                    onConfirm={(date) => { this.handleTimePicker(date) }}
+                                    onCancel={this.hideTimePicker}
+                                />
+                                {/* <DateTimePickerModal
                                 isVisible={this.state.isExpirationTimeVisible}
-                                // customDatePickerIOS={Platform.OS === 'ios' ? UncontrolledDatePickerIOS : null}
                                 mode="date"
                                 onConfirm={(date) => { this.handleTimePicker1(date) }}
                                 onCancel={this.hideTimePicker1}
-                            />
-                            <Modal isVisible={this.state.isModalVisible}>
-                                <AlertModal alertContent={this.state.alertContent} onPress={() => this.setState({ isModalVisible: false })} />
-                            </Modal>
-                            <Modal isVisible={this.state.isModalVisible1}>
-                                <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
-                                    <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-                                    <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular', width: '90%' }}>Password was changed successfully.</Text>
-                                </View>
-                            </Modal>
-                            <Modal isVisible={this.state.isModalVisible6}>
-                                <View style={styles.modalView1}>
-                                    <Text style={styles.TitleTxt1}>OOPS!</Text>
-                                    <View style={{ width: "95%", alignSelf: 'center' }}>
-                                        <Text style={{ ...styles.Description, textAlign: 'center' }}>
-                                            Password must contain following:
+                            /> */}
+                                <Modal isVisible={this.state.isModalVisible}>
+                                    <AlertModal alertContent={this.state.alertContent} onPress={() => this.setState({ isModalVisible: false })} />
+                                </Modal>
+                                <Modal isVisible={this.state.isModalVisible1}>
+                                    <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+                                        <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+                                        <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular', width: '90%' }}>Password was changed successfully.</Text>
+                                    </View>
+                                </Modal>
+                                <Modal isVisible={this.state.isModalVisible6}>
+                                    <View style={styles.modalView1}>
+                                        <Text style={styles.TitleTxt1}>OOPS!</Text>
+                                        <View style={{ width: "95%", alignSelf: 'center' }}>
+                                            <Text style={{ ...styles.Description, textAlign: 'center' }}>
+                                                Password must contain following:
                                         </Text>
-                                        <Text style={styles.Description1}>
-                                            A lowercase letter{'\n'}
+                                            <Text style={styles.Description1}>
+                                                A lowercase letter{'\n'}
                                             A capital letter{'\n'}
                                             A number{'\n'}
                                             A special character{'\n'}
                                             Minimum 8 characters
                                         </Text>
-                                    </View>
-                                    <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible6: false })}>
-                                        <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </Modal>
-                            <Modal isVisible={this.state.isModalVisible12}>
-                                <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
-                                    <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-                                    <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Profile image is uploaded</Text>
-                                </View>
-                            </Modal>
-                            <Modal isVisible={this.state.isModalVisible17}>
-                                <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
-                                    <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-                                    <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome to CannaGo App!</Text>
-                                </View>
-                            </Modal>
-                            <View style={{ width: '100%', alignItems: 'center', marginTop: 40 }}>
-                                <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
-                                    <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
-                                </TouchableOpacity>
-                                <View style={styles.personUploadgImage}>
-                                    <View style={styles.personImageArea}>
-                                        <View style={styles.personImageArea1}>
-                                            <Image source={this.state.avatarSource} resizeMode='cover' style={styles.personImage} />
                                         </View>
+                                        <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible6: false })}>
+                                            <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+                                        </TouchableOpacity>
                                     </View>
-                                    <TouchableOpacity style={styles.addBtn} onPress={() => { this.chooseImage() }}>
-                                        <Image source={require('../assets/iamges/addImage.png')} resizeMode='cover' style={styles.addImage} />
+                                </Modal>
+                                <Modal isVisible={this.state.isModalVisible12}>
+                                    <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+                                        <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+                                        <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Profile image is uploaded</Text>
+                                    </View>
+                                </Modal>
+                                <Modal isVisible={this.state.isModalVisible17}>
+                                    <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+                                        <Image source={require('../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+                                        <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Welcome to CannaGo App!</Text>
+                                    </View>
+                                </Modal>
+                                <View style={{ width: '100%', alignItems: 'center', marginTop: 40 }}>
+                                    <TouchableOpacity style={styles.backBtn} onPress={() => { this.props.navigation.goBack() }}>
+                                        <Image source={require('../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                                     </TouchableOpacity>
+                                    <View style={styles.personUploadgImage}>
+                                        <View style={styles.personImageArea}>
+                                            <View style={styles.personImageArea1}>
+                                                <Image source={this.state.avatarSource} resizeMode='cover' style={styles.personImage} />
+                                            </View>
+                                        </View>
+                                        <TouchableOpacity style={styles.addBtn} onPress={() => { this.chooseImage() }}>
+                                            <Image source={require('../assets/iamges/addImage.png')} resizeMode='cover' style={styles.addImage} />
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={styles.inputArea}>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="First Name" value={this.state.firstName} onChangeText={(text) => { this.setState({ firstName: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Last Name" value={this.state.lastName} onChangeText={(text) => { this.setState({ lastName: text }) }}></TextInput>
-                                </View>
-                                <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isTimeVisible: true, }) }}>
-                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <Text style={{ ...styles.inputTxt, color: this.state.birthday == "" ? "#7a7a7b" : "#000" }}>{this.state.birthday == "" ? "Date of Birth" : this.state.birthday}</Text>
-                                    <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
-                                </TouchableOpacity>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Email Address" value={this.state.email} onChangeText={(text) => { this.setState({ email: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
-                                    <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Password" value={this.state.password} onChangeText={(text) => { this.setState({ password: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
-                                    <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Retype password" value={this.state.conPassword} onChangeText={(text) => { this.setState({ conPassword: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} keyboardType='phone-pad' placeholderTextColor="#7a7a7b" placeholder="Mobile Number" value={this.state.phoneNum} onChangeText={(text) => { this.setState({ phoneNum: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} maxLength={7} placeholderTextColor="#7a7a7b" placeholder="Driver's License Number" value={this.state.licenseNumber} onChangeText={(text) => { this.setState({ licenseNumber: text }) }}></TextInput>
-                                </View>
-                                {Platform.OS == 'ios' ?
+                                <View style={styles.inputArea}>
                                     <View style={styles.inputItem}>
                                         <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                        <View style={{ width: '75%', marginLeft: '5%' }}>
-                                            <RNPickerSelect
-                                                placeholder={{ label: "Driver's License State" }}
-                                                value={this.state.licenseState}
-                                                onValueChange={(value) => {
-                                                    this._onChangeStatus(value);
-                                                }}
-                                                items={states}
-                                            />
-                                        </View>
-                                        {/* <Text style={styles.selectTxt}>Closed</Text> */}
-                                        <Image source={require('../assets/iamges/arrowdown.png')} resizeMode='stretch' style={styles.arrowdown} />
-                                    </View> :
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="First Name" value={this.state.firstName} onChangeText={(text) => { this.setState({ firstName: text }) }}></TextInput>
+                                    </View>
                                     <View style={styles.inputItem}>
                                         <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                        {/* <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Driver's License State" value={this.state.licenseState} onChangeText={(text) => { this.setState({ licenseState: text }) }}></TextInput> */}
-                                        <View style={{ width: '86%', marginLeft: '-9%' }}>
-                                            <RNPickerSelect
-                                                placeholder={{ label: "Driver's License State" }}
-                                                placeholderTextColor="red"
-                                                value={this.state.licenseState}
-                                                onValueChange={(value) => {
-                                                    this._onChangeStatus(value);
-                                                }}
-                                                style={{
-                                                    inputIOS: {
-                                                        fontSize: 16,
-                                                        paddingVertical: 12,
-                                                        paddingHorizontal: 10,
-                                                        borderWidth: 1,
-                                                        borderColor: 'gray',
-                                                        borderRadius: 4,
-                                                        color: 'black',
-                                                        paddingRight: 30, // to ensure the text is never behind the icon
-                                                        // transform: [
-                                                        //     { scaleX: 1.5 },
-                                                        //     { scaleY: 1.5 },
-                                                        // ]
-                                                    },
-                                                    inputAndroid: {
-                                                        fontSize: 7,
-                                                        placeholder: {
-                                                            color: 'red',
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Last Name" value={this.state.lastName} onChangeText={(text) => { this.setState({ lastName: text }) }}></TextInput>
+                                    </View>
+                                    <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isTimeVisible: true, }) }}>
+                                        <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <Text style={{ ...styles.inputTxt, color: this.state.birthday == "" ? "#7a7a7b" : "#000" }}>{this.state.birthday == "" ? "Date of Birth" : this.state.birthday}</Text>
+                                        <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
+                                    </TouchableOpacity>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/email.png')} resizeMode='stretch' style={styles.InputImage} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Email Address" value={this.state.email} onChangeText={(text) => { this.setState({ email: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
+                                        <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Password" value={this.state.password} onChangeText={(text) => { this.setState({ password: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/password.png')} resizeMode='stretch' style={styles.InputImage1} />
+                                        <TextInput secureTextEntry={true} style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Retype password" value={this.state.conPassword} onChangeText={(text) => { this.setState({ conPassword: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} keyboardType='phone-pad' placeholderTextColor="#7a7a7b" placeholder="Mobile Number" value={this.state.phoneNum} onChangeText={(text) => { this.setState({ phoneNum: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} maxLength={7} placeholderTextColor="#7a7a7b" placeholder="Driver's License Number" value={this.state.licenseNumber} onChangeText={(text) => { this.setState({ licenseNumber: text }) }}></TextInput>
+                                    </View>
+                                    {Platform.OS == 'ios' ?
+                                        <View style={styles.inputItem}>
+                                            <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                            <View style={{ width: '75%', marginLeft: '5%' }}>
+                                                <RNPickerSelect
+                                                    placeholder={{ label: "Driver's License State" }}
+                                                    value={this.state.licenseState}
+                                                    onValueChange={(value) => {
+                                                        this._onChangeStatus(value);
+                                                    }}
+                                                    items={states}
+                                                />
+                                            </View>
+                                            {/* <Text style={styles.selectTxt}>Closed</Text> */}
+                                            <Image source={require('../assets/iamges/arrowdown.png')} resizeMode='stretch' style={styles.arrowdown} />
+                                        </View> :
+                                        <View style={styles.inputItem}>
+                                            <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                            {/* <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Driver's License State" value={this.state.licenseState} onChangeText={(text) => { this.setState({ licenseState: text }) }}></TextInput> */}
+                                            <View style={{ width: '86%', marginLeft: '-9%' }}>
+                                                <RNPickerSelect
+                                                    placeholder={{ label: "Driver's License State" }}
+                                                    placeholderTextColor="red"
+                                                    value={this.state.licenseState}
+                                                    onValueChange={(value) => {
+                                                        this._onChangeStatus(value);
+                                                    }}
+                                                    style={{
+                                                        inputIOS: {
+                                                            fontSize: 16,
+                                                            paddingVertical: 12,
+                                                            paddingHorizontal: 10,
+                                                            borderWidth: 1,
+                                                            borderColor: 'gray',
+                                                            borderRadius: 4,
+                                                            color: 'black',
+                                                            paddingRight: 30, // to ensure the text is never behind the icon
+                                                            // transform: [
+                                                            //     { scaleX: 1.5 },
+                                                            //     { scaleY: 1.5 },
+                                                            // ]
                                                         },
-                                                        color: 'black',
-                                                        fontFamily: 'Poppins',
-                                                        // paddingRight: 30, // to ensure the text is never behind the icon
-                                                        transform: [
-                                                            { scaleX: 0.8 },
-                                                            { scaleY: 0.8 },
-                                                        ]
-                                                    },
-                                                }}
+                                                        inputAndroid: {
+                                                            fontSize: 7,
+                                                            placeholder: {
+                                                                color: 'red',
+                                                            },
+                                                            color: 'black',
+                                                            fontFamily: 'Poppins',
+                                                            // paddingRight: 30, // to ensure the text is never behind the icon
+                                                            transform: [
+                                                                { scaleX: 0.8 },
+                                                                { scaleY: 0.8 },
+                                                            ]
+                                                        },
+                                                    }}
 
-                                                items={states}
-                                                Icon={() => {
-                                                    return <Image source={require('../assets/iamges/arrowdown.png')} resizeMode='stretch' style={{ width: 20, height: 23, position: 'absolute', top: 12, right: 0 }} />
-                                                }}
-                                            />
+                                                    items={states}
+                                                    Icon={() => {
+                                                        return <Image source={require('../assets/iamges/arrowdown.png')} resizeMode='stretch' style={{ width: 20, height: 23, position: 'absolute', top: 12, right: 0 }} />
+                                                    }}
+                                                />
+                                            </View>
+                                            {/* <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} /> */}
                                         </View>
-                                        {/* <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} /> */}
+                                    }
+                                    <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isExpirationTimeVisible: true, }) }}>
+                                        <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <Text style={{ ...styles.inputTxt, color: this.state.licenseExpiration == "" ? "#7a7a7b" : "#000" }}>{this.state.licenseExpiration == "" ? "Driver's License Expiration" : this.state.licenseExpiration}</Text>
+                                        <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
+                                    </TouchableOpacity>
+                                    <View style={styles.SignInfoArea}>
+                                        <Text style={styles.SignInfoTxt}>Vehicle Information</Text>
                                     </View>
-                                }
-                                <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isExpirationTimeVisible: true, }) }}>
-                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <Text style={{ ...styles.inputTxt, color: this.state.licenseExpiration == "" ? "#7a7a7b" : "#000" }}>{this.state.licenseExpiration == "" ? "Driver's License Expiration" : this.state.licenseExpiration}</Text>
-                                    <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
-                                </TouchableOpacity>
-                                <View style={styles.SignInfoArea}>
-                                    <Text style={styles.SignInfoTxt}>Vehicle Information</Text>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Name" value={this.state.vehicleName} onChangeText={(text) => { this.setState({ vehicleName: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Model" value={this.state.vehicleModel} onChangeText={(text) => { this.setState({ vehicleModel: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Color" value={this.state.vehicleColor} onChangeText={(text) => { this.setState({ vehicleColor: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" keyboardType="number-pad" placeholder="Vehicle License Plate Number" value={this.state.vehicleLicense} onChangeText={(text) => { this.setState({ vehicleLicense: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.SignInfoArea}>
-                                    <Text style={styles.SignInfoTxt}>Tax Information</Text>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="1099 Agreement" value={this.state.taxInfo} onChangeText={(text) => { this.setState({ taxInfo: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.TermsArea}>
-                                    <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun() }}>
-                                        <Image source={this.state.ischecked ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
-                                    </TouchableOpacity>
-                                    <Text style={styles.termsTxt}>By checking this I agree to CannaGo's  </Text>
-                                    <TouchableOpacity style={styles.forgotBtn1}>
-                                        <Text style={{ color: '#61D273', fontSize: 10, fontFamily: 'Poppins-Regular' }}>Terms & Conditions</Text>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Name" value={this.state.vehicleName} onChangeText={(text) => { this.setState({ vehicleName: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Model" value={this.state.vehicleModel} onChangeText={(text) => { this.setState({ vehicleModel: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Color" value={this.state.vehicleColor} onChangeText={(text) => { this.setState({ vehicleColor: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" keyboardType="number-pad" placeholder="Vehicle License Plate Number" value={this.state.vehicleLicense} onChangeText={(text) => { this.setState({ vehicleLicense: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.SignInfoArea}>
+                                        <Text style={styles.SignInfoTxt}>Tax Information</Text>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="1099 Agreement" value={this.state.taxInfo} onChangeText={(text) => { this.setState({ taxInfo: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.TermsArea}>
+                                        <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun() }}>
+                                            <Image source={this.state.ischecked ? this.state.checkImage : this.state.uncheckImage} resizeMode='stretch' style={styles.uncheckImage} />
+                                        </TouchableOpacity>
+                                        <Text style={styles.termsTxt}>By checking this I agree to CannaGo's  </Text>
+                                        <TouchableOpacity style={styles.forgotBtn1}>
+                                            <Text style={{ color: '#61D273', fontSize: 10, fontFamily: 'Poppins-Regular' }}>Terms & Conditions</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <TouchableOpacity style={styles.signinBtn} onPress={() => this.SingUp()}>
+                                        <Text style={styles.signinTxt1}>Create Account</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <TouchableOpacity style={styles.signinBtn} onPress={() => this.SingUp()}>
-                                    <Text style={styles.signinTxt1}>Create Account</Text>
-                                </TouchableOpacity>
                             </View>
-                        </View>
-                        <View style={{ height: 50 }}></View>
-                    </ScrollView>
-                </View>
-            </KeyboardAwareScrollView>
+                            <View style={{ height: 50 }}></View>
+                        </ScrollView>
+                    </View>
+                </KeyboardAwareScrollView>
+            </View>
         );
     }
 }
