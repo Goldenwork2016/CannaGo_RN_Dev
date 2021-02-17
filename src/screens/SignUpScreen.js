@@ -427,7 +427,7 @@ export default class SignUpScreen extends Component {
                 <View style={{ flexDirection: 'row', width: '100%' }}>
                   <View style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }}>
                     <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Fisrt Name" value={this.state.firstName} onChangeText={(text) => { this.setState({ firstName: text }) }}></TextInput>
+                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="First Name" value={this.state.firstName} onChangeText={(text) => { this.setState({ firstName: text }) }}></TextInput>
                   </View>
                   <View style={{ ...styles.inputItem, width: '48.5%' }}>
                     <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />

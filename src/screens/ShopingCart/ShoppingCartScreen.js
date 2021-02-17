@@ -272,7 +272,7 @@ export default class ShoppingCartScreen extends Component {
                 </View>
               </View>
               <ImageBackground source={require('../../assets/iamges/orderBackgroudImage.png')} resizeMode='stretch' style={{ ...styles.backgroundImage, width: width * 0.9 }} >
-                <View style={{ width: '100%' }}>
+                <View style={{ width: '100%', marginBottom:180 }}>
                   <FlatList
                     data={this.state.order_data ? this.state.order_data : []}
                     keyExtractor={(item, index) => index.toString()}

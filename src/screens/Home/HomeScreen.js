@@ -37,9 +37,9 @@ class HomeScreen extends Component {
     const { real_data } = this.props
     const usertype = await AsyncStorage.getItem("usertype");
     const userId = await AsyncStorage.getItem("userUid");
-    // console.log(this.state.userId)
     await this.setState({ usertype: usertype })
     await this.setState({ userId: userId })
+    console.log(this.state.userId)
 
     Firebase.database()
       .ref("Carts/" + this.state.userId)
@@ -162,6 +162,9 @@ class HomeScreen extends Component {
   }
 
   gotoNextScreen = async (id) => {
+    console.log(id);
+    console.log("444444444444444444444444444444");
+    // console.log(this.state.storeId[0].storeId);
     this.state.storeId.length == 0 ? await this.setState({ touchFlag: false }) : this.state.storeId[0].storeId == id ? await this.setState({ touchFlag: false }) : await this.setState({ touchFlag: true })
     if (this.state.touchFlag == true) {
       this.setState({ alertContent: "You can only order products from one store at a time", isModalVisible: true })
@@ -227,7 +230,7 @@ class HomeScreen extends Component {
                 renderItem={({ item }) => (
                   <TouchableOpacity style={{ width: width, height: 201, marginHorizontal: 10, marginTop: 30 }} onPress={() => { this.props.navigation.navigate('UpdateItemScreen', { item: item }) }}>
                     <View style={{ justifyContent: 'center', height: 134, alignItems: 'center', borderWidth: 2, borderColor: '#61D273', borderTopLeftRadius: 30 }}>
-                      <Image source={real_data.length == 0 ? item.ImageUrl : { uri: item.itemImage }} resizeMode='cover' style={{ ...styles.productImage, borderTopLeftRadius: Platform.OS === 'ios' ? 30 : 60 }} />
+                      <Image source={real_data.length == 0 ? item.ImageUrl : { uri: item.itemImage }} resizeMode='cover' style={{ ...styles.productImage, borderTopLeftRadius: Platform.OS === 'ios' ? 30 : 30 }} />
                       <Text style={styles.desTxt1}>$ {parseFloat(item.priceValue).toFixed(2)}</Text>
                     </View>
                     <View style={styles.storeDes}>
