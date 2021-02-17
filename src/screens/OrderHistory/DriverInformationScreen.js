@@ -230,6 +230,10 @@ export default class DriverInformationScreen extends Component {
         await this.setState({ ischecked: !this.state.ischecked });
     }
 
+    _onChangeStatus = (value) => {
+        this.setState({ licenseState: value })
+    };
+
     render() {
         const self = this;
         return (
