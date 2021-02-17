@@ -84,8 +84,14 @@ export default class DriverSignUpScreen extends Component {
             isConsumer: false,
             isDispensary: false,
             isDriver: false,
+            vehicleYear: '',
+            insuranceProvider: '',
+            insurance: '',
+            InsuranceExpiration: '',
             isflag: true,
-            date: new Date()
+            date: new Date(),
+            insuranceDate: new Date(),
+            isInsuranceTimeVisible: false,
         };
     }
 
@@ -194,7 +200,7 @@ export default class DriverSignUpScreen extends Component {
     }
 
     SingUp = () => {
-        const { firstName, lastName, birthday, ageFlag, phoneNum, email, zipCode, password, conPassword, img_url, userType, age, ischecked, licenseExpiration, licenseState, licenseNumber, taxInfo, vehicleName, vehicleColor, vehicleModel, vehicleLicense } = this.state;
+        const { firstName, lastName, birthday, ageFlag, phoneNum, email, vehicleYear, insuranceProvider, insurance, InsuranceExpiration, zipCode, password, conPassword, img_url, userType, age, ischecked, licenseExpiration, licenseState, licenseNumber, taxInfo, vehicleName, vehicleColor, vehicleModel, vehicleLicense } = this.state;
         if (img_url == "") {
             this.setState({ alertContent: 'Please Select Profile Image.', isModalVisible: true })
         }
@@ -213,8 +219,7 @@ export default class DriverSignUpScreen extends Component {
             this.setState({ alertContent: 'Please input your password.', isModalVisible: true })
         } else if (reg_strong.test(password) === false) {
             this.setState({ isModalVisible6: true })
-        }
-        else if (password != conPassword) {
+        } else if (password != conPassword) {
             this.setState({ alertContent: "Password doesn't match.", isModalVisible: true })
         } else if (phoneNum == "") {
             this.setState({ alertContent: 'Please input phone number.', isModalVisible: true })
@@ -230,8 +235,16 @@ export default class DriverSignUpScreen extends Component {
             this.setState({ alertContent: 'Please input vehicle model.', isModalVisible: true })
         } else if (vehicleColor == "") {
             this.setState({ alertContent: 'Please input vehicle color.', isModalVisible: true })
+        } else if (vehicleYear == "") {
+            this.setState({ alertContent: 'Please input vehicle year.', isModalVisible: true })
         } else if (vehicleLicense == "") {
             this.setState({ alertContent: 'Please input vehicle license plate number.', isModalVisible: true })
+        } else if (insuranceProvider == "") {
+            this.setState({ alertContent: 'Please input insurance provider.', isModalVisible: true })
+        } else if (insurance == "") {
+            this.setState({ alertContent: 'Please input insurance #.', isModalVisible: true })
+        } else if (InsuranceExpiration == "") {
+            this.setState({ alertContent: 'Please input insurance exp .', isModalVisible: true })
         } else if (taxInfo == "") {
             this.setState({ alertContent: 'Please input tax information.', isModalVisible: true })
         } else if (ischecked == false) {
@@ -268,6 +281,10 @@ export default class DriverSignUpScreen extends Component {
                             vehicleModel: vehicleModel,
                             vehicleColor: vehicleColor,
                             vehicleLicense: vehicleLicense,
+                            vehicleYear: vehicleYear,
+                            insuranceProvider: insuranceProvider,
+                            insurance: insurance,
+                            InsuranceExpiration: InsuranceExpiration,
                             taxInfo: taxInfo,
                             availableBal: 0
                         });
@@ -325,6 +342,10 @@ export default class DriverSignUpScreen extends Component {
                                                         vehicleModel: vehicleModel,
                                                         vehicleColor: vehicleColor,
                                                         vehicleLicense: vehicleLicense,
+                                                        vehicleYear: vehicleYear,
+                                                        insuranceProvider: insuranceProvider,
+                                                        insurance: insurance,
+                                                        InsuranceExpiration: InsuranceExpiration,
                                                         taxInfo: taxInfo,
                                                         availableBal: 0
                                                     });
@@ -358,6 +379,10 @@ export default class DriverSignUpScreen extends Component {
                                                         vehicleModel: vehicleModel,
                                                         vehicleColor: vehicleColor,
                                                         vehicleLicense: vehicleLicense,
+                                                        vehicleYear: vehicleYear,
+                                                        insuranceProvider: insuranceProvider,
+                                                        insurance: insurance,
+                                                        InsuranceExpiration: InsuranceExpiration,
                                                         taxInfo: taxInfo,
                                                         availableBal: 0
                                                     });
@@ -440,6 +465,14 @@ export default class DriverSignUpScreen extends Component {
         await this.setState({ isExpirationTimeVisible: false })
     }
 
+    insuranceTimePicker1 = async (event, newDate) => {
+        console.log("++++++++++++++++++++")
+        console.log(newDate)
+        const selectedDate = newDate || this.state.insuranceDate;
+        await this.setState({ InsuranceExpiration: moment(selectedDate).format(DEFAULT_OUTPUT_FORMAT) })
+        await this.setState({ isInsuranceTimeVisible: false })
+    }
+
     hideTimePicker1 = () => {
         this.setState({ isExpirationTimeVisible: false })
     }
@@ -448,21 +481,33 @@ export default class DriverSignUpScreen extends Component {
         const self = this;
         return (
             <View style={{ flex: 1, height: screenHeight }}>
+                {self.state.isExpirationTimeVisible && (
+                    <MonthPicker
+                        onChange={self.handleTimePicker1}
+                        value={self.state.date}
+                        minimumDate={new Date()}
+                        maximumDate={new Date(2050, 12)}
+                        locale="en"
+                        mode="full"
+                        okButton="Confirm"
+                        cancelButton="Abort"
+                    />
+                )}
+                {self.state.isInsuranceTimeVisible && (
+                    <MonthPicker
+                        onChange={self.insuranceTimePicker1}
+                        value={self.state.insuranceDate}
+                        minimumDate={new Date()}
+                        maximumDate={new Date(2050, 12)}
+                        locale="en"
+                        mode="full"
+                        okButton="Confirm"
+                        cancelButton="Abort"
+                    />
+                )}
                 <KeyboardAwareScrollView style={{ flex: 1, height: screenHeight }}>
                     <View style={styles.container}>
                         <ScrollView style={{ width: '100%', flex: 1 }}>
-                            {self.state.isExpirationTimeVisible && (
-                                <MonthPicker
-                                    onChange={self.handleTimePicker1}
-                                    value={self.state.date}
-                                    minimumDate={new Date()}
-                                    maximumDate={new Date(2050, 12)}
-                                    locale="en"
-                                    mode="full"
-                                    okButton="Confirm"
-                                    cancelButton="Abort"
-                                />
-                            )}
                             <View style={styles.container}>
                                 <Spinner
                                     visible={this.state.isLoading}
@@ -590,7 +635,7 @@ export default class DriverSignUpScreen extends Component {
                                                 />
                                             </View>
                                             {/* <Text style={styles.selectTxt}>Closed</Text> */}
-                                            <Image source={require('../assets/iamges/arrowdown.png')} resizeMode='stretch' style={styles.arrowdown} />
+                                            <Image source={require('../assets/iamges/arrowdown.png')} resizeMode='stretch' style={{ position: 'absolute', right: 20, width: 20, height: 20 }} />
                                         </View> :
                                         <View style={styles.inputItem}>
                                             <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
@@ -664,8 +709,25 @@ export default class DriverSignUpScreen extends Component {
                                     </View>
                                     <View style={styles.inputItem}>
                                         <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" keyboardType="number-pad" placeholder="Vehicle License Plate Number" value={this.state.vehicleLicense} onChangeText={(text) => { this.setState({ vehicleLicense: text }) }}></TextInput>
+                                        <TextInput style={styles.inputTxt} keyboardType='phone-pad' placeholderTextColor="#7a7a7b" placeholder="Vehicle Year" value={this.state.vehicleYear} onChangeText={(text) => { this.setState({ vehicleYear: text }) }}></TextInput>
                                     </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" maxLength={7} placeholder="Vehicle License Plate Number" value={this.state.vehicleLicense} onChangeText={(text) => { this.setState({ vehicleLicense: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/insuranceIcon.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Insurance Provider" value={this.state.insuranceProvider} onChangeText={(text) => { this.setState({ insuranceProvider: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../assets/iamges/insuranceIcon.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Insurance #" value={this.state.insurance} onChangeText={(text) => { this.setState({ insurance: text }) }}></TextInput>
+                                    </View>
+                                    <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isInsuranceTimeVisible: true, }) }}>
+                                        <Image source={require('../assets/iamges/insuranceIcon.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <Text style={{ ...styles.inputTxt, color: this.state.InsuranceExpiration == "" ? "#7a7a7b" : "#000" }}>{this.state.InsuranceExpiration == "" ? " Insurance Exp " : this.state.InsuranceExpiration}</Text>
+                                        <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
+                                    </TouchableOpacity>
                                     <View style={styles.SignInfoArea}>
                                         <Text style={styles.SignInfoTxt}>Tax Information</Text>
                                     </View>

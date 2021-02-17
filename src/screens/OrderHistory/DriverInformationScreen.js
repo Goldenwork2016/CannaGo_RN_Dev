@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform, Dimensions } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -9,6 +9,11 @@ import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-community/async-storage';
 import Firebase from 'firebase';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import RNPickerSelect from "react-native-picker-select";
+import MonthPicker from 'react-native-month-year-picker';
+import AlertModal from '../../components/AlertModal'
+import states from '../../components/US_state'
+import moment from 'moment';
 
 import NonImage from '../../assets/iamges/personImage.png'
 import uncheckImage from '../../assets/iamges/uncheckImage.png'
@@ -19,6 +24,10 @@ const options = {
     takePhotoButtonTitle: 'Take photo with your camera',
     chooseFromLibraryButtonTitle: 'Choose photo from library'
 }
+
+const { screenWidth, screenHeight } = Dimensions.get('window')
+
+const DEFAULT_OUTPUT_FORMAT = 'MM/YYYY';
 
 export default class DriverInformationScreen extends Component {
     constructor(props) {
@@ -48,7 +57,14 @@ export default class DriverInformationScreen extends Component {
             licenseState: '',
             licenseNumber: '',
             licenseExpiration: '',
+            vehicleYear: '',
+            insuranceProvider: '',
+            insurance: '',
+            InsuranceExpiration: '',
             isExpirationTimeVisible: false,
+            isInsuranceTimeVisible: false,
+            date: new Date(),
+            insuranceDate: new Date(),
         };
     }
 
@@ -77,6 +93,10 @@ export default class DriverInformationScreen extends Component {
                     vehicleModel: snapshot.val().vehicleModel,
                     vehicleColor: snapshot.val().vehicleColor,
                     vehicleLicense: snapshot.val().vehicleLicense,
+                    vehicleYear: snapshot.val().vehicleYear,
+                    insuranceProvider: snapshot.val().insuranceProvider,
+                    insurance: snapshot.val().insurance,
+                    InsuranceExpiration: snapshot.val().InsuranceExpiration,
                     taxInfo: snapshot.val().taxInfo,
                     availableBal: snapshot.val().availableBal
                     // data.push(row)
@@ -100,6 +120,10 @@ export default class DriverInformationScreen extends Component {
                     vehicleModel: user_data.vehicleModel,
                     vehicleColor: user_data.vehicleColor,
                     vehicleLicense: user_data.vehicleLicense,
+                    vehicleYear: user_data.vehicleYear,
+                    insuranceProvider: user_data.insuranceProvider,
+                    insurance: user_data.insurance,
+                    InsuranceExpiration: user_data.InsuranceExpiration,
                     taxInfo: user_data.taxInfo,
                     availableBal: user_data.availableBal
                 })
@@ -142,8 +166,20 @@ export default class DriverInformationScreen extends Component {
         this.setState({ isTimeVisible: false })
     }
 
-    handleTimePicker1 = async (date) => {
-        await this.setState({ licenseExpiration: dayjs(date).format('MM/YYYY') })
+    handleTimePicker1 = async (event, newDate) => {
+        console.log("++++++++++++++++++++")
+        console.log(newDate)
+        const selectedDate = newDate || this.state.date;
+        await this.setState({ licenseExpiration: moment(selectedDate).format(DEFAULT_OUTPUT_FORMAT) })
+        await this.setState({ isExpirationTimeVisible: false })
+    }
+
+    insuranceTimePicker1 = async (event, newDate) => {
+        console.log("++++++++++++++++++++")
+        console.log(newDate)
+        const selectedDate = newDate || this.state.insuranceDate;
+        await this.setState({ InsuranceExpiration: moment(selectedDate).format(DEFAULT_OUTPUT_FORMAT) })
+        await this.setState({ isInsuranceTimeVisible: false })
     }
 
     hideTimePicker1 = () => {
@@ -151,7 +187,7 @@ export default class DriverInformationScreen extends Component {
     }
 
     async update() {
-        const { firstName, lastName, birthday, ageFlag, phoneNum, email, zipCode, password, conPassword, img_url, userType, age, ischecked, licenseExpiration, licenseState, licenseNumber, taxInfo, vehicleName, vehicleColor, vehicleModel, vehicleLicense } = this.state;
+        const { firstName, lastName, birthday, ageFlag, phoneNum, insuranceProvider, insurance, vehicleYear, InsuranceExpiration, email, zipCode, password, conPassword, img_url, userType, age, ischecked, licenseExpiration, licenseState, licenseNumber, taxInfo, vehicleName, vehicleColor, vehicleModel, vehicleLicense } = this.state;
         this.setState({ isLoading: true })
         try {
             await Firebase.database()
@@ -172,6 +208,10 @@ export default class DriverInformationScreen extends Component {
                     vehicleModel: vehicleModel,
                     vehicleColor: vehicleColor,
                     vehicleLicense: vehicleLicense,
+                    vehicleYear: vehicleYear,
+                    insuranceProvider: insuranceProvider,
+                    insurance: insurance,
+                    InsuranceExpiration: InsuranceExpiration,
                     taxInfo: taxInfo,
                 });
             this.setState({ isLoading: false })
@@ -191,114 +231,219 @@ export default class DriverInformationScreen extends Component {
     }
 
     render() {
+        const self = this;
         return (
-            <KeyboardAwareScrollView style={{ flex: 1 }}>
-                <View style={styles.container}>
-                    <ScrollView style={{ width: '100%' }}>
-                        <View style={styles.container}>
-                            <Spinner
-                                visible={this.state.isloading}
-                                textContent={'Updating profile infomation...'}
-                                textStyle={{ color: 'white' }}
-                            />
-                            <DateTimePickerModal
-                                isVisible={this.state.isTimeVisible}
-                                mode="date"
-                                onConfirm={(date) => { this.handleTimePicker(date) }}
-                                onCancel={this.hideTimePicker}
-                            />
-                            <DateTimePickerModal
-                                isVisible={this.state.isExpirationTimeVisible}
-                                mode="date"
-                                onConfirm={(date) => { this.handleTimePicker1(date) }}
-                                onCancel={this.hideTimePicker1}
-                            />
-                            <Modal isVisible={this.state.isModalVisible1}>
-                                <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
-                                    <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-                                    <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Profile informations are updated.</Text>
+            <View style={{ flex: 1, height: screenHeight }}>
+                {self.state.isExpirationTimeVisible && (
+                    <MonthPicker
+                        onChange={self.handleTimePicker1}
+                        value={self.state.date}
+                        minimumDate={new Date()}
+                        maximumDate={new Date(2050, 12)}
+                        locale="en"
+                        mode="full"
+                        okButton="Confirm"
+                        cancelButton="Abort"
+                    />
+                )}
+                {self.state.isInsuranceTimeVisible && (
+                    <MonthPicker
+                        onChange={self.insuranceTimePicker1}
+                        value={self.state.insuranceDate}
+                        minimumDate={new Date()}
+                        maximumDate={new Date(2050, 12)}
+                        locale="en"
+                        mode="full"
+                        okButton="Confirm"
+                        cancelButton="Abort"
+                    />
+                )}
+                <KeyboardAwareScrollView style={{ flex: 1, height: screenHeight }}>
+                    <View style={styles.container}>
+                        <ScrollView style={{ width: '100%', flex: 1 }}>
+                            <View style={styles.container}>
+                                <Spinner
+                                    visible={this.state.isloading}
+                                    textContent={'Updating profile infomation...'}
+                                    textStyle={{ color: 'white' }}
+                                />
+                                <DateTimePickerModal
+                                    isVisible={this.state.isTimeVisible}
+                                    mode="date"
+                                    onConfirm={(date) => { this.handleTimePicker(date) }}
+                                    onCancel={this.hideTimePicker}
+                                />
+                                <DateTimePickerModal
+                                    isVisible={this.state.isExpirationTimeVisible}
+                                    mode="date"
+                                    onConfirm={(date) => { this.handleTimePicker1(date) }}
+                                    onCancel={this.hideTimePicker1}
+                                />
+                                <Modal isVisible={this.state.isModalVisible1}>
+                                    <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+                                        <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+                                        <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Profile informations are updated.</Text>
+                                    </View>
+                                </Modal>
+                                <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 40 : 20 }}>
+                                    <TouchableOpacity style={{ alignItems: 'flex-start', width: '100%', marginTop: 10 }} onPress={() => { this.props.navigation.goBack() }}>
+                                        <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
+                                    </TouchableOpacity>
                                 </View>
-                            </Modal>
-                            <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 40 : 20 }}>
-                                <TouchableOpacity style={{ alignItems: 'flex-start', width: '100%', marginTop: 10 }} onPress={() => { this.props.navigation.goBack() }}>
-                                    <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
-                                </TouchableOpacity>
+                                <View style={styles.inputArea}>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="First Name" value={this.state.firstName} onChangeText={(text) => { this.setState({ firstName: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Last Name" value={this.state.lastName} onChangeText={(text) => { this.setState({ lastName: text }) }}></TextInput>
+                                    </View>
+                                    <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isTimeVisible: true, }) }}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <Text style={{ ...styles.inputTxt, color: this.state.birthday == "" ? "#7a7a7b" : "#000" }}>{this.state.birthday == "" ? "Date of Birth" : this.state.birthday}</Text>
+                                        <Image source={require('../../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("ChangeEmailScreen", { email: this.state.email, password: this.state.password }) }}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <Text style={{ ...styles.inputTxt }}>{this.state.email}</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("ChangePasswordScreen", { passoword: this.state.password }) }}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <Text style={{ ...styles.inputTxt }}>Update Password</Text>
+                                    </TouchableOpacity>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} keyboardType='phone-pad' placeholderTextColor="#7a7a7b" placeholder="Mobile Number" value={this.state.phoneNum} onChangeText={(text) => { this.setState({ phoneNum: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} keyboardType='number-pad' placeholderTextColor="#7a7a7b" placeholder="Driver's License Number" value={this.state.licenseNumber} onChangeText={(text) => { this.setState({ licenseNumber: text }) }}></TextInput>
+                                    </View>
+                                    {Platform.OS == 'ios' ?
+                                        <View style={styles.inputItem}>
+                                            <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                            <View style={{ width: '75%', marginLeft: '5%' }}>
+                                                <RNPickerSelect
+                                                    placeholder={{ label: "Driver's License State" }}
+                                                    value={this.state.licenseState}
+                                                    onValueChange={(value) => {
+                                                        this._onChangeStatus(value);
+                                                    }}
+                                                    items={states}
+                                                />
+                                            </View>
+                                            {/* <Text style={styles.selectTxt}>Closed</Text> */}
+                                            <Image source={require('../../assets/iamges/arrowdown.png')} resizeMode='stretch' style={{ position: 'absolute', right: 20, width: 20, height: 20 }} />
+                                        </View> :
+                                        <View style={styles.inputItem}>
+                                            <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                            {/* <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Driver's License State" value={this.state.licenseState} onChangeText={(text) => { this.setState({ licenseState: text }) }}></TextInput> */}
+                                            <View style={{ width: '86%', marginLeft: '-9%' }}>
+                                                <RNPickerSelect
+                                                    placeholder={{ label: "Driver's License State" }}
+                                                    placeholderTextColor="red"
+                                                    value={this.state.licenseState}
+                                                    onValueChange={(value) => {
+                                                        this._onChangeStatus(value);
+                                                    }}
+                                                    style={{
+                                                        inputIOS: {
+                                                            fontSize: 16,
+                                                            paddingVertical: 12,
+                                                            paddingHorizontal: 10,
+                                                            borderWidth: 1,
+                                                            borderColor: 'gray',
+                                                            borderRadius: 4,
+                                                            color: 'black',
+                                                            paddingRight: 30, // to ensure the text is never behind the icon
+                                                            // transform: [
+                                                            //     { scaleX: 1.5 },
+                                                            //     { scaleY: 1.5 },
+                                                            // ]
+                                                        },
+                                                        inputAndroid: {
+                                                            fontSize: 7,
+                                                            placeholder: {
+                                                                color: 'red',
+                                                            },
+                                                            color: 'black',
+                                                            fontFamily: 'Poppins',
+                                                            // paddingRight: 30, // to ensure the text is never behind the icon
+                                                            transform: [
+                                                                { scaleX: 0.8 },
+                                                                { scaleY: 0.8 },
+                                                            ]
+                                                        },
+                                                    }}
+
+                                                    items={states}
+                                                    Icon={() => {
+                                                        return <Image source={require('../../assets/iamges/arrowdown.png')} resizeMode='stretch' style={{ width: 20, height: 23, position: 'absolute', top: 12, right: 0 }} />
+                                                    }}
+                                                />
+                                            </View>
+                                            {/* <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} /> */}
+                                        </View>
+                                    }
+                                    <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isExpirationTimeVisible: true, }) }}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <Text style={{ ...styles.inputTxt, color: this.state.licenseExpiration == "" ? "#7a7a7b" : "#000" }}>{this.state.licenseExpiration == "" ? "Driver's License Expiration" : this.state.licenseExpiration}</Text>
+                                        <Image source={require('../../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
+                                    </TouchableOpacity>
+                                    <View style={styles.SignInfoArea}>
+                                        <Text style={styles.SignInfoTxt}>Vehicle Information</Text>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Name" value={this.state.vehicleName} onChangeText={(text) => { this.setState({ vehicleName: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Model" value={this.state.vehicleModel} onChangeText={(text) => { this.setState({ vehicleModel: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Color" value={this.state.vehicleColor} onChangeText={(text) => { this.setState({ vehicleColor: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} keyboardType='phone-pad' placeholderTextColor="#7a7a7b" placeholder="Vehicle Year" value={this.state.vehicleYear} onChangeText={(text) => { this.setState({ vehicleYear: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" keyboardType="number-pad" placeholder="Vehicle License Plate Number" value={this.state.vehicleLicense} onChangeText={(text) => { this.setState({ vehicleLicense: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../../assets/iamges/insuranceIcon.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Insurance Provider" value={this.state.insuranceProvider} onChangeText={(text) => { this.setState({ insuranceProvider: text }) }}></TextInput>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../../assets/iamges/insuranceIcon.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Insurance #" value={this.state.insurance} onChangeText={(text) => { this.setState({ insurance: text }) }}></TextInput>
+                                    </View>
+                                    <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isInsuranceTimeVisible: true, }) }}>
+                                        <Image source={require('../../assets/iamges/insuranceIcon.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <Text style={{ ...styles.inputTxt, color: this.state.InsuranceExpiration == "" ? "#7a7a7b" : "#000" }}>{this.state.InsuranceExpiration == "" ? " Insurance Exp " : this.state.InsuranceExpiration}</Text>
+                                        <Image source={require('../../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
+                                    </TouchableOpacity>
+                                    <View style={styles.SignInfoArea}>
+                                        <Text style={styles.SignInfoTxt}>Tax Information</Text>
+                                    </View>
+                                    <View style={styles.inputItem}>
+                                        <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="1099 Agreement" value={this.state.taxInfo} onChangeText={(text) => { this.setState({ taxInfo: text }) }}></TextInput>
+                                    </View>
+                                    <TouchableOpacity style={{ ...styles.signinBtn, backgroundColor: '#3EA3E1', width: 128, alignSelf: 'center', marginTop: 20 }} onPress={() => { this.update() }}>
+                                        <Text style={styles.signinTxt1}>Update</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            <View style={styles.inputArea}>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="First Name" value={this.state.firstName} onChangeText={(text) => { this.setState({ firstName: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Last Name" value={this.state.lastName} onChangeText={(text) => { this.setState({ lastName: text }) }}></TextInput>
-                                </View>
-                                <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isTimeVisible: true, }) }}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <Text style={{ ...styles.inputTxt, color: this.state.birthday == "" ? "#7a7a7b" : "#000" }}>{this.state.birthday == "" ? "Date of Birth" : this.state.birthday}</Text>
-                                    <Image source={require('../../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("ChangeEmailScreen", { email: this.state.email, password: this.state.password }) }}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <Text style={{ ...styles.inputTxt }}>{this.state.email}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.inputItem} onPress={() => { this.props.navigation.navigate("ChangePasswordScreen", { passoword: this.state.password }) }}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <Text style={{ ...styles.inputTxt }}>Update Password</Text>
-                                </TouchableOpacity>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} keyboardType='phone-pad' placeholderTextColor="#7a7a7b" placeholder="Mobile Number" value={this.state.phoneNum} onChangeText={(text) => { this.setState({ phoneNum: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} keyboardType='number-pad' placeholderTextColor="#7a7a7b" placeholder="Driver's License Number" value={this.state.licenseNumber} onChangeText={(text) => { this.setState({ licenseNumber: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Driver's License State" value={this.state.licenseState} onChangeText={(text) => { this.setState({ licenseState: text }) }}></TextInput>
-                                    <Image source={require('../../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
-                                </View>
-                                <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isExpirationTimeVisible: true, }) }}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <Text style={{ ...styles.inputTxt, color: this.state.licenseExpiration == "" ? "#7a7a7b" : "#000" }}>{this.state.licenseExpiration == "" ? "Driver's License Expiration" : this.state.licenseExpiration}</Text>
-                                    <Image source={require('../../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
-                                </TouchableOpacity>
-                                <View style={styles.SignInfoArea}>
-                                    <Text style={styles.SignInfoTxt}>Vehicle Information</Text>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Name" value={this.state.vehicleName} onChangeText={(text) => { this.setState({ vehicleName: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Model" value={this.state.vehicleModel} onChangeText={(text) => { this.setState({ vehicleModel: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Vehicle Color" value={this.state.vehicleColor} onChangeText={(text) => { this.setState({ vehicleColor: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" keyboardType="number-pad" placeholder="Vehicle License Plate Number" value={this.state.vehicleLicense} onChangeText={(text) => { this.setState({ vehicleLicense: text }) }}></TextInput>
-                                </View>
-                                <View style={styles.SignInfoArea}>
-                                    <Text style={styles.SignInfoTxt}>Tax Information</Text>
-                                </View>
-                                <View style={styles.inputItem}>
-                                    <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="1099 Agreement" value={this.state.taxInfo} onChangeText={(text) => { this.setState({ taxInfo: text }) }}></TextInput>
-                                </View>
-                                <TouchableOpacity style={{ ...styles.signinBtn, backgroundColor: '#3EA3E1', width: 128, alignSelf: 'center', marginTop: 20 }} onPress={() => { this.update() }}>
-                                    <Text style={styles.signinTxt1}>Update</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={{ height: 150 }}></View>
-                    </ScrollView>
-                </View>
-            </KeyboardAwareScrollView>
+                            <View style={{ height: 150 }}></View>
+                        </ScrollView>
+                    </View>
+                </KeyboardAwareScrollView>
+            </View >
         );
     }
 }
