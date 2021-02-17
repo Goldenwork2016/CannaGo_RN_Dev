@@ -18,6 +18,8 @@
 		355594A9C7238A0DAD2D2C55 /* libPods-CannaGo-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D48590B55352410681B2C65A /* libPods-CannaGo-tvOSTests.a */; };
 		4B4C0E692584989F0034548A /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B4C0E642584989E0034548A /* Poppins-Bold.ttf */; };
 		4B4C0E722584EB6C0034548A /* NunitoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B4C0E712584EB6C0034548A /* NunitoSans-Bold.ttf */; };
+		4B98D8D625DCC430003EEB3A /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B4C0E672584989E0034548A /* Poppins-SemiBold.ttf */; };
+		4B98D8D725DCC43F003EEB3A /* NunitoSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B4C0E652584989E0034548A /* NunitoSans-SemiBold.ttf */; };
 		4BE388BC25DB535E00E9938E /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B4C0E632584989E0034548A /* Poppins-Medium.ttf */; };
 		4BE388BD25DB536C00E9938E /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B4C0E662584989E0034548A /* Poppins-Regular.ttf */; };
 		77F38BE238BEB7609F60FC11 /* libPods-CannaGo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 769AD486E55C63D3611BF425 /* libPods-CannaGo.a */; };
@@ -408,6 +410,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B98D8D725DCC43F003EEB3A /* NunitoSans-SemiBold.ttf in Resources */,
+				4B98D8D625DCC430003EEB3A /* Poppins-SemiBold.ttf in Resources */,
 				4BE388BD25DB536C00E9938E /* Poppins-Regular.ttf in Resources */,
 				4BE388BC25DB535E00E9938E /* Poppins-Medium.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
