@@ -93,10 +93,24 @@ export default class ProfileInfoScreen extends Component {
     if (yearDif >= 22) {
       await this.setState({ ageFlag: true })
       console.log(this.state.ageFlag);
-      if (monDif >= 0 && dateDif >= 0) {
-        await this.setState({ age: yearDif })
-      } else {
+      if (monDif == 0) {
+        if (dateDif >= 0) {
+          await this.setState({ ageFlag: true })
+          await this.setState({ age: yearDif })
+          console.log(this.state.age);
+        } else {
+          await this.setState({ ageFlag: true })
+          await this.setState({ age: yearDif - 1 })
+          console.log(this.state.age);
+        }
+      } else if (monDif < 0) {
+        await this.setState({ ageFlag: true })
         await this.setState({ age: yearDif - 1 })
+        console.log(this.state.age);
+      } else {
+        await this.setState({ ageFlag: true })
+        await this.setState({ age: yearDif })
+        console.log(this.state.age);
       }
     } else if (yearDif == 21) {
       if (monDif == 0) {
