@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, SafeAreaView, TextInput, Platform } from 'react-native';
 import Firebase from '../../../config/firebase'
-
+import AsyncStorage from '@react-native-community/async-storage';
 import { styles } from '../../components/styles'
 
 import NonImage from '../../assets/iamges/productDetail1.png'

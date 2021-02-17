@@ -94,7 +94,7 @@ export default class HomeScreen extends Component {
             renderItem={({ item }) => (
               <TouchableOpacity style={{ width: width, height: 201, marginHorizontal: 10, marginTop: 30 }} onPress={() => { this.props.navigation.navigate('ProductDetailScreen', { productId: item.id, storeId: this.state.storeId }) }}>
                 <View style={{ justifyContent: 'center', height: 134, alignItems: 'center', borderWidth: 2, borderColor: '#61D273', borderTopLeftRadius: 30 }}>
-                  <Image source={real_data.length == 0 ? item.ImageUrl : { uri: item.itemImage }} resizeMode='stretch' style={{ ...styles.productImage, borderTopLeftRadius: Platform.OS === 'ios' ? 30 : 60 }} />
+                  <Image source={real_data.length == 0 ? item.ImageUrl : { uri: item.itemImage }} resizeMode='cover' style={{ ...styles.productImage, borderTopLeftRadius: Platform.OS === 'ios' ? 30 : 30 }} />
                   <Text style={styles.desTxt1}>$ {parseFloat(item.priceValue).toFixed(2)}</Text>
                 </View>
                 <View style={styles.storeDes}>

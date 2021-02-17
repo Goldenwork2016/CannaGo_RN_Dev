@@ -296,7 +296,7 @@ export default class DriverSignUpScreen extends Component {
                                     var row
                                     snapshot.forEach(async element => {
                                         console.log(element)
-                                        if (element.val().hasOwnProperty('dispe')) {
+                                        if (element.val().hasOwnProperty('driver')) {
                                             if (element.val().driver.email == email) {
                                                 this.setState({ alertContent: 'The email address is already in use by another account.', isModalVisible: true })
                                             }
