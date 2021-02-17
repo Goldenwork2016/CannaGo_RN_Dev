@@ -361,7 +361,7 @@ class AddStoreItemScreen extends Component {
           />
           <Spinner
             visible={this.state.isCoaImageUploading}
-            textContent={'Uploading item image...'}
+            textContent={'Uploading COA image...'}
             textStyle={{ color: 'white' }}
           />
           <ScrollView style={{ width: '100%' }}>
