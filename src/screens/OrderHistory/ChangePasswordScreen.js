@@ -95,7 +95,7 @@ class ChangePasswordScreen extends Component {
 
   upload_password = async (password) => {
     try {
-      await firebase.database().ref('user/' + this.state.userId + this.state.usertype).update({
+      await firebase.database().ref('user/' + this.state.userId + '/' + this.state.usertype).update({
         password: password,
       });
     } catch (error) {

@@ -37,9 +37,9 @@ class ChangeEmailScreen extends Component {
 
     componentDidMount = async () => {
         const usertype = await AsyncStorage.getItem("usertype");
-        this.setState({usertype:usertype})
+        this.setState({ usertype: usertype })
         const userId = await AsyncStorage.getItem("userUid");
-        this.setState({userId:userId})
+        this.setState({ userId: userId })
         await this.setState({ current_Email: this.props.navigation.getParam("email") })
         await this.setState({ password: this.props.navigation.getParam("password") })
         console.log(this.state.current_Email);
@@ -105,7 +105,7 @@ class ChangeEmailScreen extends Component {
 
     upload_Email = async (Email) => {
         try {
-            await firebase.database().ref('user/' + this.state.userId + this.state.usertype).update({
+            await firebase.database().ref('user/' + this.state.userId + '/' + this.state.usertype).update({
                 email: Email,
             });
         } catch (error) {
