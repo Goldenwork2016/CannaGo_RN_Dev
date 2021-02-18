@@ -493,7 +493,7 @@ export default class DriverSignUpScreen extends Component {
                         cancelButton="Abort"
                     />
                 )}
-                {self.state.isInsuranceTimeVisible && (
+                {/* {self.state.isInsuranceTimeVisible && (
                     <MonthPicker
                         onChange={self.insuranceTimePicker1}
                         value={self.state.insuranceDate}
@@ -504,7 +504,7 @@ export default class DriverSignUpScreen extends Component {
                         okButton="Confirm"
                         cancelButton="Abort"
                     />
-                )}
+                )} */}
                 <KeyboardAwareScrollView style={{ flex: 1, height: screenHeight }}>
                     <View style={styles.container}>
                         <ScrollView style={{ width: '100%', flex: 1 }}>
@@ -525,12 +525,12 @@ export default class DriverSignUpScreen extends Component {
                                     onConfirm={(date) => { this.handleTimePicker(date) }}
                                     onCancel={this.hideTimePicker}
                                 />
-                                {/* <DateTimePickerModal
-                                isVisible={this.state.isExpirationTimeVisible}
-                                mode="date"
-                                onConfirm={(date) => { this.handleTimePicker1(date) }}
-                                onCancel={this.hideTimePicker1}
-                            /> */}
+                                <DateTimePickerModal
+                                    isVisible={this.state.isInsuranceTimeVisible}
+                                    mode="date"
+                                    onConfirm={(date) => { this.handleTimePicker1(date) }}
+                                    onCancel={this.hideTimePicker1}
+                                />
                                 <Modal isVisible={this.state.isModalVisible}>
                                     <AlertModal alertContent={this.state.alertContent} onPress={() => this.setState({ isModalVisible: false })} />
                                 </Modal>
@@ -723,8 +723,13 @@ export default class DriverSignUpScreen extends Component {
                                         <Image source={require('../assets/iamges/insuranceIcon.png')} resizeMode='stretch' style={styles.InputImage2} />
                                         <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Insurance #" value={this.state.insurance} onChangeText={(text) => { this.setState({ insurance: text }) }}></TextInput>
                                     </View>
-                                    <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isInsuranceTimeVisible: true, }) }}>
+                                    {/* <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isInsuranceTimeVisible: true, }) }}>
                                         <Image source={require('../assets/iamges/insuranceIcon.png')} resizeMode='stretch' style={styles.InputImage2} />
+                                        <Text style={{ ...styles.inputTxt, color: this.state.InsuranceExpiration == "" ? "#7a7a7b" : "#000" }}>{this.state.InsuranceExpiration == "" ? " Insurance Exp " : this.state.InsuranceExpiration}</Text>
+                                        <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
+                                    </TouchableOpacity> */}
+                                    <TouchableOpacity style={styles.inputItem} onPress={() => { this.setState({ isInsuranceTimeVisible: true, }) }}>
+                                        <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                                         <Text style={{ ...styles.inputTxt, color: this.state.InsuranceExpiration == "" ? "#7a7a7b" : "#000" }}>{this.state.InsuranceExpiration == "" ? " Insurance Exp " : this.state.InsuranceExpiration}</Text>
                                         <Image source={require('../assets/iamges/down-left.png')} resizeMode='stretch' style={styles.downarror} />
                                     </TouchableOpacity>

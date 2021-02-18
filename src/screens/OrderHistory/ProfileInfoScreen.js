@@ -205,7 +205,7 @@ export default class ProfileInfoScreen extends Component {
                 <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <Text style={{ ...styles.inputTxt }}>Change Password</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.inputItem}>
+              <TouchableOpacity style={{...styles.inputItem,borderColor: 'red', borderWidth: 0.5}}>
                 <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <Text style={{ ...styles.inputTxt }}>Deactivate Account</Text>
               </TouchableOpacity>

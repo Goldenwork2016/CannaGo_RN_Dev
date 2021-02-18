@@ -394,7 +394,7 @@ export default class SignUpScreen extends Component {
 
   render() {
     return (
-      <KeyboardAwareScrollView style={{ flex: 1 }}>
+      <KeyboardAwareScrollView style={{ flex: 1, backgroundColor:'white' }}>
         <View style={styles.container}>
           <ScrollView style={{ width: '100%' }}>
             <View style={styles.container}>

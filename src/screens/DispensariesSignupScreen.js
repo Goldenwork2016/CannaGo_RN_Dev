@@ -405,6 +405,13 @@ export default class DispensariesSignupScreen extends Component {
 
   }
 
+  ChangeFein = async (input) => {
+    await this.setState({ fein: input })
+    if (this.state.fein.length === 2) {
+      await this.setState({ fein: this.state.fein + "-" })
+    }
+  }
+
   render() {
     return (
       <KeyboardAwareScrollView style={{ flex: 1 }}>
@@ -511,7 +518,7 @@ export default class DispensariesSignupScreen extends Component {
                 <Text style={{ ...styles.termsTxt, width: '90%', marginTop: -10, marginBottom: 10 }}>Ensure this matches the official tax documents for your business.</Text>
                 <View style={styles.inputItem}>
                   <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                  <TextInput keyboardType="number-pad" style={{ ...styles.inputTxt, fontSize: 11 }} placeholderTextColor="#7a7a7b" placeholder="FEIN (Federal Employer Identification Number)" value={this.state.fein} onChangeText={(text) => { this.setState({ fein: text }) }}></TextInput>
+                  <TextInput keyboardType="number-pad" style={{ ...styles.inputTxt, fontSize: 11 }} placeholderTextColor="#7a7a7b" placeholder="FEIN (Federal Employer Identification Number)" value={this.state.fein} onChangeText={(input) => { this.ChangeFein(input) }} maxLength={10}></TextInput>
                 </View>
                 <View style={styles.TermsArea}>
                   <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun1() }}>
