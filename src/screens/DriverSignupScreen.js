@@ -457,6 +457,15 @@ export default class DriverSignUpScreen extends Component {
         this.setState({ isTimeVisible: false })
     }
 
+    handleTimePicker2 = async(date) => {
+        await this.setState({ InsuranceExpiration: dayjs(date).format('MM/DD/YYYY') })
+        this.setState({ isInsuranceTimeVisible: false })
+    }
+
+    hideTimePicker2 = () => {
+        this.setState({ isInsuranceTimeVisible: false })
+    }
+
     handleTimePicker1 = async (event, newDate) => {
         console.log("++++++++++++++++++++")
         console.log(newDate)
@@ -528,8 +537,8 @@ export default class DriverSignUpScreen extends Component {
                                 <DateTimePickerModal
                                     isVisible={this.state.isInsuranceTimeVisible}
                                     mode="date"
-                                    onConfirm={(date) => { this.handleTimePicker1(date) }}
-                                    onCancel={this.hideTimePicker1}
+                                    onConfirm={(date) => { this.handleTimePicker2(date) }}
+                                    onCancel={this.hideTimePicker2}
                                 />
                                 <Modal isVisible={this.state.isModalVisible}>
                                     <AlertModal alertContent={this.state.alertContent} onPress={() => this.setState({ isModalVisible: false })} />
