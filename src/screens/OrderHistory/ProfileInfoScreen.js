@@ -190,9 +190,18 @@ export default class ProfileInfoScreen extends Component {
       console.log(error);
       if (error.message == "This operation is sensitive and requires recent authentication. Log in again before retrying this request.") {
         self.setState({ isModalVisible4: false })
-        self.setState({ isModalVisible5: true })
+        setTimeout(() => {
+          self.setState({ isModalVisible5: true })
+        }, 100);
       }
     });
+  }
+
+  confirm = () => {
+    this.setState({ isModalVisible3: false })
+    setTimeout(() => {
+      this.setState({ isModalVisible4: true })
+    }, 100);
   }
 
   render() {
@@ -279,7 +288,7 @@ export default class ProfileInfoScreen extends Component {
               <Text style={styles.TitleTxt1}>OOPS!</Text>
               <Text style={{ ...styles.Description, textAlign: 'center', width: '90%' }}>Are you sure you want to deactivate your CannaGo account?</Text>
               <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={{ ...styles.QuitWorkout, marginHorizontal: 5 }} onPress={() => this.setState({ isModalVisible3: false, isModalVisible4: true })}>
+                <TouchableOpacity style={{ ...styles.QuitWorkout, marginHorizontal: 5 }} onPress={() => {this.confirm()}}>
                   <Text style={{ ...styles.Dismiss, color: 'white' }}>Yes</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ ...styles.QuitWorkout, marginHorizontal: 5 }} onPress={() => this.setState({ isModalVisible3: false })}>
