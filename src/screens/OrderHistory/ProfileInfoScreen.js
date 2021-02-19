@@ -177,6 +177,7 @@ export default class ProfileInfoScreen extends Component {
   deactiveAccount = async () => {
     const self = this
     var user = Firebase.auth().currentUser;
+    var userUid = Firebase.auth().currentUser.uid
 
     user.delete().then(function () {
       AsyncStorage.setItem('Loggined', "");
@@ -184,7 +185,7 @@ export default class ProfileInfoScreen extends Component {
       AsyncStorage.setItem("usertype", "")
       self.props.navigation.navigate('LoginScreen')
       self.setState({ isModalVisible4: false })
-      Firebase.database().ref('user/' +  Firebase.auth().currentUser.uid).remove();
+      Firebase.database().ref('user/' +  userUid).remove();
     }, function (error) {
       console.log(error);
       if (error.message == "This operation is sensitive and requires recent authentication. Log in again before retrying this request.") {
