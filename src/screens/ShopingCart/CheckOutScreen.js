@@ -216,7 +216,7 @@ export default class CheckOutScreen extends Component {
                     <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" editable={false} placeholder="GA" value="GA" value={this.state.GA} onChangeText={(text) => { this.setState({ GA: text }) }}></TextInput>
                   </View>
                   <View style={styles.inputItem2}>
-                    <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" placeholder="Zip Code" value={this.state.zipCode} onChangeText={(text) => { this.setState({ zipCode: text }) }}></TextInput>
+                    <TextInput style={styles.inputTxt2} placeholderTextColor="#7a7a7b" keyboardType="number-pad" placeholder="Zip Code" maxLength={5} value={this.state.zipCode} onChangeText={(text) => { this.setState({ zipCode: text }) }}></TextInput>
                   </View>
                 </View>
                 <View style={{ ...styles.ContentItem, marginTop: 10 }}>

@@ -10,7 +10,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-community/async-storage';
 import atl_zipCode from '../components/zipCode'
-
+import AlertModal from '../components/AlertModal'
 import NonImage from '../assets/iamges/emptyPerson.png'
 import uncheckImage from '../assets/iamges/uncheckImage.png'
 import checkImage from '../assets/iamges/checkImage.png'
@@ -64,6 +64,7 @@ export default class SignUpScreen extends Component {
       password: '',
       conPassword: '',
       phoneNum: '',
+      isModalVisible: false,
       isModalVisible1: false,
       isModalVisible2: false,
       isModalVisible3: false,
@@ -86,6 +87,7 @@ export default class SignUpScreen extends Component {
       loggedIn: false,
       isImageUploading: false,
       userType: 'consumer',
+      alertContent: ''
     };
   }
 
@@ -262,26 +264,31 @@ export default class SignUpScreen extends Component {
           .catch((error) => {
             console.log(error)
             if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
+              console.log('111111111111111111')
               this.setState({ alertContent: 'Your internet Connection is failed.', isModalVisible: true })
-            } else if (error.message == "The email address is already in use by another account." && this.state.isflag) {
+            } else if (error.message == "The email address is already in use by another account.") {
+              console.log('222222222222222222222')
               Firebase.database()
                 .ref('user')
                 .on("value", async (snapshot) => {
+                  console.log(snapshot)
                   var data = []
                   var row
-                  snapshot.forEach(async element => {
+                  snapshot.forEach(element => {
                     console.log(element)
                     if (element.val().hasOwnProperty('consumer')) {
-                      if (element.val().driver.email == email) {
+                      console.log('333333333333333')
+                      if (element.val().consumer.email == email) {
                         this.setState({ alertContent: 'The email address is already in use by another account.', isModalVisible: true })
                       }
                     } else {
                       if (element.val().hasOwnProperty('driver')) {
-                        if (element.val().consumer.email == email) {
-                          await this.setState({ userId: element.key, isConsumer: true })
+                        console.log('4444444444444444444444')
+                        if (element.val().driver.email == email) {
+                          this.setState({ userId: element.key, isConsumer: true })
                           console.log(this.state.userId);
-                          AsyncStorage.setItem('userUid', this.state.userId);
-                          Firebase.database().ref('user/' + res.user.uid + '/consumer').update({
+                          AsyncStorage.setItem('userUid', element.key);
+                          Firebase.database().ref('user/' + element.key + '/consumer').update({
                             email: email,
                             fristName: firstName,
                             lastName: lastName,
@@ -299,13 +306,14 @@ export default class SignUpScreen extends Component {
                             this.props.navigation.navigate('Main')
                             this.setState({ isModalVisible17: false })
                           }, 2000)
+                        } else {
                         }
-                      }
-                      if (element.val().hasOwnProperty('dispensary')) {
+                      } else if (element.val().hasOwnProperty('dispensary')) {
+                        console.log('5555555555555555555')
                         if (element.val().dispensary.email == email) {
-                          await this.setState({ userId: element.key, isDispensary: true })
-                          AsyncStorage.setItem('userUid', this.state.userId);
-                          Firebase.database().ref('user/' + res.user.uid + '/consumer').update({
+                          this.setState({ userId: element.key, isDispensary: true })
+                          AsyncStorage.setItem('userUid', element.key);
+                          Firebase.database().ref('user/' + element.key + '/consumer').update({
                             email: email,
                             fristName: firstName,
                             lastName: lastName,
@@ -323,9 +331,11 @@ export default class SignUpScreen extends Component {
                             this.props.navigation.navigate('Main')
                             this.setState({ isModalVisible17: false })
                           }, 2000)
+                        } else {
                         }
                       }
                     }
+
                   });
                   // console.log("_____________+++++++++++++_________________");
                   // await this.setState({
@@ -412,7 +422,7 @@ export default class SignUpScreen extends Component {
 
   render() {
     return (
-      <KeyboardAwareScrollView style={{ flex: 1, backgroundColor:'white' }}>
+      <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={styles.container}>
           <ScrollView style={{ width: '100%' }}>
             <View style={styles.container}>
@@ -460,7 +470,7 @@ export default class SignUpScreen extends Component {
                   </TouchableOpacity>
                   <View style={{ ...styles.inputItem, width: '48.5%', marginRight: '3%' }}>
                     <Image source={require('../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" placeholder="Delivery Zip" value={this.state.zipCode} onChangeText={(text) => { this.setState({ zipCode: text }) }}></TextInput>
+                    <TextInput style={styles.inputTxt} placeholderTextColor="#7a7a7b" maxLength={5} placeholder="Delivery Zip" value={this.state.zipCode} onChangeText={(text) => { this.setState({ zipCode: text }) }}></TextInput>
                   </View>
                 </View>
                 <View style={styles.inputItem}>
@@ -608,6 +618,9 @@ export default class SignUpScreen extends Component {
               </TouchableOpacity>
             </View>
           </Modal>
+          <Modal isVisible={this.state.isModalVisible}>
+            <AlertModal alertContent={this.state.alertContent} onPress={() => this.setState({ isModalVisible: false })} />
+          </Modal>
           <Modal isVisible={this.state.isModalVisible10}>
             <View style={styles.modalView}>
               <Text style={styles.TitleTxt1}>OOPS!</Text>
@@ -664,6 +677,9 @@ export default class SignUpScreen extends Component {
                 <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
               </TouchableOpacity>
             </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible}>
+            <AlertModal alertContent={this.state.alertContent} onPress={() => this.setState({ isModalVisible: false })} />
           </Modal>
           <Modal isVisible={this.state.isModalVisible19}>
             <View style={styles.modalView}>

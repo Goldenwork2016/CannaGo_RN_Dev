@@ -31,6 +31,9 @@ export default class ProfileInfoScreen extends Component {
       isloading: false,
       isModalVisible1: false,
       isModalVisible2: false,
+      isModalVisible3: false,
+      isModalVisible4: false,
+      isModalVisible5: false,
       timeFlag: false,
       birthday: ''
     };
@@ -171,6 +174,26 @@ export default class ProfileInfoScreen extends Component {
     }
   }
 
+  deactiveAccount = async () => {
+    const self = this
+    var user = Firebase.auth().currentUser;
+
+    user.delete().then(function () {
+      AsyncStorage.setItem('Loggined', "");
+      AsyncStorage.setItem("userUid", "")
+      AsyncStorage.setItem("usertype", "")
+      self.props.navigation.navigate('LoginScreen')
+      self.setState({ isModalVisible4: false })
+      Firebase.database().ref('user/' +  Firebase.auth().currentUser.uid).remove();
+    }, function (error) {
+      console.log(error);
+      if (error.message == "This operation is sensitive and requires recent authentication. Log in again before retrying this request.") {
+        self.setState({ isModalVisible4: false })
+        self.setState({ isModalVisible5: true })
+      }
+    });
+  }
+
   render() {
     const { profileimage, firstName, password, lastName, age, phoneNum, email, availableBal, birthday, ageFlag } = this.state
     return (
@@ -219,7 +242,7 @@ export default class ProfileInfoScreen extends Component {
                 <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <Text style={{ ...styles.inputTxt }}>Change Password</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={{...styles.inputItem,borderColor: 'red', borderWidth: 0.5}}>
+              <TouchableOpacity style={{ ...styles.inputItem, borderColor: 'red', borderWidth: 0.5 }} onPress={() => { this.setState({ isModalVisible3: true }) }}>
                 <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
                 <Text style={{ ...styles.inputTxt }}>Deactivate Account</Text>
               </TouchableOpacity>
@@ -246,6 +269,43 @@ export default class ProfileInfoScreen extends Component {
               <Text style={styles.TitleTxt1}>OOPS!</Text>
               <Text style={{ ...styles.Description, textAlign: 'center', width: '90%' }}>Sorry, you have to be 21 years or older to use our service.</Text>
               <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible2: false })}>
+                <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible3}>
+            <View style={styles.modalView}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={{ ...styles.Description, textAlign: 'center', width: '90%' }}>Are you sure you want to deactivate your CannaGo account?</Text>
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity style={{ ...styles.QuitWorkout, marginHorizontal: 5 }} onPress={() => this.setState({ isModalVisible3: false, isModalVisible4: true })}>
+                  <Text style={{ ...styles.Dismiss, color: 'white' }}>Yes</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ ...styles.QuitWorkout, marginHorizontal: 5 }} onPress={() => this.setState({ isModalVisible3: false })}>
+                  <Text style={{ ...styles.Dismiss, color: 'white' }}>No</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible4}>
+            <View style={{ ...styles.modalView, height: 250 }}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={{ ...styles.Description, textAlign: 'center', width: '90%' }}>Once you have deactivated your account you'll no longer have access to this account. Are you sure you want to move forward?</Text>
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity style={{ ...styles.QuitWorkout, marginHorizontal: 5 }} onPress={() => { this.deactiveAccount() }}>
+                  <Text style={{ ...styles.Dismiss, color: 'white' }}>Yes</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ ...styles.QuitWorkout, marginHorizontal: 5 }} onPress={() => this.setState({ isModalVisible4: false })}>
+                  <Text style={{ ...styles.Dismiss, color: 'white' }}>No</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible5}>
+            <View style={{...styles.modalView, height:220}}>
+              <Text style={styles.TitleTxt1}>OOPS!</Text>
+              <Text style={{ ...styles.Description, textAlign: 'center', width: '90%' }}>This operation is sensitive and requires recent authentication. Log in again before retrying this request.</Text>
+              <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible5: false })}>
                 <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
               </TouchableOpacity>
             </View>

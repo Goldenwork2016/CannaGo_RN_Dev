@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import ImagePicker from 'react-native-image-picker';
 import Modal from 'react-native-modal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
 import { styles } from '../../components/styles'
 
 import { func, string, bool, object, array } from "prop-types";

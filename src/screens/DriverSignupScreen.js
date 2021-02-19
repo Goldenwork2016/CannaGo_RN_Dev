@@ -210,8 +210,7 @@ export default class DriverSignUpScreen extends Component {
             this.setState({ alertContent: 'Please input last name.', isModalVisible: true })
         } else if (birthday == "") {
             this.setState({ alertContent: 'Please select your birthday.', isModalVisible: true })
-        }
-        if (email == "") {
+        } else if (email == "") {
             this.setState({ alertContent: 'Please input email address.', isModalVisible: true })
         } else if (reg.test(email) === false) {
             this.setState({ alertContent: 'Email type error, Please type again.', isModalVisible: true })
@@ -311,7 +310,7 @@ export default class DriverSignUpScreen extends Component {
                                 .on("value", async (snapshot) => {
                                     var data = []
                                     var row
-                                    snapshot.forEach(async element => {
+                                    snapshot.forEach(element => {
                                         console.log(element)
                                         if (element.val().hasOwnProperty('driver')) {
                                             if (element.val().driver.email == email) {
@@ -322,10 +321,10 @@ export default class DriverSignUpScreen extends Component {
                                                 console.log("consumer");
                                                 if (element.val().consumer.email == email) {
                                                     console.log("consumerTrue");
-                                                    await this.setState({ userId: element.key, isConsumer: true })
+                                                    this.setState({ userId: element.key, isConsumer: true })
                                                     console.log(this.state.userId);
-                                                    AsyncStorage.setItem('userUid', this.state.userId);
-                                                    Firebase.database().ref('user/' + this.state.userId + '/driver').set({
+                                                    AsyncStorage.setItem('userUid', element.key);
+                                                    Firebase.database().ref('user/' + element.key + '/driver').set({
                                                         email: email,
                                                         fristName: firstName,
                                                         lastName: lastName,
@@ -357,12 +356,12 @@ export default class DriverSignUpScreen extends Component {
                                                 }
                                             }
                                             if (element.val().hasOwnProperty('dispensary')) {
-                                                console.log("dispensary");
+                                                console.log("dispensaryoooooooooooooo");
                                                 if (element.val().dispensary.email == email) {
                                                     console.log("dispensaryTrue");
-                                                    await this.setState({ userId: element.key, isDispensary: true })
-                                                    AsyncStorage.setItem('userUid', this.state.userId);
-                                                    Firebase.database().ref('user/' + this.state.userId + '/driver').set({
+                                                    this.setState({ userId: element.key, isDispensary: true })
+                                                    AsyncStorage.setItem('userUid', element.key);
+                                                    Firebase.database().ref('user/' + element.key + '/driver').set({
                                                         email: email,
                                                         fristName: firstName,
                                                         lastName: lastName,
@@ -457,7 +456,7 @@ export default class DriverSignUpScreen extends Component {
         this.setState({ isTimeVisible: false })
     }
 
-    handleTimePicker2 = async(date) => {
+    handleTimePicker2 = async (date) => {
         await this.setState({ InsuranceExpiration: dayjs(date).format('MM/DD/YYYY') })
         this.setState({ isInsuranceTimeVisible: false })
     }

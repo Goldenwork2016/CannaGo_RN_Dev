@@ -7,7 +7,7 @@ import { styles } from '../components/styles'
 import RNFetchBlob from "react-native-fetch-blob";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import AsyncStorage from '@react-native-community/async-storage';
-
+import AlertModal from '../components/AlertModal'
 import NonImage from '../assets/iamges/emptyPhoto.png'
 import uncheckImage from '../assets/iamges/uncheckImage.png'
 import checkImage from '../assets/iamges/checkImage.png'
@@ -52,6 +52,7 @@ export default class DispensariesSignupScreen extends Component {
       img_url: '',
       fein: '',
       userType: 'dispensary',
+      isModalVisible: false,
       isModalVisible1: false,
       isModalVisible2: false,
       isModalVisible3: false,
@@ -225,8 +226,7 @@ export default class DispensariesSignupScreen extends Component {
       this.setState({ isModalVisible4: true })
     } else if (password == "") {
       this.setState({ isModalVisible5: true })
-    }
-    else if (reg_strong.test(password) === false) {
+    } else if (reg_strong.test(password) === false) {
       this.setState({ isModalVisible6: true })
     }
     else if (password != conPassword) {
@@ -318,19 +318,19 @@ export default class DispensariesSignupScreen extends Component {
                 .on("value", async (snapshot) => {
                   var data = []
                   var row
-                  snapshot.forEach(async element => {
+                  snapshot.forEach(element => {
                     console.log(element)
                     if (element.val().hasOwnProperty('dispensary')) {
-                      if (element.val().driver.email == ownerEmail) {
+                      if (element.val().dispensary.email == ownerEmail) {
                         this.setState({ alertContent: 'The email address is already in use by another account.', isModalVisible: true })
                       }
                     } else {
                       if (element.val().hasOwnProperty('driver')) {
-                        if (element.val().consumer.email == ownerEmail) {
-                          await this.setState({ userId: element.key, isConsumer: true })
+                        if (element.val().driver.email == ownerEmail) {
+                          this.setState({ userId: element.key, isConsumer: true })
                           console.log(this.state.userId);
-                          AsyncStorage.setItem('userUid', this.state.userId);
-                          Firebase.database().ref('user/' + this.state.userId + '/dispensary').update({
+                          AsyncStorage.setItem('userUid', element.key);
+                          Firebase.database().ref('user/' + element.key + '/dispensary').update({
                             email: ownerEmail,
                             fristName: fristName,
                             lastName: lastName,
@@ -357,10 +357,10 @@ export default class DispensariesSignupScreen extends Component {
                         }
                       }
                       if (element.val().hasOwnProperty('consumer')) {
-                        if (element.val().dispensary.email == ownerEmail) {
-                          await this.setState({ userId: element.key, isDispensary: true })
-                          AsyncStorage.setItem('userUid', this.state.userId);
-                          Firebase.database().ref('user/' + this.state.uid + '/dispensary').update({
+                        if (element.val().consumer.email == ownerEmail) {
+                          this.setState({ userId: element.key, isDispensary: true })
+                          AsyncStorage.setItem('userUid', element.key);
+                          Firebase.database().ref('user/' + element.key + '/dispensary').update({
                             email: ownerEmail,
                             fristName: fristName,
                             lastName: lastName,
@@ -580,6 +580,9 @@ export default class DispensariesSignupScreen extends Component {
                 <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
               </TouchableOpacity>
             </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible}>
+            <AlertModal alertContent={this.state.alertContent} onPress={() => this.setState({ isModalVisible: false })} />
           </Modal>
           <Modal isVisible={this.state.isModalVisible6}>
             <View style={styles.modalView1}>
