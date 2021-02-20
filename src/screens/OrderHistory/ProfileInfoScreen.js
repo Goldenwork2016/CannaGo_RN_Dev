@@ -228,7 +228,7 @@ export default class ProfileInfoScreen extends Component {
             />
             <Spinner
               visible={this.state.isDeactiveloading}
-              textContent={'Dedicating your account...'}
+              textContent={'Deactivating your account...'}
               textStyle={{ color: 'white' }}
             />
             <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 40 : 20 }}>
@@ -339,7 +339,7 @@ export default class ProfileInfoScreen extends Component {
           <Modal isVisible={this.state.isModalVisible17}>
             <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
               <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
-              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Your CannaGo account was dedicated successfully.</Text>
+              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Your CannaGo account was deactivated successfully. Thanks for using our app.</Text>
             </View>
           </Modal>
         </ScrollView>
