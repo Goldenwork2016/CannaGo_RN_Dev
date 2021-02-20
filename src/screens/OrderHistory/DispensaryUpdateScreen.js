@@ -54,7 +54,7 @@ class DispensaryUpdateScreen extends Component {
     };
   }
 
-  componentDidMount = async() => {
+  componentDidMount = async () => {
     const usertype = await AsyncStorage.getItem("usertype");
     const userId = await AsyncStorage.getItem("userUid");
     await this.setState({ userId: userId })
@@ -232,6 +232,21 @@ class DispensaryUpdateScreen extends Component {
     await this.setState({ ischecked1: !this.state.ischecked1 });
   }
 
+  ChangeFein = async (input) => {
+    await this.setState({ fein: input })
+    input = input.replace("-", "")
+    if (input.length >= 3) {
+      var str = input.slice(0, 2) + '-' + input.slice(2)
+      await this.setState({ fein: str })
+      console.log(this.state.fein);
+      // this.state.fein.replace(this.state.fein, this.state.fein + "-")
+    }
+    // if (input.length >= 0 && input.length < 9) {
+    //   this.setState({ fein: input.replace(/\s/g, '').replace(/(\d{2})/g, `${input}-`) });
+    // }
+
+  }
+
   render() {
     const { firstName, lastName, email, phoneNum, userType, profileimage, password, storeName, storePhoneNum, storeStreetAdress, city, GA, zipCode, storeHours, companyName, fein, } = this.state
     return (
@@ -324,7 +339,7 @@ class DispensaryUpdateScreen extends Component {
                 <Text style={{ ...styles.termsTxt, width: '90%', marginTop: -10, marginBottom: 10 }}>Ensure this matches the official tax documents for your business.</Text>
                 <View style={styles.inputItem}>
                   <Image source={require('../../assets/iamges/user.png')} resizeMode='stretch' style={styles.InputImage2} />
-                  <TextInput onChangeText={value => this.setState({ fein: value })} style={{ ...styles.inputTxt, fontSize: 11 }} placeholderTextColor="#7a7a7b" value={fein} placeholder="21267236637"></TextInput>
+                  <TextInput onChangeText={(input) => { this.ChangeFein(input) }} maxLength={10} style={{ ...styles.inputTxt, fontSize: 11 }} placeholderTextColor="#7a7a7b" value={fein} placeholder="21267236637"></TextInput>
                 </View>
                 <View style={styles.TermsArea}>
                   <TouchableOpacity style={styles.forgotBtn1} onPress={() => { this.checkfun1() }}>

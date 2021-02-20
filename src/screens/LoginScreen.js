@@ -18,7 +18,7 @@ var usertype = "consumer";
 let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 let reg_strong = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,30}$/;
 
-class LoginScreen extends Component {
+export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -139,55 +139,55 @@ class LoginScreen extends Component {
           var user_info
           var user_row
           var row
-          Firebase.database()
-            .ref('Items/' + user.user.uid)
-            .once("value")
-            .then(snapshot => {
-              snapshot.forEach(element => {
-                row = {
-                  Description: element.val().Description,
-                  GpriceValue: element.val().GpriceValue,
-                  Tag: element.val().Tag,
-                  feeValue: element.val().feeValue,
-                  id: element.val().id,
-                  itemImage: element.val().itemImage,
-                  itemNum1: element.val().itemNum1,
-                  priceValue: element.val().priceValue,
-                  productName: element.val().productName
-                }
-                data.push(row)
-              });
-              // console.log(data)
-              load(data)
-            });
+          // Firebase.database()
+          //   .ref('Items/' + user.user.uid)
+          //   .once("value")
+          //   .then(snapshot => {
+          //     snapshot.forEach(element => {
+          //       row = {
+          //         Description: element.val().Description,
+          //         GpriceValue: element.val().GpriceValue,
+          //         Tag: element.val().Tag,
+          //         feeValue: element.val().feeValue,
+          //         id: element.val().id,
+          //         itemImage: element.val().itemImage,
+          //         itemNum1: element.val().itemNum1,
+          //         priceValue: element.val().priceValue,
+          //         productName: element.val().productName
+          //       }
+          //       data.push(row)
+          //     });
+          //     // console.log(data)
+          //     load(data)
+          //   });
 
-          Firebase.database()
-            .ref('user/' + user.user.uid)
-            .once("value", snapshot => {
-              console.log(snapshot)
-              user_info
-              user_row = {
-                companyName: snapshot.val().companyName,
-                email: snapshot.val().email,
-                fein: snapshot.val().fein,
-                phoneNum: snapshot.val().phoneNum,
-                firstName: snapshot.val().fristName,
-                lastName: snapshot.val().lastName,
-                password: snapshot.val().password,
-                profileimage: snapshot.val().profileimage,
-                storeAddress: snapshot.val().storeStreetAdress,
-                storeName: snapshot.val().storeName,
-                storeHours: snapshot.val().storeHours,
-                storePhoneNum: snapshot.val().storePhoneNum,
-                userType: snapshot.val().userType,
-                availableBal: snapshot.val().availableBal,
-                GA: snapshot.val().GA,
-                zipCode: snapshot.val().zipCode,
-              }
-              user_info = user_row;
-              // console.log(data)
-              userInfo(user_info)
-            });
+          // Firebase.database()
+          //   .ref('user/' + user.user.uid)
+          //   .once("value", snapshot => {
+          //     console.log(snapshot)
+          //     user_info
+          //     user_row = {
+          //       companyName: snapshot.val().companyName,
+          //       email: snapshot.val().email,
+          //       fein: snapshot.val().fein,
+          //       phoneNum: snapshot.val().phoneNum,
+          //       firstName: snapshot.val().fristName,
+          //       lastName: snapshot.val().lastName,
+          //       password: snapshot.val().password,
+          //       profileimage: snapshot.val().profileimage,
+          //       storeAddress: snapshot.val().storeStreetAdress,
+          //       storeName: snapshot.val().storeName,
+          //       storeHours: snapshot.val().storeHours,
+          //       storePhoneNum: snapshot.val().storePhoneNum,
+          //       userType: snapshot.val().userType,
+          //       availableBal: snapshot.val().availableBal,
+          //       GA: snapshot.val().GA,
+          //       zipCode: snapshot.val().zipCode,
+          //     }
+          //     user_info = user_row;
+          //     // console.log(data)
+          //     userInfo(user_info)
+          // });
 
           self.setState({ isLoading: false })
           // clearTimeout(myTimer)
@@ -449,22 +449,22 @@ class LoginScreen extends Component {
   }
 }
 
-LoginScreen.propTypes = {
-  load: func,
-  real_data: array,
-};
+// LoginScreen.propTypes = {
+//   load: func,
+//   real_data: array,
+// };
 
-const mapDispatchToProps = dispatch => ({
-  load: (data) => dispatch(load(data)),
-  userInfo: (user_info) => dispatch(userInfo(user_info)),
-});
+// const mapDispatchToProps = dispatch => ({
+//   load: (data) => dispatch(load(data)),
+//   userInfo: (user_info) => dispatch(userInfo(user_info)),
+// });
 
-const mapStateToProps = ({ user }) => ({
-  real_data: user.real_data,
-  user_real_info: user.user_real_info
-});
+// const mapStateToProps = ({ user }) => ({
+//   real_data: user.real_data,
+//   user_real_info: user.user_real_info
+// });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(LoginScreen);
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// )(LoginScreen);

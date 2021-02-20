@@ -407,9 +407,17 @@ export default class DispensariesSignupScreen extends Component {
 
   ChangeFein = async (input) => {
     await this.setState({ fein: input })
-    if (this.state.fein.length === 2) {
-      await this.setState({ fein: this.state.fein + "-" })
+    input = input.replace("-", "")
+    if (input.length >= 3) {
+      var str = input.slice(0, 2) + '-' + input.slice(2)
+      await this.setState({ fein: str })
+      console.log(this.state.fein);
+      // this.state.fein.replace(this.state.fein, this.state.fein + "-")
     }
+    // if (input.length >= 0 && input.length < 9) {
+    //   this.setState({ fein: input.replace(/\s/g, '').replace(/(\d{2})/g, `${input}-`) });
+    // }
+
   }
 
   render() {
