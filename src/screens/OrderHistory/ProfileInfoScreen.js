@@ -29,11 +29,13 @@ export default class ProfileInfoScreen extends Component {
       fein: '',
       userId: "",
       isloading: false,
+      isDeactiveloading: false,
       isModalVisible1: false,
       isModalVisible2: false,
       isModalVisible3: false,
       isModalVisible4: false,
       isModalVisible5: false,
+      isModalVisible17: false,
       timeFlag: false,
       birthday: ''
     };
@@ -178,22 +180,31 @@ export default class ProfileInfoScreen extends Component {
     const self = this
     var user = Firebase.auth().currentUser;
     var userUid = Firebase.auth().currentUser.uid
-
+    self.setState({ isDeactiveloading: true })
     user.delete().then(function () {
       AsyncStorage.setItem('Loggined', "");
       AsyncStorage.setItem("userUid", "")
       AsyncStorage.setItem("usertype", "")
-      self.props.navigation.navigate('LoginScreen')
+      self.setState({ isDeactiveloading: false })
+      setTimeout(() => {
+        self.setState({ isModalVisible17: true })
+      }, 500);
+      setTimeout(() => {
+        self.props.navigation.navigate('LoginScreen')
+        self.setState({ isModalVisible17: false })
+      }, 2500)
       self.setState({ isModalVisible4: false })
-      Firebase.database().ref('user/' +  userUid).remove();
+      Firebase.database().ref('user/' + userUid).remove();
     }, function (error) {
       console.log(error);
+      self.setState({ isDeactiveloading: false })
       if (error.message == "This operation is sensitive and requires recent authentication. Log in again before retrying this request.") {
         self.setState({ isModalVisible4: false })
         setTimeout(() => {
           self.setState({ isModalVisible5: true })
         }, 500);
       }
+      self.setState({ isDeactiveloading: false })
     });
   }
 
@@ -213,6 +224,11 @@ export default class ProfileInfoScreen extends Component {
             <Spinner
               visible={this.state.isloading}
               textContent={'Updating profile infomation...'}
+              textStyle={{ color: 'white' }}
+            />
+            <Spinner
+              visible={this.state.isDeactiveloading}
+              textContent={'Dedicating your account...'}
               textStyle={{ color: 'white' }}
             />
             <View style={{ width: '100%', alignItems: 'center', marginTop: Platform.OS == 'ios' ? 40 : 20 }}>
@@ -288,7 +304,7 @@ export default class ProfileInfoScreen extends Component {
               <Text style={styles.TitleTxt1}>OOPS!</Text>
               <Text style={{ ...styles.Description, textAlign: 'center', width: '90%' }}>Are you sure you want to deactivate your CannaGo account?</Text>
               <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={{ ...styles.QuitWorkout, marginHorizontal: 5 }} onPress={() => {this.confirm()}}>
+                <TouchableOpacity style={{ ...styles.QuitWorkout, marginHorizontal: 5 }} onPress={() => { this.confirm() }}>
                   <Text style={{ ...styles.Dismiss, color: 'white' }}>Yes</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ ...styles.QuitWorkout, marginHorizontal: 5 }} onPress={() => this.setState({ isModalVisible3: false })}>
@@ -312,12 +328,18 @@ export default class ProfileInfoScreen extends Component {
             </View>
           </Modal>
           <Modal isVisible={this.state.isModalVisible5}>
-            <View style={{...styles.modalView, height:220}}>
+            <View style={{ ...styles.modalView, height: 220 }}>
               <Text style={styles.TitleTxt1}>OOPS!</Text>
               <Text style={{ ...styles.Description, textAlign: 'center', width: '90%' }}>This operation is sensitive and requires recent authentication. Log in again before retrying this request.</Text>
               <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible5: false })}>
                 <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
               </TouchableOpacity>
+            </View>
+          </Modal>
+          <Modal isVisible={this.state.isModalVisible17}>
+            <View style={{ ...styles.modalView, backgroundColor: 'white' }}>
+              <Image source={require('../../assets/iamges/CannaGo.png')} resizeMode='stretch' style={{ width: 80, height: 80, marginBottom: 20 }} />
+              <Text style={{ ...styles.Description1, fontSize: 20, color: "#61D273", fontFamily: 'Poppins-Regular' }}>Your CannaGo account was dedicated successfully.</Text>
             </View>
           </Modal>
         </ScrollView>
