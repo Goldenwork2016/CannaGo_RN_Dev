@@ -163,7 +163,7 @@ class LoginScreen extends Component {
 
           Firebase.database()
             .ref('user/' + user.user.uid)
-            .on("value", snapshot => {
+            .once("value", snapshot => {
               console.log(snapshot)
               user_info
               user_row = {
