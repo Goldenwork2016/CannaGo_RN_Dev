@@ -192,7 +192,7 @@ export default class ProfileInfoScreen extends Component {
         self.setState({ isModalVisible4: false })
         setTimeout(() => {
           self.setState({ isModalVisible5: true })
-        }, 100);
+        }, 500);
       }
     });
   }
@@ -201,7 +201,7 @@ export default class ProfileInfoScreen extends Component {
     this.setState({ isModalVisible3: false })
     setTimeout(() => {
       this.setState({ isModalVisible4: true })
-    }, 100);
+    }, 500);
   }
 
   render() {
