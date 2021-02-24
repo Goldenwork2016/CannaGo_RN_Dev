@@ -356,7 +356,7 @@ export default class LoginScreen extends Component {
         <Modal isVisible={this.state.isModalVisible1}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input your email address</Text>
+            <Text style={{...styles.Description, textAlign:'center'}}>Please input your email address</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible1: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
@@ -365,7 +365,7 @@ export default class LoginScreen extends Component {
         <Modal isVisible={this.state.isModalVisible2}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Email type error, Please type again</Text>
+            <Text style={{...styles.Description, textAlign:'center'}}>Email type error, Please type again</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible2: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
@@ -374,7 +374,7 @@ export default class LoginScreen extends Component {
         <Modal isVisible={this.state.isModalVisible3}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Please input your password</Text>
+            <Text style={{...styles.Description, textAlign:'center'}}>Please input your password</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible3: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
@@ -403,7 +403,7 @@ export default class LoginScreen extends Component {
         <Modal isVisible={this.state.isModalVisible5}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Email or password is wrong</Text>
+            <Text style={{...styles.Description, textAlign:'center'}}>Email or password is wrong</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible5: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>
@@ -428,7 +428,7 @@ export default class LoginScreen extends Component {
         <Modal isVisible={this.state.isModalVisible8}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>This email does not exist. Please create an account.</Text>
+            <Text style={{...styles.Description, textAlign:'center'}}>This email does not exist. Please create an account.</Text>
             {/* <Text style={{ ...styles.Description, marginTop: -25 }}></Text> */}
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible8: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
@@ -438,7 +438,7 @@ export default class LoginScreen extends Component {
         <Modal isVisible={this.state.isModalVisible9}>
           <View style={styles.modalView}>
             <Text style={styles.TitleTxt1}>OOPS!</Text>
-            <Text style={styles.Description}>Your internet Connection is failed</Text>
+            <Text style={{...styles.Description, textAlign:'center'}}>Your internet Connection is failed</Text>
             <TouchableOpacity style={styles.QuitWorkout} onPress={() => this.setState({ isModalVisible9: false })}>
               <Text style={{ ...styles.Dismiss, color: 'white' }}>OK</Text>
             </TouchableOpacity>

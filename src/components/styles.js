@@ -899,6 +899,7 @@ export const styles = StyleSheet.create({
         fontSize: 15,
         marginBottom: 20,
         fontFamily: 'Poppins-Regular',
+        textAlign:'center'
     },
     QuitWorkout: {
         width: 100,

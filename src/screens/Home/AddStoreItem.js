@@ -373,7 +373,7 @@ class AddStoreItemScreen extends Component {
                 </TouchableOpacity>
                 <View style={styles.AddItemImage}>
                   {/* <Image source={{uri:this.state.img_url}} resizeMode='cover' style={styles.storeImage2} /> */}
-                  <Image source={this.state.avatarSource} resizeMode='cover' style={styles.storeImage2} />
+                  <Image source={this.state.avatarSource} resizeMode='contain' style={styles.storeImage2} />
                   <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
                     <Image source={require('../../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
                   </TouchableOpacity>

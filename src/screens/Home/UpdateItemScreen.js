@@ -381,7 +381,7 @@ class UpdateItemScreen extends Component {
                   <Image source={require('../../assets/iamges/backImage.png')} resizeMode='stretch' style={styles.backImage} />
                 </TouchableOpacity>
                 <View style={styles.AddItemImage}>
-                  <Image source={{ uri: itemImage }} resizeMode='cover' style={styles.storeImage2} />
+                  <Image source={{ uri: itemImage }} resizeMode='contain' style={styles.storeImage2} />
                   <TouchableOpacity style={styles.addStoreBtn} onPress={() => { this.chooseImage() }}>
                     <Image source={require('../../assets/iamges/cameraImage.png')} resizeMode='stretch' style={styles.addImage} />
                   </TouchableOpacity>

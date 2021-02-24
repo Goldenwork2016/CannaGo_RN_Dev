@@ -109,7 +109,7 @@ export default class ProductDetailScreen extends Component {
                             </TouchableOpacity>
                             <View style={styles.personUploadgImage}>
                                 <Text style={styles.DetailTitle}>Details</Text>
-                                <Image source={{ uri: this.state.real_data.itemImage }} resizeMode='stretch' style={styles.productDetailImage} />
+                                <Image source={{ uri: this.state.real_data.itemImage }} resizeMode='contain' style={styles.productDetailImage} />
                             </View>
                         </View>
                         <View style={styles.inputArea}>
